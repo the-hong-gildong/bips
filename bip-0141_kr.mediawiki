@@ -112,71 +112,71 @@ commitment는 코인베이스 트랜잭션의 <code>scriptPubKey</code>에 기�
 
 블록은 현재 총 크기가 1,000,000바이트(1MB)로 제한되어 있습니다. 이 제한을 다음과 같이 변경합니다:
 
-''Block weight'' is defined as ''Base size'' * 3 + ''Total size''. (rationale<ref>Rationale of using a single composite constraint, instead of two separate limits such as 1MB base data and 3MB witness data: Using two separate limits would make mining and fee estimation nearly impossible. Miners would need to solve a complex non-linear optimization problem to find the set of transactions that maximize fees given both constraints, and wallets would not be able to know what to pay as it depends on which of the two conditions is most constrained by the time miners try to produce blocks with their transactions in. Another problem with such an approach is freeloading. Once a set of transactions hit the base data 1MB constraint, up to 3MB extra data could be added to the witness by just minimally increasing the fee. The marginal cost for extra witness space effectively becomes zero in that case.</ref>)
+''블록 무게(Block weight)''는 ''베이스 사이즈(Base size)'' * 3 + ''총 사이즈(Total size)''으로 정의된다. (근거<ref>1MB 기본 데이터와 3MB 증인 데이터와 같은 두 개의 개별 제한 대신 단일 합성 조건(single composite constraint)을 사용하는 이유: 두 개의 개별적인 제한을 사용하면 채굴과 수수료 추정이 거의 불가능해집니다. 채굴자는 두 가지 제약 조건이 주어졌을 때 수수료를 최대화하는 트랜잭션 집합을 찾기 위해 복잡한 비선형 최적화 문제를 풀어야 하며, 지갑은 채굴자가 트랜잭션이 포함된 블록을 생성하려고 할 때 두 조건 중 어떤 조건이 가장 큰 제약을 받는지에 따라 지불해야 할 금액을 알 수 없게 됩니다. 이러한 접근 방식의 또 다른 문제는 프리로딩입니다(freeloading). 트랜잭션 세트가 기본 데이터 1MB 제약에 도달하면, 최소한의 수수료만 인상하여 최대 3MB의 추가 데이터를 증인에 추가할 수 있습니다. 이 경우 추가 증인 공간에 대한 한계 비용은 사실상 0이 됩니다.</ref>)
 
-''Base size'' is the block size in bytes with the original transaction serialization without any witness-related data, as seen by a non-upgraded node.
+''베이스 사이즈(Base size)''는 업그레이드되지 않은 노드에서 볼 때 증인 관련 데이터가 없는 기존 트랜잭션 직렬화의 블록 사이즈(바이트)입니다.
 
-''Total size'' is the block size in bytes with transactions serialized as described in [[bip-0144.mediawiki|BIP144]], including base data and witness data.
+''총 사이즈(Total size)''는 베이스 데이터와 증인 데이터를 포함하여 [[bip-0144.mediawiki|BIP144]]에 설명된 대로 직렬화된 트랜잭션이 포함된 바이트 단위의 블록 사이즈입니다.
 
-The new rule is ''block weight'' ≤ 4,000,000.
+새로운 규칙: ''블록 무게(block weight)'' ≤ 4,000,000.
 
 ==== Sigops ====
 
-Sigops per block is currently limited to 20,000. We change this restriction as follows:
+현재 블록당 Sigops는 20,000개로 제한되어 있습니다. 이 제한을 다음과 같이 변경합니다:
 
-Sigops in the current pubkey script, signature script, and P2SH check script are counted at 4 times their previous value.
-The sigop limit is likewise quadrupled to ≤ 80,000.
+현재 공개키 스크립트, 서명 스크립트 및 P2SH 확인 스크립트의 Sigops는 이전 값의 4배로 계산됩니다. Sigops 제한도 마찬가지로 ≤ 80,000으로 4배 증가합니다.
 
-Each P2WPKH input is counted as 1 sigop. In addition, opcodes within a P2WSH <code>witnessScript</code> are counted identically as previously within the P2SH <code>redeemScript</code>. That is, CHECKSIG is counted as only 1 sigop. When preceded by OP_1 to OP_16 CHECKMULTISIG is counted as 1 to 16 sigops respectively, otherwise it is counted as 20 sigops. This rule applies to both native witness program and P2SH witness program.
+각 P2WPKH 입력은 1 sigop으로 계산됩니다. 또한 P2WSH <code>witnessScript</code> 내의 오피코드들은 P2SH <code>redeemScript</code> 내에서 이전과 동일하게 계산됩니다.
+즉, CHECKSIG는 1 sigop으로만 계산됩니다. 앞에 OP_1 ~ OP_16이 오면 CHECKMULTISIG는 각각 1~16 sigops으로 계산되고, 그렇지 않으면 20 sigops으로 계산됩니다. 이 규칙은 네이티브 증인 프로그램과 P2SH 증인 프로그램 모두에 적용됩니다.
 
 === Additional definitions ===
 
-The following definitions are not used for consensus limits, but are suggested to provide language consistent with the terminology introduced above.
+다음 정의는 합의 제한에 사용되지는 않지만, 위에 소개된 용어와 일관된 언어를 제공하기 위해 제안된 것입니다.
 
 ==== Transaction size calculations ====
 
-''Transaction weight'' is defined as ''Base transaction size'' * 3 + ''Total transaction size'' (ie. the same method as calculating ''Block weight'' from ''Base size'' and ''Total size'').
+''트랜잭션 무게(Transaction weight)''는 ''베이스 트랜잭션 사이즈(Base transaction size)'' * 3 + ''총 트랜잭션 사이즈(Total transaction size)'' 로 정의됩니다(즉, ''베이스 사이즈(Base size)''와 ''총 사이즈(Total size)''에서 ''블록 무게(Block weight)''를 계산하는 것과 동일한 방식).
 
-''Virtual transaction size'' is defined as ''Transaction weight'' / 4 (rounded up to the next integer).
+''가상 트랜잭션 사이즈(Virtual transaction size)''는 ''트랜잭션 무게(Transaction weight)'' / 4 (다음 정수로 반올림) 로 정의됩니다.
 
-''Base transaction size'' is the size of the transaction serialised with the witness data stripped.
+''베이스 트랜잭션 사이즈(Base transaction size)''는 증인 데이터가 제거된 상태로 직렬화된 트랜잭션의 크기입니다.
 
-''Total transaction size'' is the transaction size in bytes serialized as described in [[bip-0144.mediawiki|BIP144]], including base data and witness data.
+''총 트랜잭션 사이즈(Total transaction size)'' 는 기본 데이터와 증인 데이터를 포함하여 [[bip-0144.mediawiki|BIP144]]에 설명된 대로 직렬화된 바이트 단위의 트랜잭션 크기입니다.
 
 === New script semantics ===
 
-Despite that the script language for P2WPKH and P2WSH looks very similar to pre-segregated witness script, there are several notable differences. Users MUST NOT assume that a script spendable in pre-segregated witness system would also be spendable as a P2WPKH or P2WSH script. Before large-scale deployment in the production network, developers should test the scripts on testnet with the default relay policy turned on, and with a small amount of money after BIP141 is activated on mainnet.
+P2WPKH 및 P2WSH의 스크립트 언어는 세그윗 이전 스크립트와 매우 유사해 보이지만 몇 가지 주목할 만한 차이점이 있습니다. 사용자는 세그윗 이전 시스템에서 지출 가능한 스크립트를 P2WPKH 또는 P2WSH 스크립트로도 지출할 수 있다고 가정해서는 안 됩니다(MUST NOT). 개발자는 프로덕션 네트워크에 대규모로 배포하기 전에 기본 릴레이 정책을 켠 상태에서 테스트넷에서 스크립트를 테스트하고, 메인넷에서 BIP141이 활성화된 후 적은 금액으로 테스트해야 합니다.
 
-A major difference at consensus level is described in [https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki BIP143], as a new transaction digest algorithm for signature verification in version 0 witness program.
+합의 수준에서의 주요 차이점은 버전 0 증인 프로그램에서 서명 검증을 위한 새로운 트랜잭션 다이제스트 알고리즘이고 [https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki BIP143]에 설명되어 있습니다. 
 
-Three relay and mining policies are also included in the first release of segregated witness at reference implementation version 0.13.1. Softforks based on these policies are likely to be proposed in the near future. To avoid indefinite delay in transaction confirmation and permanent fund loss in a potential softfork, users MUST observe the new semantics carefully:
+세 가지 릴레이 및 마이닝 정책도 참조 구현 버전 0.13.1에서 세그윗 첫 번째 릴리즈에 포함되어 있습니다. 이러한 정책에 기반한 소프트포크는 가까운 시일 내에 제안될 가능성이 높습니다. 잠재적인 소프트포크에서 트랜잭션 확인의 무기한 지연과 영구적인 자금 손실을 피하기 위해 사용자는 새로운 시맨틱을 주의 깊게 관찰해야만 합니다:
 
-# Only compressed public keys are accepted in P2WPKH and P2WSH (See [https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type BIP143])
-# The argument of OP_IF/NOTIF in P2WSH must be minimal<ref>https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2016-August/013014.html</ref>
-# Signature(s) must be null vector(s) if an OP_CHECKSIG or OP_CHECKMULTISIG is failed (for both pre-segregated witness script and P2WSH. See [https://github.com/bitcoin/bips/blob/master/bip-0146.mediawiki BIP146])
+# P2WPKH 및 P2WSH에서는 압축된 공개 키만 허용됩니다. (See [https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type BIP143])
+# P2WSH의 OP_IF/NOTIF 인수는 최소값이어야 합니다.<ref>https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2016-August/013014.html</ref>
+# OP_CHECKSIG 또는 OP_CHECKMULTISIG가 실패한 경우 서명은 널 벡터(null vector(s))여야 합니다. (세그윗 이전 스크립트와 P2WSH 모두에 대해. See [https://github.com/bitcoin/bips/blob/master/bip-0146.mediawiki BIP146])
 
 == Examples ==
 
 === P2WPKH ===
 
-The following example is a version 0 pay-to-witness-public-key-hash (P2WPKH):
+다음 예는 버전 0 P2WPKH(pay-to-witness-public-key-hash)입니다:
 
     witness:      <signature> <pubkey>
     scriptSig:    (empty)
     scriptPubKey: 0 <20-byte-key-hash>
                   (0x0014{20-byte-key-hash})
 
-The '0' in scriptPubKey indicates the following push is a version 0 witness program. The length of the witness program indicates that it is a P2WPKH type. The witness must consist of exactly 2 items. The HASH160 of the pubkey in witness must match the witness program.
+scriptPubKey의 '0'은 다음 푸시가 버전 0 증인 프로그램임을 나타냅니다. 증인 프로그램의 길이는 P2WPKH 유형임을 나타냅니다. 증인은 정확히 2개의 항목으로 구성되어야 합니다. 증인에 있는 pubkey의 HASH160은 증인 프로그램과 일치해야 합니다.
 
-The signature is verified as
+서명은 다음과 같이 검증됩니다.
 
     <signature> <pubkey> CHECKSIG
 
-Comparing with a traditional P2PKH output, the P2WPKH equivalent occupies 3 less bytes in the scriptPubKey, and moves the signature and public key from scriptSig to witness.
+기존 P2PKH 출력과 비교했을 때, P2WPKH에 해당하는 것은 scriptPubKey에서 3바이트를 덜 차지하고 서명과 공개키를 scriptSig에서 증인으로 옮깁니다.
 
 === P2WPKH nested in BIP16 P2SH ===
 
-The following example is the same P2WPKH, but nested in a BIP16 P2SH output.
+다음 예시는 동일한 P2WPKH이지만 BIP16 P2SH 출력에 중첩된(nested) 예시입니다.
 
     witness:      <signature> <pubkey>
     scriptSig:    <0 <20-byte-key-hash>>
@@ -184,38 +184,38 @@ The following example is the same P2WPKH, but nested in a BIP16 P2SH output.
     scriptPubKey: HASH160 <20-byte-script-hash> EQUAL
                   (0xA914{20-byte-script-hash}87)
 
-The only item in scriptSig is hashed with HASH160, compared against the 20-byte-script-hash in scriptPubKey, and interpreted as:
+scriptSig의 유일한 항목은 HASH160으로 해시되고, scriptPubKey의 20바이트 스크립트 해시와 비교되어 다음과 같이 해석됩니다:
 
     0 <20-byte-key-hash>
 
-The public key and signature are then verified as described in the previous example.
+그런 다음 이전 예제에서 설명한 대로 공개 키와 서명을 확인합니다.
 
-Comparing with the previous example, the scriptPubKey is 1 byte bigger and the scriptSig is 23 bytes bigger. Although a nested witness program is less efficient, its payment address is fully transparent and backward compatible for all Bitcoin reference client since version 0.6.0.
+이전 예시와 비교하면 scriptPubKey는 1바이트 더 크고 scriptSig는 23바이트 더 큽니다. 중첩된(nested) witness 프로그램은 효율성은 떨어지지만, 결제 주소가 완전히 투명하고 버전 0.6.0 이후 모든 비트코인 참조 클라이언트에서 이전 버전과 호환됩니다.
 
 === P2WSH ===
 
-The following example is an 1-of-2 multi-signature version 0 pay-to-witness-script-hash (P2WSH).
+다음 예는 1-of-2 다중 서명 버전 0 P2WSH(pay-to-witness-script-hash)입니다.
 
     witness:      0 <signature1> <1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>
     scriptSig:    (empty)
     scriptPubKey: 0 <32-byte-hash>
                   (0x0020{32-byte-hash})
 
-The '0' in scriptPubKey indicates the following push is a version 0 witness program. The length of the witness program indicates that it is a P2WSH type. The last item in the witness (the "witnessScript") is popped off, hashed with SHA256, compared against the 32-byte-hash in scriptPubKey, and deserialized:
+scriptPubKey의 '0'은 다음 푸시가 버전 0 증인 프로그램임을 나타냅니다. 증인 프로그램의 길이는 P2WSH 유형임을 나타냅니다. 증인("witnessScript")의 마지막 항목은 팝업되고(popped off) SHA256으로 해시된 다음 scriptPubKey의 32바이트 해시와 비교한 후 역직렬화합니다:
 
     1 <pubkey1> <pubkey2> 2 CHECKMULTISIG
 
-The script is executed with the remaining data from witness:
+스크립트는 증인의 나머지 데이터로 실행됩니다:
 
     0 <signature1> 1 <pubkey1> <pubkey2> 2 CHECKMULTISIG
 
-P2WSH allows maximum script size of 10,000 bytes, as the 520-byte push limit is bypassed.
+P2WSH는 520바이트 푸시 제한을 우회하므로 최대 10,000바이트의 스크립트 크기를 허용합니다.
 
-The scriptPubKey occupies 34 bytes, as opposed to 23 bytes of BIP16 P2SH. The increased size improves security against possible collision attacks, as 2<sup>80</sup> work is not infeasible anymore (By the end of 2015, 2<sup>84</sup> hashes have been calculated in Bitcoin mining since the creation of Bitcoin). The spending script is same as the one for an equivalent BIP16 P2SH output but is moved to witness.
+scriptPubKey는 BIP16 P2SH의 23바이트와 달리 34바이트를 차지합니다. 2<sup>80</sup>개의 작업이 더 이상 불가능하지 않기 때문에 크기가 증가하면 충돌 공격에 대한 보안이 향상됩니다 (2015년 말까지 비트코인 생성 이후 비트코인 채굴에서 계산된 해시는 2<sup>84</sup> 개입니다). 지출 스크립트는 동등한 BIP16 P2SH 출력에 대한 스크립트와 동일하지만 증인으로 이동됩니다.
 
 === P2WSH nested in BIP16 P2SH ===
 
-The following example is the same 1-of-2 multi-signature P2WSH script, but nested in a BIP16 P2SH output.
+다음 예시는 동일한 1-of-2 다중 서명 P2WSH 스크립트이지만 BIP16 P2SH 출력에 중첩된 예시입니다.
 
     witness:      0 <signature1> <1 <pubkey1> <pubkey2> 2 CHECKMULTISIG>
     scriptSig:    <0 <32-byte-hash>>
@@ -223,35 +223,35 @@ The following example is the same 1-of-2 multi-signature P2WSH script, but neste
     scriptPubKey: HASH160 <20-byte-hash> EQUAL
                   (0xA914{20-byte-hash}87)
 
-The only item in scriptSig is hashed with HASH160, compared against the 20-byte-hash in scriptPubKey, and interpreted as:
+scriptSig의 유일한 항목은 HASH160으로 해시되고, scriptPubKey의 20바이트 해시와 비교되어 다음과 같이 해석됩니다:
 
     0 <32-byte-hash>
 
-The P2WSH witnessScript is then executed as described in the previous example.
+그런 다음 이전 예제에서 설명한 대로 P2WSH witnessScript가 실행됩니다.
 
-Comparing with the previous example, the scriptPubKey is 11 bytes smaller (with reduced security) while witness is the same. However, it also requires 35 bytes in scriptSig.
+이전 예제와 비교하면, scriptPubKey는 11바이트 더 작지만(보안이 약해짐), witness는 동일합니다. 그러나 scriptSig에는 35바이트가 필요합니다.
 
 === Extensible commitment structure ===
 
-The new commitment in coinbase transaction is a hash of the <code>witness root hash</code> and a <code>witness reserved value</code>. The <code>witness reserved value</code> currently has no consensus meaning, but in the future allows new commitment values for future softforks. For example, if a new consensus-critical commitment is required in the future, the commitment in coinbase becomes:
+코인베이스 트랜잭션의 새로운 commitment는 <code>witness root hash</code> 및 <code>witness reserved value</code>의 해시입니다. <code>witness reserved value</code>은 현재 합의된 의미가 없지만, 향후 소프트포크를 위한 새로운 commitment 값을 허용할 예정입니다. 예를 들어, 향후 합의에 중요한 새로운 commitment가 필요한 경우 코인베이스의 commitment가 됩니다:
 
   Double-SHA256(Witness root hash|Hash(new commitment|witness reserved value))
 
-For backward compatibility, the <code>Hash(new commitment|witness reserved value)</code> will go to the coinbase witness, and the <code>witness reserved value</code> will be recorded in another location specified by the future softfork. Any number of new commitment could be added in this way.
+이전 버전과의 호환성을 위해 <code>Hash(new commitment|witness reserved value)</code>는 코인베이스 증인으로 이동하고, <code>witness reserved value</code>는 향후 소프트포크에서 지정한 다른 위치에 기록될 것입니다. 이러한 방식으로 새로운 commitment를 얼마든지 추가할 수 있습니다.
 
-Any commitments that are not consensus-critical to Bitcoin, such as merge-mining, MUST NOT use the <code>witness reserved value</code> to preserve the ability to do upgrades of the Bitcoin consensus protocol.
+병합 채굴(merge-mining)과 같이 비트코인에 합의에 중요하지 않은 commitment는 비트코인 합의 프로토콜의 업그레이드 기능을 보존하기 위해 <code>witness reserved value</code>을 사용해서는 안 됩니다(MUST NOT).
 
-The optional data space following the commitment also leaves room for metadata of future softforks, and MUST NOT be used for other purpose.
+commitment에 따른 선택적 데이터 공간(optional data space)은 향후 소프트포크의 메타데이터를 위한 여유 공간을 남겨두며, 다른 용도로 사용해서는 안 됩니다(MUST NOT).
 
 === Trust-free unconfirmed transaction dependency chain ===
 
-Segregated witness fixes the problem of transaction malleability fundamentally, which enables the building of unconfirmed transaction dependency chains in a trust-free manner.
+세그윗은 트랜잭션 가변성 문제를 근본적으로 해결하여 신뢰가 필요 없는(trust-free) 방식으로 미확인 트랜잭션 종속성 체인을 구축할 수 있습니다.
 
-Two parties, Alice and Bob, may agree to send certain amount of Bitcoin to a 2-of-2 multisig output (the "funding transaction"). Without signing the funding transaction, they may create another transaction, time-locked in the future, spending the 2-of-2 multisig output to third account(s) (the "spending transaction"). Alice and Bob will sign the spending transaction and exchange the signatures. After examining the signatures, they will sign and commit the funding transaction to the blockchain. Without further action, the spending transaction will be confirmed after the lock-time and release the funding according to the original contract. It also retains the flexibility of revoking the original contract before the lock-time, by another spending transaction with shorter lock-time, but only with mutual-agreement of both parties.
+앨리스와 밥이라는 두 당사자는 2-of-2 다중서명 출력("펀딩 트랜잭션")에 일정량의 비트코인을 전송하는 데 동의할 수 있습니다. 펀딩 트랜잭션에 서명하지 않고 미래에 시간 제한이 있는 또 다른 트랜잭션을 생성하여 2-of-2 다중서명 출력을 제3의 계정으로 지출할 수 있습니다("지출 트랜잭션(spending transaction)"). 앨리스와 밥은 지출 트랜잭션에 서명하고 서명을 교환합니다.서명을 검토한 후 펀딩 트랜잭션에 서명 하고 블록체인에 커밋합니다. 추가 조치가 없으면 잠금 시간이 지나면 지출 트랜잭션이 확정되고 원래 계약에 따라 자금이 릴리즈됩니다. 또한 잠금 시간 전에 잠금 시간이 더 짧은 다른 지출 트랜잭션을 통해 원래 계약을 취소할 수 있는 유연성을 유지하되, 양 당사자의 상호 동의가 있는 경우에만 가능합니다.
 
-Such setups are not possible with BIP62 as the malleability fix, since the spending transaction could not be created without both parties first signing the funding transaction. If Alice reveals the funding transaction signature before Bob does, Bob is able to lock up the funding indefinitely without ever signing the spending transaction.
+양 당사자가 먼저 펀딩 트랜잭션에 서명하지 않으면 지출 트랜잭션을 생성할 수 없기 때문에 BIP62의 가변성 수정으로 이러한 설정은 불가능합니다. 앨리스가 밥보다 먼저 펀딩 거래 서명을 공개하면 밥은 지출 거래에 서명하지 않고도 펀딩을 무기한 동결할 수 있습니다.
 
-Unconfirmed transaction dependency chain is a fundamental building block of more sophisticated payment networks, such as duplex micropayment channel and the Lightning Network, which have the potential to greatly improve the scalability and efficiency of the Bitcoin system.
+미확인 거래 의존성 체인은 양방향(duplex) 소액 결제 채널과 라이트닝 네트워크와 같은 보다 정교한 결제 네트워크의 기본 구성 요소로, 비트코인 시스템의 확장성과 효율성을 크게 향상시킬 수 있는 잠재력을 가지고 있습니다.
 
 == Future extensions ==
 
