@@ -257,59 +257,59 @@ commitment에 따른 선택적 데이터 공간(optional data space)은 향후 �
 
 === Compact fraud proof for SPV nodes ===
 
-Bitcoin right now only has two real security models. A user either runs a full-node which validates every block with all rules in the system, or a SPV (Simple Payment Verification) client which only validates the headers as a proof of publication of some transactions. The Bitcoin whitepaper suggested that SPV nodes may accept alerts from full nodes when they detect an invalid block, prompting the SPV node to download the questioned blocks and transactions for validation. This approach, however, could become a DoS attack vector as there is virtually no cost to generate a false alarm. An alarm must come with a compact, yet deterministic fraud proof.
+현재 비트코인의 실제 보안 모델은 두 가지뿐입니다. 사용자는 시스템의 모든 규칙으로 모든 블록을 검증하는 전체 노드를 실행하거나, 일부 트랜잭션의 게시 증명으로 헤더만 검증하는 SPV(간편결제 검증) 클라이언트를 실행합니다. 비트코인 백서에서는 풀 노드가 잘못된 블록을 감지하면 SPV 노드가 경고를 수신하여 의심스러운 블록과 트랜잭션을 다운로드하고 확인할 수 있다고 제안합니다. 그러나 이 접근 방식은 허위 경보를 생성하는 데 비용이 거의 들지 않기 때문에 DoS 공격 벡터가 될 수 있습니다. 알람은 간결하면서도 확실한 사기 증거와 함께 제공되어야 합니다.
 
-In the current Bitcoin protocol, it is possible to generate compact fraud proof for almost all rules except a few:
+현재 비트코인 프로토콜에서는 거의 모든 규칙에 대해 간단한 부정 증명을 생성할 수 있지만, 몇 가지 규칙에 대해서는 불가능합니다:
 
-# It is not possible to prove a miner has introduced too many Bitcoins in the coinbase transaction outputs without showing the whole block itself and all input transactions.
-# It is not possible to prove the violation of any block specific constraints, such as size and sigop limits, without showing the whole block (and all input transactions in the case of sigop limit)
-# It is not possible to prove the spending of a non-existing input without showing all transaction IDs in the blockchain way back to the genesis block.
+# 채굴자가 코인베이스 거래 출력에서 너무 많은 비트코인을 생성했음을 증명하는 것은 블록 전체와 모든 입력 트랜잭션을 보여주지 않고는 불가능합니다.
+# 블록 특정 제약 조건, 예를 들어 크기 및 sigop 한계, 위반을 증명하는 것은 블록 전체를 보여주지 않으면 (sigop 한계의 경우 모든 입력 트랜잭션을 보여주어야 함) 불가능합니다.
+# 존재하지 않는 입력의 소비를 증명하는 것은 제네시스 블록부터 블록체인의 모든 트랜잭션 ID를 보여주지 않으면 불가능합니다.
 
-Extra witness data can be committed that allows short proofs of block invalidity that SPV nodes can quickly verify:
+추가적인 증인 데이터를 커밋하여 짧은 무효 블록 증명을 가능하게 합니다. 이를 통해 SPV 노드가 빠르게 검증할 수 있습니다.
 
-# Sum trees for transaction fee can be committed making it possible to construct short proofs that the miner does not add excessive fees to the coinbase transaction. Similar for the block size and sigop count limit.
-# Backlinks for the outputs spent by the transaction's inputs can be provided. These backlinks consist of a block hash and an offset that thin clients can easily query and check to verify that the outputs exist.
+# 트랜잭션 수수료에 대한 총합 트리를 커밋하면, 채굴자가 코인베이스 트랜잭션에 과도한 수수료를 추가하지 않았음을 증명할 수 있는 짧은 증명을 구성할 수 있습니다. 블록 크기와 sigop 개수 제한에 대해서도 유사하게 구성할 수 있습니다.
+# 트랜잭션의 입력으로 소비된 출력에 대한 백링크를 제공할 수 있습니다. 이러한 백링크는 블록 해시와 오프셋으로 구성되어 있으며, 날씬한 클라이언트(thin clients)가 쉽게 쿼리하고 확인하여 출력이 존재하는지 검증할 수 있습니다.
 
-These commitments could be included in the extensible commitment structure through a soft fork and will be transparent to nodes that do not understand such new rules.
+이러한 commitment는 소프트포크를 통해 확장 가능한 commitment 구조에 포함될 수 있으며, 이러한 새로운 규칙을 이해하지 못하는 노드에게는 투명할 것입니다.
 
 === New script system ===
 
-Since a version byte is pushed before a witness program, and programs with unknown versions are always considered as anyone-can-spend script, it is possible to introduce any new script system with a soft fork. The witness as a structure is not restricted by any existing script semantics and constraints, the 520-byte push limit in particular, and therefore allows arbitrarily large scripts and signatures.
+버전 바이트가 증인 프로그램 앞에 푸시되기 때문에 알 수 없는 버전의 프로그램은 항상 누구나 지출할 수 있는 스크립트로 간주되므로, 새로운 스크립트 시스템을 소프트 포크로 도입하는 것이 가능합니다. 증인은 기존의 스크립트 의미론 및 제약 조건, 특히 520바이트 푸시 제한과 같은 제한 사항에 제한되지 않으므로 임의로 큰 스크립트 및 서명을 허용합니다.
 
-Examples of new script system include Schnorr signatures which reduce the size of multisig transactions dramatically, Lamport signature which is quantum computing resistance, and Merklized abstract syntax trees which allow very compact witness for conditional scripts with extreme complexity.
+새로운 스크립트 시스템의 예시로는 멀티시그 거래의 크기를 크게 줄이는 슈노르(Schnorr) 서명, 양자 컴퓨팅에 대한 내성을 가지는 램포트(Lamport) 서명, 그리고 극도로 복잡한 조건 스크립트를 위한 머클화(Merklized) 추상 구문 트리를 통해 매우 간결한 증인을 가능하게 하는 것이 있습니다.
 
 === Per-input lock-time and relative-lock-time ===
 
-Currently there is only one nLockTime field in a transaction and all inputs must share the same value. [https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki BIP68] enables per-input relative-lock-time using the nSequence field, however, with a limited lock-time period and resolution.
+현재 거래에는 하나의 nLockTime 필드만 있으며, 모든 입력은 동일한 값을 공유해야 합니다. [https://github.com/bitcoin/bips/blob/master/bip-0068.mediawiki BIP68]은 nSequence 필드를 사용하여 입력마다 상대적인 락타임을 가능하게 합니다. 그러나 락타임 기간과 해상도가 제한적입니다.
 
-With a soft fork, it is possible to introduce a separate witness structure to allow per-input lock-time and relative-lock-time, and a new script system that could sign and manipulate the new data (like [https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki BIP65] and [https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki BIP112]).
+소프트 포크를 통해, 입력마다 락타임 및 상대적 락타임을 가능하게 하는 별도의 증인 구조와, 새로운 데이터를 서명하고 조작할 수 있는 새로운 스크립트 시스템을 도입할 수 있습니다. ([https://github.com/bitcoin/bips/blob/master/bip-0065.mediawiki BIP65] 와 [https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki BIP112] 처럼).
 
 == Backward compatibility ==
 
-As a soft fork, older software will continue to operate without modification.  Non-upgraded nodes, however, will not see nor validate the witness data and will consider all witness programs as anyone-can-spend scripts (except a few edge cases where the witness programs are equal to 0, which the script must fail). Wallets should always be wary of anyone-can-spend scripts and treat them with suspicion. Non-upgraded nodes are strongly encouraged to upgrade in order to take advantage of the new features.
+소프트 포크로서, 기존의 소프트웨어는 수정 없이 계속 작동할 수 있습니다. 그러나 업그레이드되지 않은 노드는 증인 데이터를 보거나 검증하지 않으며, 모든 증인 프로그램을 누구나 지출할 수 있는 스크립트로 간주합니다(단, 증인 프로그램이 0인 경우 몇 가지 예외적 상황이 있으며, 이 경우 스크립트는 실패해야 합니다). 지갑은 항상 누구나 지출할 수 있는 스크립트에 대해 조심하고 의심을 가져야 합니다. 업그레이드되지 않은 노드는 새로운 기능을 활용하기 위해 업그레이드하는 것이 강력히 권장됩니다.
 
 '''What a non-upgraded wallet can do'''
 
-* Receiving bitcoin from non-upgraded and upgraded wallets
-* Sending bitcoin to non-upgraded and upgraded wallets with traditional P2PKH address (without any benefit of segregated witness)
-* Sending bitcoin to upgraded wallets using a P2SH address
-* Sending bitcoin to upgraded wallets using a native witness program through [https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki BIP70] payment protocol
+* 업그레이드되지 않은 지갑 및 업그레이드된 지갑으로부터 비트코인을 수신할 수 있습니다
+* 기존의 P2PKH 주소를 사용하여 업그레이드되지 않은 지갑 및 업그레이드된 지갑으로 비트코인을 송금할 수 있습니다(세그윗의 혜택은 없음)
+* P2SH 주소를 사용하여 업그레이드된 지갑으로 비트코인을 송금할 수 있습니다
+* [https://github.com/bitcoin/bips/blob/master/bip-0070.mediawiki BIP70] 지불 프로토콜을 통해 업그레이드된 지갑에 대한 네이티브 세그윗 프로그램을 사용하여 비트코인을 송금할 수 있습니다
 
 '''What a non-upgraded wallet cannot do'''
 
-* Validating segregated witness transaction. It assumes such a transaction is always valid
+* 세그윗 트랜잭션을 검증하기. 트랜잭션이 항상 유효하다고 가정합니다.
 
 == Deployment ==
 
-This BIP will be deployed by "version bits" BIP9 with the name "segwit" and using bit 1.
+이 BIP는 "version bits" BIP9를 통해 "segwit"이라는 이름으로 배포되며, 비트 1을 사용합니다.
 
-For Bitcoin mainnet, the BIP9 starttime will be midnight 15 november 2016 UTC (Epoch timestamp 1479168000) and BIP9 timeout will be midnight 15 november 2017 UTC (Epoch timestamp 1510704000).
+비트코인 메인넷에서, BIP9 시작 시간은 2016년 11월 15일 자정 UTC (에포크 타임스탬프 1479168000)이며, BIP9 타임아웃은 2017년 11월 15일 자정 UTC (에포크 타임스탬프 1510704000)입니다.
 
 For Bitcoin testnet, the BIP9 starttime will be midnight 1 May 2016 UTC (Epoch timestamp 1462060800) and BIP9 timeout will be midnight 1 May 2017 UTC (Epoch timestamp 1493596800).
 
 == Credits ==
 
-Special thanks to Gregory Maxwell for originating many of the ideas in this BIP and Luke-Jr for figuring out how to deploy this as a soft fork.
+이 BIP에서 제안된 많은 아이디어를 기원하는 것은 Gregory Maxwell에게 특별히 감사드립니다. 또한 이것을 소프트 포크로 배포하는 방법을 찾아낸 Luke-Jr에게도 감사의 말씀을 전합니다.
 
 == Footnotes ==
 
@@ -328,4 +328,4 @@ https://github.com/bitcoin/bitcoin/pull/8149
 
 == Copyright ==
 
-This document is placed in the public domain.
+이 문서는 퍼블릭 도메인에 배치되어 있습니다.
