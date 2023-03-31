@@ -20,13 +20,13 @@
 
 안타깝게도, 원래 SignatureHash 트랜잭션 다이제스트 알고리즘에는 최소한 2가지의 약점이 있습니다:
 
-* For the verification of each signature, the amount of data hashing is proportional to the size of the transaction. Therefore, data hashing grows in O(n<sup>2</sup>) as the number of sigops in a transaction increases. While a 1 MB block would normally take 2 seconds to verify with an average computer in 2015, a 1MB transaction with 5569 sigops may take 25 seconds to verify. This could be fixed by optimizing the digest algorithm by introducing some reusable “midstate”, so the time complexity becomes O(n). <ref>[https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2013-2292 CVE-2013-2292]</ref><ref>[https://bitcointalk.org/?topic=140078 New Bitcoin vulnerability: A transaction that takes at least 3 minutes to verify]</ref><ref>[http://rusty.ozlabs.org/?p=522 The Megatransaction: Why Does It Take 25 Seconds?]</ref>
-* The algorithm does not involve the amount of Bitcoin being spent by the input. This is usually not a problem for online network nodes as they could request for the specified transaction to acquire the output value. For an offline transaction signing device ("cold wallet"), however, the unknowing of input amount makes it impossible to calculate the exact amount being spent and the transaction fee. To cope with this problem a cold wallet must also acquire the full transaction being spent, which could be a big obstacle in the implementation of lightweight, air-gapped wallet. By including the input value of part of the transaction digest, a cold wallet may safely sign a transaction by learning the value from an untrusted source. In the case that a wrong value is provided and signed, the signature would be invalid and no funding might be lost. <ref>[https://bitcointalk.org/index.php?topic=181734.0 SIGHASH_WITHINPUTVALUE: Super-lightweight HW wallets and offline data]</ref>
+* 각 서명의 검증에 대해 데이터 해싱 양이 트랜잭션의 크기에 비례합니다. 따라서 트랜잭션 내의 sigops 수가 증가함에 따라 데이터 해싱은 O(n<sup>2</sup>)로 증가합니다. 예를 들어, 1MB 블록은 일반적으로 2015년 평균 컴퓨터에서 2초의 검증 시간이 소요되지만, 5569개의 sigops가 포함된 1MB 트랜잭션은 25초 이상 소요될 수 있습니다. 이는 재사용 가능한 "중간 상태(midstate)"를 도입하여 다이제스트 알고리즘을 최적화함으로써 시간 복잡도를 O(n)으로 개선함으로써 해결될 수 있습니다. <ref>[https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2013-2292 CVE-2013-2292]</ref><ref>[https://bitcointalk.org/?topic=140078 New Bitcoin vulnerability: A transaction that takes at least 3 minutes to verify]</ref><ref>[http://rusty.ozlabs.org/?p=522 The Megatransaction: Why Does It Take 25 Seconds?]</ref>
+* 이 알고리즘은 입력으로 지출되는 비트코인의 양을 포함하지 않습니다. 온라인 네트워크 노드에서는 지정된 트랜잭션을 요청하여 출력 값을 얻을 수 있으므로 일반적으로 문제가 되지 않습니다. 그러나 오프라인 트랜잭션 서명 장치("콜드 월렛")의 경우, 입력 금액을 모르기 때문에 정확한 지출 금액과 트랜잭션 수수료를 계산할 수 없습니다. 이 문제를 해결하기 위해서는 콜드 월렛이 지출되는 전체 트랜잭션을 획득해야 하며, 이는 경량화된, 에어 갭월렛 구현에 큰 장애물이 될 수 있습니다. 트랜잭션 다이제스트의 일부로 입력 값이 포함되도록 하면 콜드 월렛은 신뢰가 없는 소스로부터 값을 배움으로써 안전하게 트랜잭션에 서명할 수 있습니다. 잘못된 값이 제공되어 서명된 경우 서명은 유효하지 않을 것이며 자금이 손실될 수 없습니다. <ref>[https://bitcointalk.org/index.php?topic=181734.0 SIGHASH_WITHINPUTVALUE: Super-lightweight HW wallets and offline data]</ref>
 
-Deploying the aforementioned fixes in the original script system is not a simple task. That would be either a hardfork, or a softfork for new sigops without the ability to remove or insert stack items. However, the introduction of segregated witness softfork offers an opportunity to define a different set of script semantics without disrupting the original system, as the unupgraded nodes would always consider such a transaction output is spendable by arbitrary signature or no signature at all. <ref>[https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141: Segregated Witness (Consensus layer)]</ref>
+기존 스크립트 시스템에서 위에서 언급한 수정 사항을 배포하는 것은 간단한 작업이 아닙니다. 이것은 하드포크이거나 스택 항목을 제거하거나 삽입할 수 없는 새로운 서명 연산 코드(sigops)가 있는 소프트포크가 될 것입니다. 그러나 세그윗 소프트포크의 도입은 기존 시스템을 방해하지 않고 다른 스크립트 의미론(semantic)을 정의할 수 있는 기회를 제공합니다. 업그레이드되지 않은 노드는 이러한 트랜잭션 출력이 임의의 서명 또는 전혀 서명되지 않은 상태로 소비 가능하다고 항상 간주합니다. <ref>[https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141: Segregated Witness (Consensus layer)]</ref>
 
 == Specification ==
-A new transaction digest algorithm is defined, but only applicable to sigops in version 0 witness program:
+새로운 트랜잭션 다이제스트 알고리즘이 정의되었지만, 버전 0 증인 프로그램의 시그옵스에만 적용됩니다.
   Double SHA256 of the serialization of:
      1. nVersion of the transaction (4-byte little endian)
      2. hashPrevouts (32-byte hash)
@@ -39,16 +39,16 @@ A new transaction digest algorithm is defined, but only applicable to sigops in 
      9. nLocktime of the transaction (4-byte little endian)
     10. sighash type of the signature (4-byte little endian)
 
-Semantics of the original sighash types remain unchanged, except the followings:
-# The way of serialization is changed;
-# All sighash types commit to the amount being spent by the signed input;
-# <code>FindAndDelete</code> of the signature is not applied to the <code>scriptCode</code>;
-# <code>OP_CODESEPARATOR</code>(s) after the last executed <code>OP_CODESEPARATOR</code> are not removed from the <code>scriptCode</code> (the last executed <code>OP_CODESEPARATOR</code> and any script before it are always removed);
-# <code>SINGLE</code> does not commit to the input index. When <code>ANYONECANPAY</code> is not set, the semantics are unchanged since <code>hashPrevouts</code> and <code>outpoint</code> together implictly commit to the input index. When <code>SINGLE</code> is used with <code>ANYONECANPAY</code>, omission of the index commitment allows permutation of the input-output pairs, as long as each pair is located at an equivalent index.
+다음을 제외하고 기존 sighash 유형의 의미(semantic)는 변경되지 않습니다:
+# 직렬화 방식이 변경됩니다;
+# 모든 sighash 유형은 서명된 입력에 의해 소비되고있는 금액에 대해 커밋(commit)합니다;
+# <code>scriptCode</code>에서 서명의 <code>FindAndDelete</code>는 적용되지 않습니다.;
+# 마지막으로 실행된 <code>OP_CODESEPARATOR</code> 이후의 모든 <code>OP_CODESEPARATOR</code>는 scriptCode에서 제거되지 않습니다 (마지막으로 실행된 <code>OP_CODESEPARATOR</code>와 그 앞의 스크립트는 항상 제거됩니다);
+# <code>SINGLE</code>은 입력 인덱스를 명시적으로 커밋하지 않습니다. <code>ANYONECANPAY</code>가 설정되지 않은 경우, <code>hashPrevouts</code>와 <code>outpoint</code>가 함께 입력 인덱스를 암묵적으로 커밋하므로 의미는 변경되지 않습니다. <code>SINGLE</code>이 <code>ANYONECANPAY</code>와 함께 사용되는 경우 인덱스 커밋이 생략되어 입력-출력 쌍을 동등한 인덱스에 위치시키는 것만으로 순열이 가능합니다.
 
-The items 1, 4, 7, 9, 10 have the same meaning as the original algorithm. <ref name=wiki></ref>
+1, 4, 7, 9, 10 항목들은 기존 알고리즘과 같은 의미를 가집니다. <ref name=wiki></ref>
 
-The item 5:
+항목 5:
 *For <code>P2WPKH</code> witness program, the <code>scriptCode</code> is <code>0x1976a914{20-byte-pubkey-hash}88ac</code>.
 *For <code>P2WSH</code> witness program,
 **if the <code>witnessScript</code> does not contain any <code>OP_CODESEPARATOR</code>, the <code>scriptCode</code> is the <code>witnessScript</code> serialized as scripts inside <code>CTxOut</code>.
