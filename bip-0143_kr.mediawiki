@@ -131,13 +131,13 @@
 </source>
 
 == Restrictions on public key type ==
-As a default policy, only compressed public keys are accepted in <code>P2WPKH</code> and <code>P2WSH</code>. Each public key passed to a sigop inside version 0 witness program must be a compressed key: the first byte MUST be either <code>0x02</code> or <code>0x03</code>, and the size MUST be 33 bytes. Transactions that break this rule will not be relayed or mined by default.
+기본 정책으로 <code>P2WPKH</code>와 <code>P2WSH</code>에서는 압축된 공개키(compressed public keys)만 허용됩니다. 버전 0 증인 프로그램 내에서 sigop으로 전달되는 모든 공개키는 압축된 키여야 하며, 첫 번째 바이트는 반드시 <code>0x02</code> 또는 <code>0x03</code>이어야 하고, 크기는 33바이트여야 합니다. 이 규칙을 위반하는 트랜잭션은 기본적으로 릴레이(relay)되거나 채굴되지 않습니다.
 
-Since this policy is preparation for a future softfork proposal, to avoid potential future funds loss, users MUST NOT use uncompressed keys in version 0 witness programs.
+이 정책은 앞으로의 소프트포크 제안을 준비하기 위한 것이므로, 잠재적인 자금 손실을 피하기 위해 사용자들은 버전 0 증인 프로그램에서 압축되지 않은 키를 사용해서는 안 됩니다.
 
 == Example ==
 
-To ensure consistency in consensus-critical behaviour, developers should test their implementations against all the tests below. More tests related to this proposal could be found under https://github.com/bitcoin/bitcoin/tree/master/src/test/data .
+합의에 중요한 영향을 미치는 일관성을 보장하기 위해, 개발자는 구현을 아래의 모든 테스트에 대해 검증해야 합니다. 이 제안과 관련된 더 많은 테스트는 https://github.com/bitcoin/bitcoin/tree/master/src/test/data 에서 찾을 수 있습니다.
 
 === Native P2WPKH ===
   
@@ -262,7 +262,7 @@ To ensure consistency in consensus-critical behaviour, developers should test th
 
 === Native P2WSH ===
 
-This example shows how <code>OP_CODESEPARATOR</code> and out-of-range <code>SIGHASH_SINGLE</code> are processed:
+다음 예시는 <code>OP_CODESEPARATOR</code>와 범위를 벗어난(out-of-range) <code>SIGHASH_SINGLE</code>의 처리 방식을 보여줍니다:
 
   
   
@@ -322,7 +322,7 @@ This example shows how <code>OP_CODESEPARATOR</code> and out-of-range <code>SIGH
   The serialized signed transaction is: 01000000000102fe3dc9208094f3ffd12645477b3dc56f60ec4fa8e6f5d67c565d1c6b9216b36e000000004847304402200af4e47c9b9629dbecc21f73af989bdaa911f7e6f6c2e9394588a3aa68f81e9902204f3fcf6ade7e5abb1295b6774c8e0abd94ae62217367096bc02ee5e435b67da201ffffffff0815cf020f013ed6cf91d29f4202e8a58726b1ac6c79da47c23d1bee0a6925f80000000000ffffffff0100f2052a010000001976a914a30741f8145e5acadf23f751864167f32e0963f788ac000347304402200de66acf4527789bfda55fc5459e214fa6083f936b430a762c629656216805ac0220396f550692cd347171cbc1ef1f51e15282e837bb2b30860dc77c8f78bc8501e503473044022027dc95ad6b740fe5129e7e62a75dd00f291a2aeb1200b84b09d9e3789406b6c002201a9ecd315dd6a0e632ab20bbb98948bc0c6fb204f2c286963bb48517a7058e27034721026dccc749adc2a9d0d89497ac511f760f45c47dc5ed9cf352a58ac706453880aeadab210255a9626aebf5e29c0e6538428ba0d1dcf6ca98ffdf086aa8ced5e0d0215ea465ac00000000
 
 
-This example shows how unexecuted <code>OP_CODESEPARATOR</code> is processed, and <code>SINGLE|ANYONECANPAY</code> does not commit to the input index:
+이 예시는 실행되지 않은 <code>OP_CODESEPARATOR</code> 가 어떻게 처리되는지, 그리고 <code>SINGLE|ANYONECANPAY</code> 가 인풋 인덱스를 커밋하지 않는 것을 보여줍니다.
 
   
   
@@ -407,7 +407,7 @@ This example shows how unexecuted <code>OP_CODESEPARATOR</code> is processed, an
 
 === P2SH-P2WSH ===
 
-This example is a P2SH-P2WSH 6-of-6 multisig witness program signed with 6 different <code>SIGHASH</code> types.
+이 예제는 6개의 다른 <code>SIGHASH</code> 타입으로 서명된 P2SH-P2WSH 6-of-6 멀티시그 witness 프로그램입니다.
 
   
   
@@ -541,7 +541,7 @@ This example is a P2SH-P2WSH 6-of-6 multisig witness program signed with 6 diffe
 
 === No FindAndDelete ===
 
-These examples show that <code>FindAndDelete</code> for the signature is not applied. The transactions are generated in an unconventional way. Instead of signing using a private key, the signatures are pre-determined as part of <code>witnessScript</code>. The public keys are generated with key recovery, using the fixed signatures and the <code>sighash</code> defined in this proposal. Therefore, the private keys are unknown.
+이 예제는 서명에 대한 <code>FindAndDelete</code>가 적용되지 않음을 보여줍니다. 이 트랜잭션들은 비전통적인 방법으로 생성되었습니다. 개인 키를 사용하여 서명하는 대신, 서명은 <code>witnessScript</code>의 일부로 미리 결정됩니다. 공개키는 이 제안서에서 정의된 고정 서명 및 <code>sighash</code>를 사용하여 키 복구를 통해 생성됩니다. 따라서 개인 키는 알 수 없습니다.
 
   
   The following is an unsigned transaction: 010000000169c12106097dc2e0526493ef67f21269fe888ef05c7a3a5dacab38e1ac8387f14c1d000000ffffffff0101000000000000000000000000
@@ -615,15 +615,15 @@ These examples show that <code>FindAndDelete</code> for the signature is not app
                     9552af4830450220487fb382c4974de3f7d834c1b617fe15860828c7f96454490edd6d891556dcc9022100baf95feb48f845d5bfc9882eb6aeefa1bc3790e39f59eaa46ff7f15ae626c53e0148304502205286f726690b2e9b0207f0345711e63fa7012045b9eb0f19c2458ce1db90cf43022100e89f17f86abc5b149eba4115d4f128bcf45d77fb3ecdd34f594091340c0395960175
 
 
-The new serialization format is described in BIP144 <ref>[[bip-0144.mediawiki|BIP144: Segregated Witness (Peer Services)]]</ref>
+새로운 직렬화 형식은 BIP144에서 설명하고 있습니다 <ref>[[bip-0144.mediawiki|BIP144: Segregated Witness (Peer Services)]]</ref>
 
 == Deployment ==
 
-This proposal is deployed with Segregated Witness softfork (BIP 141) 
+이 제안은 세그윗(Segregated Witness) 소프트포크(BIP 141)와 함께 배포됩니다
 
 == Backward compatibility ==
 
-As a soft fork, older software will continue to operate without modification. Non-upgraded nodes, however, will not see nor validate the witness data and will consider all witness programs, including the redefined sigops, as anyone-can-spend scripts.
+오래된 소프트웨어는 수정 없이 계속 작동합니다. 그러나 업그레이드되지 않은 노드는 증인 데이터를 볼 수 없으며 유효성을 검사하지 않으며, 재정의된 서명 연산(redefined sigops)을 포함한 모든 증인 프로그램을 누구나 소비 가능한 스크립트로 간주합니다.
 
 == Reference Implementation ==
 
@@ -635,4 +635,4 @@ https://github.com/bitcoin/bitcoin/pull/8149
 
 == Copyright ==
 
-This document is placed in the public domain.
+이 문서는 공공 도메인에 배치되어 있습니다.
