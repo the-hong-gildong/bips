@@ -49,29 +49,30 @@
 1, 4, 7, 9, 10 항목들은 기존 알고리즘과 같은 의미를 가집니다. <ref name=wiki></ref>
 
 항목 5:
-*For <code>P2WPKH</code> witness program, the <code>scriptCode</code> is <code>0x1976a914{20-byte-pubkey-hash}88ac</code>.
-*For <code>P2WSH</code> witness program,
-**if the <code>witnessScript</code> does not contain any <code>OP_CODESEPARATOR</code>, the <code>scriptCode</code> is the <code>witnessScript</code> serialized as scripts inside <code>CTxOut</code>.
-**if the <code>witnessScript</code> contains any <code>OP_CODESEPARATOR</code>, the <code>scriptCode</code> is the <code>witnessScript</code> but removing everything up to and including the last executed <code>OP_CODESEPARATOR</code> before the signature checking opcode being executed, serialized as scripts inside <code>CTxOut</code>. (The exact semantics is demonstrated in the examples below)
+*<code>P2WPKH</code> 증인 프로그램에서, <code>scriptCode</code>는 <code>0x1976a914{20-byte-pubkey-hash}88ac</code>입니다.
+*P2WSH 증인 프로그램의 경우,
+**만약 <code>witnessScript</code>가 어떠한 <code>OP_CODESEPARATOR</code>도 포함하지 않는다면, <code>scriptCode</code>는 <code>CTxOut</code> 안에 직렬화된 <code>witnessScript</code>와 동일합니다.
+**만약 <code>witnessScript</code>에 <code>OP_CODESEPARATOR</code>가 포함되어 있다면, <code>scriptCode</code>는 서명 확인 명령 코드가 실행되기 전 마지막으로 실행된 <code>OP_CODESEPARATOR</code>를 포함하여 그 이전 모든 것을 제거한 <code>witnessScript</code>입니다. 이것은 <code>CTxOut</code> 안의 스크립트로 직렬화됩니다. (아래의 예시에서 정확한 의미가 설명되어 있습니다.)
 
-The item 6 is a 8-byte value of the amount of bitcoin spent in this input.
+항목 6은 이 입력에서 소비된 비트코인 금액의 8바이트 값을 나타냅니다.
 
 <code>hashPrevouts</code>:
-*If the <code>ANYONECANPAY</code> flag is not set, <code>hashPrevouts</code> is the double SHA256 of the serialization of all input outpoints;
-*Otherwise, <code>hashPrevouts</code> is a <code>uint256</code> of <code>0x0000......0000</code>.
+*만약 <code>ANYONECANPAY</code> 플래그가 설정되지 않은 경우, <code>hashPrevouts</code>는 모든 입력 아웃포인트들의 직렬화(serialization of all input outpoints)의 이중 SHA256 값입니다;
+<blockquote> "outpoints"는 입력 트랜잭션의 outpoint(해당 입력이 참조하는 이전 출력)를 나타내는 것입니다. 따라서 "이전 트랜잭션의 모든 outpoint 직렬화"로 해석하는 것이 더 적절합니다. by chatGPT</blockquote>
+*그렇지 않으면 <code>hashPrevouts</code>는 <code>0x0000......0000</code>의 <code>uint256</code>입니다.
 
 <code>hashSequence</code>:
-*If none of the <code>ANYONECANPAY</code>, <code>SINGLE</code>, <code>NONE</code> sighash type is set, <code>hashSequence</code> is the double SHA256 of the serialization of <code>nSequence</code> of all inputs;
-*Otherwise, <code>hashSequence</code> is a <code>uint256</code> of <code>0x0000......0000</code>.
+*만약 <code>ANYONECANPAY</code>, <code>SINGLE</code>, <code>NONE</code> sighash type 중 어떤 것도 설정되어 있지 않다면, <code>hashSequence</code>는 모든 입력의 <code>nSequence</code> 직렬화를 더블 SHA256으로 해싱한 값입니다;
+*그렇지 않으면, <code>hashSequence</code>는 <code>0x0000......0000</code>의 <code>uint256</code>입니다.
 
 <code>hashOutputs</code>:
-*If the sighash type is neither <code>SINGLE</code> nor <code>NONE</code>, <code>hashOutputs</code> is the double SHA256 of the serialization of all output amount (8-byte little endian) with <code>scriptPubKey</code> (serialized as scripts inside CTxOuts);
-*If sighash type is <code>SINGLE</code> and the input index is smaller than the number of outputs, <code>hashOutputs</code> is the double SHA256 of the output amount with <code>scriptPubKey</code> of the same index as the input;
-*Otherwise, <code>hashOutputs</code> is a <code>uint256</code> of <code>0x0000......0000</code>.<ref>In the original algorithm, a <code>uint256</code> of <code>0x0000......0001</code> is committed if the input index for a <code>SINGLE</code> signature is greater than or equal to the number of outputs. In this BIP a <code>0x0000......0000</code> is committed, without changing the semantics.</ref>
+*만약 sighash 타입이 <code>SINGLE</code>도 <code>NONE</code>도 아닌 경우, <code>hashOutputs</code>는 모든 출력의 금액 (8바이트 리틀엔디언)과 <code>scriptPubKey</code> (CTxOuts 내에서 스크립트로 직렬화된)의 직렬화 결과에 대한 이중 SHA256 해시입니다;
+*만약 sighash 유형이 <code>SINGLE</code>이고 인풋 인덱스가 아웃풋의 수보다 작은 경우, <code>hashOutputs</code>는 <code>scriptPubKey</code>으로부터 얻은 인풋과 같은 인덱스를 가진 아웃풋의 금액의 이중 SHA256 해시값입니다;
+*그렇지 않으면, <code>hashOutputs</code>은 <code>0x0000......0000</code>의 <code>uint256</code>입니다.<ref>기존 알고리즘에서는 <code>SINGLE</code> 서명용 입력 인덱스가 출력의 개수보다 크거나 같으면 <code>0x0000......0001</code>의 <code>uint256</code>을 커밋하도록 되어 있었습니다. 이 BIP에서는 의미를 바꾸지 않으면서 <code>0x0000......0000</code>을 커밋하도록 바뀌었습니다.</ref>
 
-The <code>hashPrevouts</code>, <code>hashSequence</code>, and <code>hashOutputs</code> calculated in an earlier verification may be reused in other inputs of the same transaction, so that the time complexity of the whole hashing process reduces from O(n<sup>2</sup>) to O(n).
+앞서 검증에서 계산된 <code>hashPrevouts</code>, <code>hashSequence</code>, 그리고 <code>hashOutputs</code>는 동일한 거래의 다른 인풋에서 재사용될 수 있습니다. 이렇게 함으로써 전체 해싱 프로세스의 시간 복잡도는 O(n<sup>2</sup>)에서 O(n)으로 줄어듭니다.
 
-Refer to the reference implementation, reproduced below, for the precise algorithm:
+아래에 재현된 참조 구현을 참고하여 정확한 알고리즘을 확인하세요.
 
 <source lang="cpp">
   uint256 hashPrevouts;
