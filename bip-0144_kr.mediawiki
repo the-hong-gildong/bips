@@ -16,14 +16,14 @@
 이 BIP는 세그윗 구조에 대한 커밋을 포함하는 거래와 블록의 전파를 위한 새로운 메시지 및 직렬화 형식을 정의합니다.
 
 ==Motivation==
-In addition to defining witness structures and requiring commitments in future blocks ([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP), new mechanisms must be defined to allow peers to advertise support for segregated witness and to relay the witness structures and request them from other peers without breaking compatibility with older nodes.
+추가로 세그윗 구조체를 정의하고 미래 블록에 대한 커밋을 요구하는 데([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP), 새로운 메커니즘은 피어가 다른 피어에게 호환성을 깨뜨리지 않으면서 세그윗을 지원하는 것을 알리고 증인 구조체를 전달하고 요청하는 것을 허용하도록 정의되어야만 합니다.
 
 ==Specification==
 
 === Serialization ===
-A new serialization format for tx messages is added to the peer-to-peer protocol.
+tx 메시지에 대한 새로운 직렬화 형식이 P2P 프로토콜에 추가됩니다.
 
-The serialization has the following structure:
+직렬화는 다음 구조를 가지고 있습니다:
 
 {| class="wikitable" style="width: auto; text-align: center; font-size: smaller; table-layout: fixed;"
 !Field Size
@@ -34,94 +34,88 @@ The serialization has the following structure:
 | 4
 | version
 | int32_t
-| Transaction data format version
+| 트랜잭션 데이터 형식 버전
 |-
 | 1
 | marker
 | char
-| Must be zero
+| 반드시 0 
 |-
 | 1
 | flag
 | char
-| Must be nonzero
+| 반드시 0이 아닌 값
 |-
 | 1+
 | txin_count
 | var_int
-| Number of transaction inputs
+| 트랜잭션 입력의 개수
 |-
 | 41+
 | txins
 | txin[]
-| A list of one or more transaction inputs
+| 하나 이상의 트랜잭션 입력 리스트
 |-
 | 1+
 | txout_count
 | var_int
-| Number of transaction outputs
+| 트랜잭션 출력의 개수
 |-
 | 9+
 | txouts
 | txouts[]
-| A list of one or more transaction outputs
+| 하나 이상의 트랜잭션 출력 리스트
 |-
 | 1+
 | script_witnesses
 | script_witnesses[]
-| The witness structure as a serialized byte array
+| 바이트 배열로 직렬화된 증인 구조체
 |-
 | 4
 | lock_time
 | uint32_t
-| The block number or timestamp until which the transaction is locked
+| 트랜잭션 잠금이 유지되는 블록 번호 또는 타임스탬프
 |}
 
-Parsers supporting this BIP will be able to distinguish between the old serialization format (without the witness) and this one. The marker byte is set to zero so that this structure will never parse as a valid transaction in a parser that does not support this BIP. If parsing were to succeed, such a transaction would contain no inputs and a single output.
+이 BIP을 지원하는 파서는 이전 직렬화 형식(증인이 없는)과 이 새로운 형식을 구별할 수 있을 것입니다. 마커 바이트는 0으로 설정되어 있으므로, 이 구조체는 이 BIP를 지원하지 않는 파서에서 유효한 트랜잭션으로 파싱되지 않습니다. 만약 파싱이 성공한다면, 그런 트랜잭션은 입력이 없고 하나의 출력만을 포함하게 됩니다.
 
-If the witness is empty, the old serialization format must be used. 
+만약 증인이 비어있다면, 예전의 직렬화 포맷을 사용해야 합니다.
 
-Currently, the only witness objects type supported are script witnesses which consist of a stack of byte arrays. It is encoded as a var_int item count followed by each item encoded as a var_int length followed by a string of bytes. Each txin has its own script witness. The number of script witnesses is not explicitly encoded as it is implied by txin_count. Empty script witnesses are encoded as a zero byte. The order of the script witnesses follows the same order as the associated txins.
+현재로서는, 지원되는 유일한 증인 객체 유형은 바이트 배열의 누적으로 구성된 script witness입니다. 이것은 var_int 아이템 카운트로 인코딩되며, 각 항목은 var_int 길이로 인코딩된 후 바이트 문자열이 따라옵니다. 각각의 txin은 고유한 script witness를 가지고 있습니다. txin_count에 의해 함축적으로 표현되므로, script witnesses의 수는 명시적으로 인코딩되지 않습니다. 빈 script witnesses은 0바이트로 인코딩됩니다. script witnesses의 순서는 연관된 txin의 순서와 동일합니다.
 
-* '''Rationale for not having an independent message type with its own serialization''': this would require separate "tx" and "block" messages, and all RPC calls operating on raw transactions would need to be duplicated, or need inefficient or nondeterministic guesswork to know which type is to be used.
+* '''자체 직렬화가 있는 독립적인 메시지 유형이 없는 이유''': 이는 "tx"와 "block" 메시지를 따로 만들어야 하며, 모든 raw transactions을 다루는 RPC 호출은 복제되어야 하거나, 어떤 타입을 사용해야 하는지 알기 위해 비효율적이거나 결정론적인 추측이 필요하게 될 것이라는 것을 의미합니다.
 
-* '''Rationale for not using just a single 0x00 byte as marker''': that would lead to empty transactions (no inputs, no outputs, which are used in some tests) to be interpreted as new serialized data.
+* '''마커의 바이트 값으로 단순히 0x00을 사용하지 않는 이유''': 그렇게 하면 입력도 출력도 없는 빈 트랜잭션이 (일부 테스트에서 사용되는) 새로운 직렬화된 데이터로 해석될 수 있습니다.
 
-* '''Rationale for the 0x01 flag byte in between''': this will allow us to easily add more extra non-committed data to transactions (like txouts being spent, ...). It can be interpreted as a bitvector.
+* '''0x01 플래그 바이트의 이유''': 이를 통해 우리는 트랜잭션에 추가로 미확정(non-committed) 데이터를 쉽게 추가할 수 있습니다 (소비된 txout 등). 이는 비트 벡터로 해석될 수 있습니다.
 
 === Handshake ===
-A node will signal that it can provide witnesses using the following service bit
+노드는 다음 서비스 비트를 사용하여 증인을 제공할 수 있다는 신호를 보냅니다.
 
     NODE_WITNESS = (1 << 3)
 	
 
 === Hashes ===
-Transaction hashes used in the transaction merkle tree and txin outpoints are always computed using the old non-witness
-serialization.
+트랜잭션 Merkle 트리 및 txin outpoint에서 사용되는 트랜잭션 해시는 항상 이전의 비-증인 직렬화를 사용하여 계산됩니다.
 
-Support for a new hash including the witness data is added that is
-computed from the new witness serialization. (Note that transactions
-with an empty witness always use the old serialization,
-and therefore, they have witness hash equal to normal hash.)
+새로운 증인 직렬화에서 계산된 증인 데이터를 포함하는 새 해시를 지원하도록 추가되었습니다. (빈 증인을 갖는 트랜잭션은 항상 이전 직렬화를 사용하므로, 보통 해시와 같은 증인 해시를 갖습니다.)
 
 <img src=bip-0144/witnesstx.png></img>
 
 === Relay ===
-New inv types MSG_WITNESS_TX (0x40000001, or (1<<30)+MSG_TX) and MSG_WITNESS_BLOCK (0x40000002, or (1<<30)+MSG_BLOCK) are added, only
-for use in getdata. Inventory messages themselves still use just MSG_TX and MSG_BLOCK,
-similar to MSG_FILTERED_BLOCK. A further inv type MSG_FILTERED_WITNESS_BLOCK (0x40000003, or (1<<30)+MSG_FILTERED_BLOCK) is reserved for future use.
+인벤토리 메시지 자체는 MSG_TX와 MSG_BLOCK과 유사하게 MSG_FILTERED_BLOCK과 같이 사용됩니다. MSG_FILTERED_WITNESS_BLOCK(0x40000003 또는 (1<<30)+MSG_FILTERED_BLOCK)과 같은 추가적인 인벤토리 타입은 예약되어 있으며(reserved), 나중에 사용될 예정입니다.
 
-* '''Rationale for not advertizing witnessness in invs''': we don't always use invs anymore (with 'sendheaders' BIP 130), plus it's not useful: implicitly, every transaction and block have a witness, old ones just have empty ones.
+* '''인벤토리에서 증인을 알리지 않는 이유''': 더 이상 invs를 항상 사용하지 않으며('sendheaders' BIP 130으로), 게다가 유용하지 않습니다. 묵시적으로 모든 트랜잭션과 블록은 증인을 가지고 있지만, 구버전은 빈 증인을 가지고 있습니다.
 
-MSG_WITNESS_TX getdata requests should use the non-witness serialized hash. The peer shall respond with a tx message, and if the witness structure is nonempty, the witness serialization shall be used.
+MSG_WITNESS_TX getdata 요청은 증인 직렬화되지 않은 해시를 사용해야 합니다. 피어는 tx 메시지로 응답하고, 증인 구조가 비어있지 않은 경우 증인 직렬화가 사용됩니다.
 
-MSG_WITNESS_BLOCK requests will return a block message with transactions that have a witness using witness serialization.
+MSG_WITNESS_BLOCK 요청은 증인 직렬화를 사용하는 증인을 갖는 트랜잭션을 포함하는 블록 메시지를 반환합니다.(MSG_WITNESS_BLOCK requests will return a block message with transactions that have a witness using witness serialization.)
 
 == Credits ==
-Special thanks to Gregory Maxwell for originating many of the ideas in this BIP and Luke-Jr for figuring out how to deploy this as a soft fork.
+이 BIP에서 많은 아이디어를 제안한 Gregory Maxwell와 이를 소프트포크로 배포하는 방법을 개발한 Luke-Jr에게 특별히 감사드립니다.
 
 == Reference Implementation ==
 https://github.com/bitcoin/bitcoin/pull/8149
 
 == Copyright ==
-This document is placed in the public domain.
+이 문서는 공개 도메인에 배치됩니다.
