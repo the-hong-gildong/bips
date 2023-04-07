@@ -21,61 +21,38 @@
 
 ===Copyright===
 
-This BIP is licensed under the 2-clause BSD license.
+이 BIP는 2-clause BSD 라이센스에 따라 라이센스가 부여됩니다.
 
 ===Motivation===
 
-For most of its history, Bitcoin has relied on base58 addresses with a
-truncated double-SHA256 checksum. They were part of the original
-software and their scope was extended in
-[https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki BIP13]
-for Pay-to-script-hash
-([https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki P2SH]).
-However, both the character set and the checksum algorithm have limitations:
-* Base58 needs a lot of space in QR codes, as it cannot use the ''alphanumeric mode''.
-* The mixed case in base58 makes it inconvenient to reliably write down, type on mobile keyboards, or read out loud.
-* The double SHA256 checksum is slow and has no error-detection guarantees.
-* Most of the research on error-detecting codes only applies to character-set sizes that are a [https://en.wikipedia.org/wiki/Prime_power prime power], which 58 is not.
-* Base58 decoding is complicated and relatively slow.
+비트코인의 대부분의 역사에서, 비트코인은 끝이 잘려진 이중 SHA256 체크섬을 사용하는 base58 주소를 사용해 왔습니다. 이들은 원래 소프트웨어의 일부였으며 [https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki BIP13] 에서 Pay-to-script-hash ([https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki P2SH])를 위해 범위가 확장되었습니다.
+그러나 문자 집합과 체크섬 알고리즘 모두 제한이 있습니다.
+* Base58는 ''알파벳-숫자 모드(alphanumeric mode)''를 사용할 수 없기 때문에 QR 코드에서 많은 공간을 차지합니다.
+* Base58에서의 대소문자 혼합은 정확하게 적기, 모바일 키보드에서 입력하기, 혹은 소리 내어 읽기에 불편합니다.
+* 이중 SHA256 체크섬은 느리며 오류 검출 보장이 안 됩니다.
+* 오류 감지 코드에 대한 대부분의 연구는 (58이 아닌) [https://en.wikipedia.org/wiki/Prime_power 소수 거듭제곱(prime power)]인 문자 집합 크기에 적용되기 때문에, 이 경우에는 적용할 수 없습니다.
+* Base58 디코딩은 복잡하고 비교적 느립니다.
 
-Included in the Segregated Witness proposal are a new class of outputs
-(witness programs, see
-[https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141]),
-and two instances of it ("P2WPKH" and "P2WSH", see
-[https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki BIP143]).
-Their functionality is available indirectly to older clients by embedding in P2SH
-outputs, but for optimal efficiency and security it is best to use it
-directly. In this document we propose a new address format for native
-witness outputs (current and future versions).
+세그윗 제안에는 새로운 클래스의 출력(증인 프로그램, [https://github.com/MyLifeForB/bips/blob/master/bip-0141_kr.mediawiki BIP141] 참조)과 그것의 두 인스턴스("P2WPKH"와 "P2WSH", [https://github.com/MyLifeForB/bips/blob/master/bip-0143_kr.mediawiki BIP143] 참조)가 포함됩니다. 이들의 기능은 P2SH 출력에 포함되어 구현이 가능하지만, 최적의 효율성과 보안을 위해서는 세그윗을 직접 사용하는 것이 좋습니다. 이 문서에서는 네이티브 증인 출력에 대한 새로운 주소 형식을 제안합니다(현재 및 미래 버전 모두).
 
-This replaces
-[https://github.com/bitcoin/bips/blob/master/bip-0142.mediawiki BIP142],
-and was previously discussed
-[https://bitcoincore.org/logs/2016-05-zurich-meeting-notes.html#base32 here] (summarized
-[https://bitcoincore.org/en/meetings/2016/05/20/#error-correcting-codes-for-future-address-types here]).
+이는 [https://github.com/bitcoin/bips/blob/master/bip-0142.mediawiki BIP142]를 대체하며, 이전에 [https://bitcoincore.org/logs/2016-05-zurich-meeting-notes.html#base32 여기]에서 논의되었습니다([https://bitcoincore.org/en/meetings/2016/05/20/#error-correcting-codes-for-future-address-types 여기]에 요약되어있습니다).
 
 ===Examples===
 
-All examples use public key
-<tt>0279BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798</tt>.
-The P2WSH examples use <tt>key OP_CHECKSIG</tt> as script.
+모든 예제는 공개키 <tt>0279BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798</tt>를 사용합니다. P2WSH 예제에서는 스크립트로 <tt>key OP_CHECKSIG</tt>를 사용합니다.
 
-* Mainnet P2WPKH: <tt>bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4</tt>
-* Testnet P2WPKH: <tt>tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx</tt>
-* Mainnet P2WSH: <tt>bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3</tt>
-* Testnet P2WSH: <tt>tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7</tt>
+* 메인넷 P2WPKH: <tt>bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4</tt>
+* 테스트넷 P2WPKH: <tt>tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx</tt>
+* 메인넷 P2WSH: <tt>bc1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3qccfmv3</tt>
+* 테스트넷 P2WSH: <tt>tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7</tt>
 
 ==Specification==
 
-We first describe the general checksummed base32<ref>'''Why use base32 at all?''' The lack of mixed case makes it more
-efficient to read out loud or to put into QR codes. It does come with a 15% length
-increase, but that does not matter when copy-pasting addresses.</ref> format called
-''Bech32'' and then define Segregated Witness addresses using it.
+우선 일반적인 체크섬이 있는 base32<ref>'''도대체 왜 base32를 사용하는 것인가요?''' 대소문자를 혼용하지 않아서 읽기 쉽고 QR 코드에 넣기 쉬워진다는 점입니다. 길이가 15% 증가하지만, 복사, 붙여넣기할 때는 문제가 되지 않습니다.</ref> 포맷인 ''Bech32''를 설명한 후, 이를 사용하여 세그윗 주소를 정의합니다.
 
 ===Bech32===
 
-A Bech32<ref>'''Why call it Bech32?''' "Bech" contains the characters BCH (the error
-detection algorithm used) and sounds a bit like "base".</ref> string is at most 90 characters long and consists of:
+Bech32<ref>'''왜 Bech32라고 부르나요?''' "는 BCH(사용된 오류 검출 알고리즘) 문자를 포함하며 "base"와 비슷한 소리가 나기 때문입니다.</ref> 문자열은 최대 90자 이하이며 다음과 같이 구성됩니다:
 * The '''human-readable part''', which is intended to convey the type of data, or anything else that is relevant to the reader. This part MUST contain 1 to 83 US-ASCII characters, with each character having a value in the range [33-126]. HRP validity may be further restricted by specific applications.
 * The '''separator''', which is always "1". In case "1" is allowed inside the human-readable part, the last one in the string is the separator<ref>'''Why include a separator in addresses?''' That way the human-readable
 part is unambiguously separated from the data part, avoiding potential
