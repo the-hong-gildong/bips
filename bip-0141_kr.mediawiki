@@ -34,7 +34,7 @@
 # 트랜잭션 데이터의 일부를 현재 프로토콜에 알려지지 않은(Unknown) 구조로 이동하여'''소프트 포크를 통해 일부 제약 조건을 우회할 수 있습니다'''. 예를들어:
 #* 블록 크기를 계산할 때 증인의 크기를 무시 / 할인하여 블록 크기를 어느 정도 효과적으로 늘릴 수 있습니다
 #* 최대 데이터 푸시 크기(520바이트) 또는 시그옵스 제한과 같은 하드 코딩된 상수는 값을 바꾸거나 제거될 수 있습니다
-#* 기존 스크립트 시맨틱의 제한 없이 새로운 스크립트 시스템을 도입할 수 있습니다. 예를 들어, 트랜잭션 서명 검증을 위한 새로운 트랜잭션 다이제스트 알고리즘은 [https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki BIP143]에 설명되어 있습니다
+#* 기존 스크립트 시맨틱의 제한 없이 새로운 스크립트 시스템을 도입할 수 있습니다. 예를 들어, 트랜잭션 서명 검증을 위한 새로운 트랜잭션 다이제스트 알고리즘은 [https://github.com/MyLifeForB/bips/blob/master/bip-0143_kr.mediawiki BIP143(kr)]에 설명되어 있습니다
 
 ==Specification==
 
@@ -116,7 +116,7 @@ commitment는 코인베이스 트랜잭션의 <code>scriptPubKey</code>에 기�
 
 ''베이스 사이즈(Base size)''는 업그레이드되지 않은 노드에서 볼 때 증인 관련 데이터가 없는 기존 트랜잭션 직렬화의 블록 사이즈(바이트)입니다.
 
-''총 사이즈(Total size)''는 베이스 데이터와 증인 데이터를 포함하여 [[bip-0144.mediawiki|BIP144]]에 설명된 대로 직렬화된 트랜잭션이 포함된 바이트 단위의 블록 사이즈입니다.
+''총 사이즈(Total size)''는 베이스 데이터와 증인 데이터를 포함하여 [[bip-0144_kr.mediawiki|BIP144(kr)]]에 설명된 대로 직렬화된 트랜잭션이 포함된 바이트 단위의 블록 사이즈입니다.
 
 새로운 규칙: ''블록 무게(block weight)'' ≤ 4,000,000.
 
@@ -141,17 +141,17 @@ commitment는 코인베이스 트랜잭션의 <code>scriptPubKey</code>에 기�
 
 ''베이스 트랜잭션 사이즈(Base transaction size)''는 증인 데이터가 제거된 상태로 직렬화된 트랜잭션의 크기입니다.
 
-''총 트랜잭션 사이즈(Total transaction size)'' 는 기본 데이터와 증인 데이터를 포함하여 [[bip-0144.mediawiki|BIP144]]에 설명된 대로 직렬화된 바이트 단위의 트랜잭션 크기입니다.
+''총 트랜잭션 사이즈(Total transaction size)'' 는 기본 데이터와 증인 데이터를 포함하여 [[bip-0144_kr.mediawiki|BIP144(kr)]]에 설명된 대로 직렬화된 바이트 단위의 트랜잭션 크기입니다.
 
 === New script semantics ===
 
 P2WPKH 및 P2WSH의 스크립트 언어는 세그윗 이전 스크립트와 매우 유사해 보이지만 몇 가지 주목할 만한 차이점이 있습니다. 사용자는 세그윗 이전 시스템에서 지출 가능한 스크립트를 P2WPKH 또는 P2WSH 스크립트로도 지출할 수 있다고 가정해서는 안 됩니다(MUST NOT). 개발자는 프로덕션 네트워크에 대규모로 배포하기 전에 기본 릴레이 정책을 켠 상태에서 테스트넷에서 스크립트를 테스트하고, 메인넷에서 BIP141이 활성화된 후 적은 금액으로 테스트해야 합니다.
 
-합의 수준에서의 주요 차이점은 버전 0 증인 프로그램에서 서명 검증을 위한 새로운 트랜잭션 다이제스트 알고리즘이고 [https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki BIP143]에 설명되어 있습니다. 
+합의 수준에서의 주요 차이점은 버전 0 증인 프로그램에서 서명 검증을 위한 새로운 트랜잭션 다이제스트 알고리즘이고 [https://github.com/MyLifeForB/bips/blob/master/bip-0143_kr.mediawiki BIP143(kr)]에 설명되어 있습니다. 
 
 세 가지 릴레이 및 마이닝 정책도 참조 구현 버전 0.13.1에서 세그윗 첫 번째 릴리즈에 포함되어 있습니다. 이러한 정책에 기반한 소프트포크는 가까운 시일 내에 제안될 가능성이 높습니다. 잠재적인 소프트포크에서 트랜잭션 확인의 무기한 지연과 영구적인 자금 손실을 피하기 위해 사용자는 새로운 시맨틱을 주의 깊게 관찰해야만 합니다:
 
-# P2WPKH 및 P2WSH에서는 압축된 공개 키만 허용됩니다. (See [https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki#Restrictions_on_public_key_type BIP143])
+# P2WPKH 및 P2WSH에서는 압축된 공개 키만 허용됩니다. (See [https://github.com/MyLifeForB/bips/blob/master/bip-0143_kr.mediawiki#Restrictions_on_public_key_type BIP143(kr)])
 # P2WSH의 OP_IF/NOTIF 인수는 최소값이어야 합니다.<ref>https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2016-August/013014.html</ref>
 # OP_CHECKSIG 또는 OP_CHECKMULTISIG가 실패한 경우 서명은 널 벡터(null vector(s))여야 합니다. (세그윗 이전 스크립트와 P2WSH 모두에 대해. See [https://github.com/bitcoin/bips/blob/master/bip-0146.mediawiki BIP146])
 
@@ -322,8 +322,8 @@ https://github.com/bitcoin/bitcoin/pull/8149
 == References ==
 
 *[[bip-0016.mediawiki|BIP16 Pay to Script Hash]]
-*[[bip-0143.mediawiki|BIP143 Transaction Signature Verification for Version 0 Witness Program]]
-*[[bip-0144.mediawiki|BIP144 Segregated Witness (Peer Services)]]
+*[[bip-0143_kr.mediawiki|BIP143(kr) Transaction Signature Verification for Version 0 Witness Program]]
+*[[bip-0144_kr.mediawiki|BIP144(kr) Segregated Witness (Peer Services)]]
 *[[bip-0173.mediawiki|BIP173 Base32 address format for native v0-16 witness outputs]]
 
 == Copyright ==
