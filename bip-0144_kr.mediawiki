@@ -16,7 +16,7 @@
 이 BIP는 세그윗 구조에 대한 커밋을 포함하는 거래와 블록의 전파를 위한 새로운 메시지 및 직렬화 형식을 정의합니다.
 
 ==Motivation==
-추가로 세그윗 구조체를 정의하고 미래 블록에 대한 커밋을 요구하는 데([https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki BIP141] - Consensus segwit BIP), 새로운 메커니즘은 피어가 다른 피어에게 호환성을 깨뜨리지 않으면서 세그윗을 지원하는 것을 알리고 증인 구조체를 전달하고 요청하는 것을 허용하도록 정의되어야만 합니다.
+추가로 세그윗 구조체를 정의하고 미래 블록에 대한 커밋을 요구하는 데([https://github.com/MyLifeForB/bips/blob/master/bip-0141_kr.mediawiki BIP141(kr)] - Consensus segwit BIP), 새로운 메커니즘은 피어가 다른 피어에게 호환성을 깨뜨리지 않으면서 세그윗을 지원하는 것을 알리고 증인 구조체를 전달하고 요청하는 것을 허용하도록 정의되어야만 합니다.
 
 ==Specification==
 
