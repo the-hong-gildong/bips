@@ -53,23 +53,10 @@
 ===Bech32===
 
 Bech32<ref>'''왜 Bech32라고 부르나요?''' "는 BCH(사용된 오류 검출 알고리즘) 문자를 포함하며 "base"와 비슷한 소리가 나기 때문입니다.</ref> 문자열은 최대 90자 이하이며 다음과 같이 구성됩니다:
-* The '''human-readable part''', which is intended to convey the type of data, or anything else that is relevant to the reader. This part MUST contain 1 to 83 US-ASCII characters, with each character having a value in the range [33-126]. HRP validity may be further restricted by specific applications.
-* The '''separator''', which is always "1". In case "1" is allowed inside the human-readable part, the last one in the string is the separator<ref>'''Why include a separator in addresses?''' That way the human-readable
-part is unambiguously separated from the data part, avoiding potential
-collisions with other human-readable parts that share a prefix. It also
-allows us to avoid having character-set restrictions on the human-readable part. The
-separator is ''1'' because using a non-alphanumeric character would
-complicate copy-pasting of addresses (with no double-click selection in
-several applications). Therefore an alphanumeric character outside the normal character set
-was chosen.</ref>.
-* The '''data part''', which is at least 6 characters long and only consists of alphanumeric characters excluding "1", "b", "i", and "o"<ref>'''Why not use an existing character set like [http://www.faqs.org/rfcs/rfc3548.html RFC3548] or [https://philzimmermann.com/docs/human-oriented-base-32-encoding.txt z-base-32]'''?
-The character set is chosen to minimize ambiguity according to
-[https://hissa.nist.gov/~black/GTLD/ this] visual similarity data, and
-the ordering is chosen to minimize the number of pairs of similar
-characters (according to the same data) that differ in more than 1 bit.
-As the checksum is chosen to maximize detection capabilities for low
-numbers of bit errors, this choice improves its performance under some
-error models.</ref>.
+* '''인간이-읽을-수-있는 파트(human-readable part)'''으로, 데이터의 유형이나 읽는 사람에게 관련이 있는 내용을 전달하기 위해 사용됩니다. 이 부분은 1~83개의 US-ASCII 문자로 이루어져 있으며, 각 문자는 [33-126] 범위의 값을 가지고 있어야 합니다. HRP 유효성은 특정 응용 프로그램에서 더 제한될 수 있습니다.
+* '''구분자(separator)'''는 항상 "1"입니다. 만약 "1"이 인간이-읽을-수-있는 파트 안에 허용된다면, 마지막에 있는 것이 구분자입니다.<ref>'''왜 주소에 구분자가 포함되나요?''' 이렇게 함으로써, 인간이-읽을-수-있는 파트와 데이터 부분이 명확하게 구분되어, 동일한 접두사를 공유하는 다른 인간이-읽을-수-있는 파트와 충돌할 가능성을 피할 수 있습니다. 인간이-읽을-수-있는 파트에 문자 집합 제한을 피할 수 있습니다. 구분 기호는 ''1''로 선택되었는데, 이는 비알파벳-숫자(non-alphanumeric)' 문자를 사용하면 주소 복사 붙여넣기 작업이 복잡해지기 때문입니다(일부 애플리케이션에서는 더블 클릭 선택이 불가능합니다). 따라서 일반 문자 집합 외의 알파벳-숫자 문자가 선택되었습니다.</ref>.
+* '''데이터 파트(data part)'''는 적어도 6자 이상이며, "1", "b", "i", "o"를 제외한 알파벳 대소문자와 숫자로만 구성됩니다.<ref>'''왜 [http://www.faqs.org/rfcs/rfc3548.html RFC3548] 또는 [https://philzimmermann.com/docs/human-oriented-base-32-encoding.txt z-base-32]와 같은 기존 문자 집합을 사용하지 않는 것일까요?'''
+이 문자 집합은 [https://hissa.nist.gov/~black/GTLD/ 이런] 시각적 유사성 데이터에 따라 모호성을 최소화하기 위해 선택되었으며, 순서는 (동일한 데이터에 따라) 1 비트 이상 차이나는 유사한 문자 쌍의 수를 최소화하기 위해 선택되었습니다. 체크섬은 비트 오류의 수가 적을 때 감지 능력을 극대화하기 위해 선택되므로, 이 선택은 일부 오류 모델에서의 성능을 향상시킵니다.</ref>.
 
 
 {| class="wikitable"
@@ -100,12 +87,9 @@ error models.</ref>.
 
 '''Checksum'''
 
-The last six characters of the data part form a checksum and contain no
-information. Valid strings MUST pass the criteria for validity specified
-by the Python3 code snippet below. The function
-<tt>bech32_verify_checksum</tt> must return true when its arguments are:
-* <tt>hrp</tt>: the human-readable part as a string
-* <tt>data</tt>: the data part as a list of integers representing the characters after conversion using the table above
+데이터 부분의 마지막 6개 문자는 체크섬을 형성하며 어떠한 정보도 포함하지 않습니다. 유효한 문자열은 아래의 Python3 코드 스니펫에서 명시된 유효성 기준을 충족해야 합니다. <tt>bech32_verify_checksum</tt> 함수는 다음과 같은 인수를 받았을 때 참을 반환해야 합니다:
+* <tt>hrp</tt>: 문자열로 된 인간이-읽을-수-있는 파트
+* <tt>data</tt>: 위의 표를 사용하여 변환한 후 문자열을 나타내는 정수 목록으로 나타낸 데이터 부분
 
 <pre>
 def bech32_polymod(values):
@@ -125,18 +109,11 @@ def bech32_verify_checksum(hrp, data):
   return bech32_polymod(bech32_hrp_expand(hrp) + data) == 1
 </pre>
 
-This implements a [https://en.wikipedia.org/wiki/BCH_code BCH code] that
-guarantees detection of '''any error affecting at most 4 characters'''
-and has less than a 1 in 10<sup>9</sup> chance of failing to detect more
-errors. More details about the properties can be found in the
-Checksum Design appendix. The human-readable part is processed by first
-feeding the higher bits of each character's US-ASCII value into the
-checksum calculation followed by a zero and then the lower bits of each<ref>'''Why are the high bits of the human-readable part processed first?'''
-This results in the actually checksummed data being ''[high hrp] 0 [low hrp] [data]''. This means that under the assumption that errors to the
-human readable part only change the low 5 bits (like changing an alphabetical character into another), errors are restricted to the ''[low hrp] [data]''
-part, which is at most 89 characters, and thus all error detection properties (see appendix) remain applicable.</ref>.
+이 코드는 '''최대 4개 문자에 영향을 미치는 어떤 오류'''든 감지할 수 있는 [https://en.wikipedia.org/wiki/BCH_code BCH code]를 구현하며, 추가적인 오류를 감지하지 못할 확률이 10억 분의 1 미만입니다. 더 많은 세부 정보는 부록-Checksum Design에서 확인할 수 있습니다. 인간이-읽을-수-있는 파트는 각 문자의 US-ASCII 값을 상위 비트로 사용하여 체크섬 계산에 먼저 입력한 다음 0을 더한 다음 각 문자의 하위 비트를 입력하여 처리됩니다<ref>'''왜 인간이-읽을-수-있는 파트의 상위 비트를 먼저 처리하나요?'''
+이로 인해 실제로 체크섬이 계산되는 데이터는 ''[high hrp] 0 [low hrp] [data]'' 가 됩니다.
+이는 인간이-읽을-수-있는 파트의 오류가 알파벳 문자를 다른 문자로 변경하는 것과 같이 하위 5비트만 변경되는 것으로 가정하면, 오류는 최대 89자인 ''[low hrp] [data]'' 부분으로 제한되며, 따라서 모든 오류 감지 속성(부록 참조)이 적용됨을 의미합니다.</ref>.
 
-To construct a valid checksum given the human-readable part and (non-checksum) values of the data-part characters, the code below can be used:
+인간이-읽을-수-있는 파트와 (체크섬이 아닌) 데이터 파트의 값이 주어졌을 때 유효한 체크섬을 구성하려면 아래의 코드를 사용할 수 있습니다.
 
 <pre>
 def bech32_create_checksum(hrp, data):
@@ -147,15 +124,7 @@ def bech32_create_checksum(hrp, data):
 
 '''Error correction'''
 
-One of the properties of these BCH codes is that they can be used for
-error correction. An unfortunate side effect of error correction is that
-it erodes error detection: correction changes invalid inputs into valid
-inputs, but if more than a few errors were made then the valid input may
-not be the correct input. Use of an incorrect but valid input can cause
-funds to be lost irrecoverably. Because of this, implementations SHOULD
-NOT implement correction beyond potentially suggesting to the user where
-in the string an error might be found, without suggesting the correction
-to make.
+BCH 코드의 특징 중 하나는 오류 정정에 사용할 수 있다는 것입니다. 오류 정정의 불행한 부작용 중 하나는 오류 검출 기능이 약화된다는 것입니다: 정정은 유효하지 않은(invalid) 입력을 유효한(valid) 입력으로 바꿀 수 있지만, 여러 개의 에러가 발생한 경우 유효한(valid) 입력이 정확한(correct) 입력이 아닐 수 있습니다. 잘못된(incorrect) 그러나 유효한 입력을 사용하면 자금이 복구할 수 없이 손실될 수 있습니다. 이러한 이유로, 구현체는 올바르지 않은 입력을 수정하는 기능을 구현하지 말아야 합니다(SHOULD NOT). 최대한 오류가 발생한 위치를 사용자에게 제시할 수는 있지만, 수정할 값을 제시해서는 안 됩니다.
 
 '''Uppercase/lowercase'''
 
