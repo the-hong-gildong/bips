@@ -30,7 +30,7 @@
 * Base58는 ''알파벳-숫자 모드(alphanumeric mode)''를 사용할 수 없기 때문에 QR 코드에서 많은 공간을 차지합니다.
 * Base58에서의 대소문자 혼합은 정확하게 적기, 모바일 키보드에서 입력하기, 혹은 소리 내어 읽기에 불편합니다.
 * 이중 SHA256 체크섬은 느리며 오류 검출 보장이 안 됩니다.
-* 오류 감지 코드에 대한 대부분의 연구는 (58이 아닌) [https://en.wikipedia.org/wiki/Prime_power 소수 거듭제곱(prime power)]인 문자 집합 크기에 적용되기 때문에, 이 경우에는 적용할 수 없습니다.
+* 오류 검출 코드에 대한 대부분의 연구는 (58이 아닌) [https://en.wikipedia.org/wiki/Prime_power 소수 거듭제곱(prime power)]인 문자 집합 크기에 적용되기 때문에, 이 경우에는 적용할 수 없습니다.
 * Base58 디코딩은 복잡하고 비교적 느립니다.
 
 세그윗 제안에는 새로운 클래스의 출력(증인 프로그램, [https://github.com/MyLifeForB/bips/blob/master/bip-0141_kr.mediawiki BIP141] 참조)과 그것의 두 인스턴스("P2WPKH"와 "P2WSH", [https://github.com/MyLifeForB/bips/blob/master/bip-0143_kr.mediawiki BIP143] 참조)가 포함됩니다. 이들의 기능은 P2SH 출력에 포함되어 구현이 가능하지만, 최적의 효율성과 보안을 위해서는 세그윗을 직접 사용하는 것이 좋습니다. 이 문서에서는 네이티브 증인 출력에 대한 새로운 주소 형식을 제안합니다(현재 및 미래 버전 모두).
@@ -56,7 +56,7 @@ Bech32<ref>'''왜 Bech32라고 부르나요?''' "는 BCH(사용된 오류 검출
 * '''인간이-읽을-수-있는 파트(human-readable part)'''으로, 데이터의 유형이나 읽는 사람에게 관련이 있는 내용을 전달하기 위해 사용됩니다. 이 부분은 1~83개의 US-ASCII 문자로 이루어져 있으며, 각 문자는 [33-126] 범위의 값을 가지고 있어야 합니다. HRP 유효성은 특정 응용 프로그램에서 더 제한될 수 있습니다.
 * '''구분자(separator)'''는 항상 "1"입니다. 만약 "1"이 인간이-읽을-수-있는 파트 안에 허용된다면, 마지막에 있는 것이 구분자입니다.<ref>'''왜 주소에 구분자가 포함되나요?''' 이렇게 함으로써, 인간이-읽을-수-있는 파트와 데이터 파트가 명확하게 구분되어, 동일한 접두사를 공유하는 다른 인간이-읽을-수-있는 파트와 충돌할 가능성을 피할 수 있습니다. 인간이-읽을-수-있는 파트에 문자 집합 제한을 피할 수 있습니다. 구분 기호는 ''1''로 선택되었는데, 이는 비알파벳-숫자(non-alphanumeric)' 문자를 사용하면 주소 복사 붙여넣기 작업이 복잡해지기 때문입니다(일부 애플리케이션에서는 더블 클릭 선택이 불가능합니다). 따라서 일반 문자 집합 외의 알파벳-숫자 문자가 선택되었습니다.</ref>.
 * '''데이터 파트(data part)'''는 적어도 6자 이상이며, "1", "b", "i", "o"를 제외한 알파벳 대소문자와 숫자로만 구성됩니다.<ref>'''왜 [http://www.faqs.org/rfcs/rfc3548.html RFC3548] 또는 [https://philzimmermann.com/docs/human-oriented-base-32-encoding.txt z-base-32]와 같은 기존 문자 집합을 사용하지 않는 것일까요?'''
-이 문자 집합은 [https://hissa.nist.gov/~black/GTLD/ 이런] 시각적 유사성 데이터에 따라 모호성을 최소화하기 위해 선택되었으며, 순서는 (동일한 데이터에 따라) 1 비트 이상 차이나는 유사한 문자 쌍의 수를 최소화하기 위해 선택되었습니다. 체크섬은 비트 오류의 수가 적을 때 감지 능력을 극대화하기 위해 선택되므로, 이 선택은 일부 오류 모델에서의 성능을 향상시킵니다.</ref>.
+이 문자 집합은 [https://hissa.nist.gov/~black/GTLD/ 이런] 시각적 유사성 데이터에 따라 모호성을 최소화하기 위해 선택되었으며, 순서는 (동일한 데이터에 따라) 1 비트 이상 차이나는 유사한 문자 쌍의 수를 최소화하기 위해 선택되었습니다. 체크섬은 비트 오류의 수가 적을 때 검출 능력을 극대화하기 위해 선택되므로, 이 선택은 일부 오류 모델에서의 성능을 향상시킵니다.</ref>.
 
 
 {| class="wikitable"
@@ -109,9 +109,9 @@ def bech32_verify_checksum(hrp, data):
   return bech32_polymod(bech32_hrp_expand(hrp) + data) == 1
 </pre>
 
-이 코드는 '''최대 4개 문자에 영향을 미치는 어떤 오류'''든 감지할 수 있는 [https://en.wikipedia.org/wiki/BCH_code BCH code]를 구현하며, 추가적인 오류를 감지하지 못할 확률이 10억 분의 1 미만입니다. 더 많은 세부 정보는 부록-Checksum Design에서 확인할 수 있습니다. 인간이-읽을-수-있는 파트는 각 문자의 US-ASCII 값을 상위 비트로 사용하여 체크섬 계산에 먼저 입력한 다음 0을 더한 다음 각 문자의 하위 비트를 입력하여 처리됩니다<ref>'''왜 인간이-읽을-수-있는 파트의 상위 비트를 먼저 처리하나요?'''
+이 코드는 '''최대 4개 문자에 영향을 미치는 어떤 오류'''든 검출할 수 있는 [https://en.wikipedia.org/wiki/BCH_code BCH code]를 구현하며, 추가적인 오류를 검출하지 못할 확률이 10억 분의 1 미만입니다. 더 많은 세부 정보는 부록-Checksum Design에서 확인할 수 있습니다. 인간이-읽을-수-있는 파트는 각 문자의 US-ASCII 값을 상위 비트로 사용하여 체크섬 계산에 먼저 입력한 다음 0을 더한 다음 각 문자의 하위 비트를 입력하여 처리됩니다<ref>'''왜 인간이-읽을-수-있는 파트의 상위 비트를 먼저 처리하나요?'''
 이로 인해 실제로 체크섬이 계산되는 데이터는 ''[high hrp] 0 [low hrp] [data]'' 가 됩니다.
-이는 인간이-읽을-수-있는 파트의 오류가 알파벳 문자를 다른 문자로 변경하는 것과 같이 하위 5비트만 변경되는 것으로 가정하면, 오류는 최대 89자인 ''[low hrp] [data]'' 부분으로 제한되며, 따라서 모든 오류 감지 속성(부록 참조)이 적용됨을 의미합니다.</ref>.
+이는 인간이-읽을-수-있는 파트의 오류가 알파벳 문자를 다른 문자로 변경하는 것과 같이 하위 5비트만 변경되는 것으로 가정하면, 오류는 최대 89자인 ''[low hrp] [data]'' 부분으로 제한되며, 따라서 모든 오류 검출 속성(부록 참조)이 적용됨을 의미합니다.</ref>.
 
 인간이-읽을-수-있는 파트와 (체크섬이 아닌) 데이터 파트의 값이 주어졌을 때 유효한 체크섬을 구성하려면 아래의 코드를 사용할 수 있습니다.
 
@@ -198,7 +198,7 @@ segwit 주소를 해석하는 소프트웨어는:
 
 ===Test vectors===
 
-The following strings are valid Bech32:
+다음 문자열들은 유효한 Bech32입니다:
 * <tt>A12UEL5L</tt>
 * <tt>a12uel5l</tt>
 * <tt>an83characterlonghumanreadablepartthatcontainsthenumber1andtheexcludedcharactersbio1tt5tgs</tt>
@@ -212,10 +212,10 @@ The following strings are valid Bech32:
 '?1ezyfcl'
 </pre>
 
-The following string are not valid Bech32 (with reason for invalidity):
-* 0x20 + <tt>1nwldj5</tt>: HRP character out of range
-* 0x7F + <tt>1axkwrx</tt>: HRP character out of range
-* 0x80 + <tt>1eym55h</tt>: HRP character out of range
+다음 문자열들은 유효하지 않은 Bech32입니다 (유효하지 않은 근거와 함께):
+* 0x20 + <tt>1nwldj5</tt>: 범위를 벗어난 HRP 문자
+* 0x7F + <tt>1axkwrx</tt>: 범위를 벗어난 HRP 문자
+* 0x80 + <tt>1eym55h</tt>: 범위를 벗어난 HRP 문자
 * <tt>an84characterslonghumanreadablepartthatcontainsthenumber1andtheexcludedcharactersbio1569pvx</tt>: overall max length exceeded
 * <tt>pzry9x0s0muk</tt>: No separator character
 * <tt>1pzry9x0s0muk</tt>: Empty HRP
@@ -226,8 +226,7 @@ The following string are not valid Bech32 (with reason for invalidity):
 * <tt>10a06t8</tt>: empty HRP
 * <tt>1qzzfhee</tt>: empty HRP
 
-The following list gives valid segwit addresses and the scriptPubKey that they
-translate to in hex.
+다음 목록은 유효한 세그윗 주소와 해당하는 ScriptPubKey를 16진수입니다.
 * <tt>BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4</tt>: <tt>0014751e76e8199196d454941c45d1b3a323f1433bd6</tt>
 * <tt>tb1qrp33g0q5c5txsp9arysrx4k6zdkfs4nce4xj0gdcccefvpysxf3q0sl5k7</tt>: <tt>00201863143c14c5166804bd19203356da136c985678cd4d27a1b8c6329604903262</tt>
 * <tt>bc1pw508d6qejxtdg4y5r3zarvary0c5xw7kw508d6qejxtdg4y5r3zarvary0c5xw7k7grplx</tt>: <tt>5128751e76e8199196d454941c45d1b3a323f1433bd6751e76e8199196d454941c45d1b3a323f1433bd6</tt>
@@ -235,8 +234,7 @@ translate to in hex.
 * <tt>bc1zw508d6qejxtdg4y5r3zarvaryvg6kdaj</tt>: <tt>5210751e76e8199196d454941c45d1b3a323</tt>
 * <tt>tb1qqqqqp399et2xygdj5xreqhjjvcmzhxw4aywxecjdzew6hylgvsesrxh6hy</tt>: <tt>0020000000c4a5cad46221b2a187905e5266362b99d5e91c6ce24d165dab93e86433</tt>
 
-The following list gives invalid segwit addresses and the reason for
-their invalidity.
+다음 목록은 유효하지 않은 세그윗 주소와 유효하지 않은 이유입니다.
 * <tt>tc1qw508d6qejxtdg4y5r3zarvary0c5xw7kg3g4ty</tt>: Invalid human-readable part
 * <tt>bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t5</tt>: Invalid checksum
 * <tt>BC13W508D6QEJXTDG4Y5R3ZARVARY0C5XW7KN40WF2</tt>: Invalid witness version
@@ -252,38 +250,25 @@ their invalidity.
 
 '''Design choices'''
 
-BCH codes can be constructed over any prime-power alphabet and can be chosen to have a good trade-off between
-size and error-detection capabilities. While most work around BCH codes uses a binary alphabet, that is not a requirement.
-This makes them more appropriate for our use case than [https://en.wikipedia.org/wiki/Cyclic_redundancy_check CRC codes]. Unlike
-[https://en.wikipedia.org/wiki/Reed%E2%80%93Solomon_error_correction Reed-Solomon codes],
-they are not restricted in length to one less than the alphabet size. While they also support efficient error correction,
-the implementation of just error detection is very simple.
+BCH 코드는 모든 소수-거듭제곱 문자 알파벳에서 구성할 수 있으며, 크기와 오류 검출 능력 간에 좋은 트레이드 오프를 갖도록 선택할 수 있습니다. 대부분의 BCH 코드 작업은 이진 알파벳을 사용하지만, 이는 필수 요건은 아닙니다. 이는 [https://en.wikipedia.org/wiki/Cyclic_redundancy_check CRC 코드]보다 우리의 사용 사례에 더 적합합니다. [https://en.wikipedia.org/wiki/Reed%E2%80%93Solomon_error_correction Reed-Solomon 코드]와 달리, 길이가 알파벳 크기에서 하나 더 적어지도록 제한되지 않습니다. 또한 효율적인 오류 정정을 지원하지만, 오류 검출만 구현하는 것은 매우 간단합니다.
 
-We pick 6 checksum characters as a trade-off between length of the addresses and the error-detection capabilities, as 6
-characters is the lowest number sufficient for a random failure chance below 1 per billion. For the length of data
-we're interested in protecting (up to 71 bytes for a potential future 40-byte witness
-program), BCH codes can be constructed that guarantee detecting up to 4 errors.
+주소 길이와 오류 검출 능력 간의 균형을 위해 우리는 6개의 체크섬 문자를 선택합니다. 이는 1분의 10억 이하의 랜덤 실패 확률을 위한 충분한 가장 낮은 수입니다. 우리가 보호하려는 데이터의 길이(잠재적인 40바이트 증인 프로그램의 경우 최대 71바이트)를 위해 BCH 코드를 구성할 수 있으며, 이는 최대 4개의 오류 검출을 보장합니다.
 
 '''Selected properties'''
 
-Many of these codes perform badly when dealing with more errors than they are designed to detect, but not all.
-For that reason, we consider codes that are designed to detect only 3 errors as well as 4 errors,
-and analyse how well they perform in practice.
+모든 코드가 그렇지는 않지만 여러 코드들 중 일부는 설계한 목표 이상으로 오류를 검출하려 할 때 성능이 나빠집니다. 이러한 이유로, 3개의 오류만을 검출하도록 설계된 코드와 4개의 오류를 검출하도록 설계된 코드를 고려하고, 실제로 얼마나 잘 수행되는지 분석합니다.
 
-The specific code chosen here is the result
-of:
-* Starting with an exhaustive list of 159605 BCH codes designed to detect 3 or 4 errors up to length 93, 151, 165, 341, 1023, and 1057.
-* From those, requiring the detection of 4 errors up to length 71, resulting in 28825 remaining codes.
-* From those, choosing the codes with the best worst-case window for 5-character errors, resulting in 310 remaining codes.
-* From those, picking the code with the lowest chance for not detecting small numbers of ''bit'' errors.
+여기서 선택한 구체적인 코드는 다음의 결과로부터 선정되었습니다.:
+* 최대 길이 93, 151, 165, 341, 1023 및 1057까지 3 개 또는 4 개의 오류를 검출하기 위해 설계된 159605 개의 철저한 BCH 코드 목록으로 시작합니다.
+* 이 중, 길이 71까지 4 개의 오류를 검출하는 것을 요구하면, 28825 개의 코드가 남습니다.
+* 이 중, 워스트 케이스에서 가장 좋은 성능을 보이는 5 개의 오류를 검출하는 윈도우 를 선택하면, 310개의 코드가 남습니다.
+* 이 중에서도 작은 ''bit'' 오류를 검출하지 못할 확률이 가장 낮은 코드를 선택합니다.
 
-As a naive search would require over 6.5 * 10<sup>19</sup> checksum evaluations, a collision-search approach was used for
-analysis. The code can be found [https://github.com/sipa/ezbase32/ here].
+순진한 검색(naive search)은 6.5 * 10<sup>19</sup> 개 이상의 체크섬 평가를 필요로 하기 때문에, 분석에는 충돌 검색(collision-search)이 사용되었습니다. 이 코드는 [https://github.com/sipa/ezbase32/ 여기]에서 찾을 수 있습니다.
 
 '''Properties'''
 
-The following table summarizes the chances for detection failure (as
-multiples of 1 in 10<sup>9</sup>).
+다음 표는 검출 실패 확률을 요약한 것입니다 (10<sup>9</sup> 분의 1의 배수로).
 
 {| class="wikitable"
 |-
@@ -299,33 +284,24 @@ multiples of 1 in 10<sup>9</sup>).
 !8
 !≥9
 |-
-| 8 || Longest detecting 6 errors || colspan="3" | 0 || 1.127 || 0.909 || n/a
+| 8 || 최대 6개 에러 검출 || colspan="3" | 0 || 1.127 || 0.909 || n/a
 |-
-| 18 || Longest detecting 5 errors || colspan="2" | 0 || 0.965 || 0.929 || 0.932 || 0.931
+| 18 || 최대 5개 에러 검출 || colspan="2" | 0 || 0.965 || 0.929 || 0.932 || 0.931
 |-
-| 19 || Worst case for 6 errors || 0 || 0.093 || 0.972 || 0.928 || colspan="2" | 0.931
+| 19 || 워스트 케이스에서 6개 에러 || 0 || 0.093 || 0.972 || 0.928 || colspan="2" | 0.931
 |-
-| 39 ||  Length for a P2WPKH address || 0 || 0.756 || 0.935 || 0.932 || colspan="2" | 0.931
+| 39 ||  P2WPKH 주소 길이 || 0 || 0.756 || 0.935 || 0.932 || colspan="2" | 0.931
 |-
-| 59 || Length for a P2WSH address || 0 || 0.805 || 0.933 || colspan="3" | 0.931
+| 59 || P2WSH 주소 길이 || 0 || 0.805 || 0.933 || colspan="3" | 0.931
 |-
-| 71 || Length for a 40-byte program address || 0 || 0.830 || 0.934 || colspan="3" | 0.931
+| 71 || 40 바이트 프로그램 주소 길이 || 0 || 0.830 || 0.934 || colspan="3" | 0.931
 |-
-| 89 || Longest detecting 4 errors || 0 || 0.867 || 0.933 || colspan="3" | 0.931
+| 89 || 최대 4개 에러 검출 || 0 || 0.867 || 0.933 || colspan="3" | 0.931
 |}
-This means that when 5 changed characters occur randomly distributed in
-the 39 characters of a P2WPKH address, there is a chance of
-''0.756 per billion'' that it will go undetected. When those 5 changes
-occur randomly within a 19-character window, that chance goes down to
-''0.093 per billion''. As the number of errors goes up, the chance
-converges towards ''1 in 2<sup>30</sup>'' = ''0.931 per billion''.
+이것은 P2WPKH 주소의 39개 문자 중에서 무작위로 분포하는 5개의 변경 문자가 발생할 때, 검출되지 않을 확률이''10억 당 0.75''인 것을 의미합니다. 이러한 5개의 변경 사항이 19자리 윈도우 내에서 무작위로 발생하면, 이 확률은 ''10억 당 0.093''로 줄어듭니다. 오류의 수가 증가함에 따라 확률은 ''2의 30승 중 1'' = ''10억 당 0.931''로 수렴합니다.
 
-Even though the chosen code performs reasonably well up to 1023 characters,
-other designs are preferable for lengths above 89 characters (excluding the
-separator).
+선택된 코드는 1023자 이하의 길이에 대해서는 괜찮은 성능을 보이지만, 89자(구분자 제외) 이상의 길이에 대해서는 다른 디자인이 더 좋습니다.
 
 ==Acknowledgements==
 
-This document is inspired by the [https://rusty.ozlabs.org/?p=578 address proposal] by Rusty Russell, the
-[https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2014-February/004402.html base32] proposal by Mark Friedenbach, and had input from Luke Dashjr,
-Johnson Lau, Eric Lombrozo, Peter Todd, and various other reviewers.
+이 문서는 Rusty Russell의 [https://rusty.ozlabs.org/?p=578 주소 제안], Mark Friedenbach의 [https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2014-February/004402.html base32] 제안에서 영감을 받았으며, Luke Dashjr, Johnson Lau, Eric Lombrozo, Peter Todd 및 다양한 리뷰어들의 의견을 반영하였습니다.
