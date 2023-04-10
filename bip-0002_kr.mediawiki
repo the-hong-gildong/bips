@@ -1,7 +1,7 @@
 <pre>
   BIP: 2
   제목: BIP 프로세스, 수정된
-  저자: Luke Dashjr <luke+bip@dashjr.org>
+  작성자: Luke Dashjr <luke+bip@dashjr.org>
   코멘트 요약: No comments yet.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0002
   상태: Active
