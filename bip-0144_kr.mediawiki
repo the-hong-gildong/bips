@@ -85,7 +85,10 @@ tx 메시지에 대한 새로운 직렬화 형식이 P2P 프로토콜에 추가�
 
 * '''자체 직렬화가 있는 독립적인 메시지 유형이 없는 이유''': 이는 "tx"와 "block" 메시지를 따로 만들어야 하며, 모든 raw transactions을 다루는 RPC 호출은 복제되어야 하거나, 어떤 타입을 사용해야 하는지 알기 위해 비효율적이거나 결정론적인 추측이 필요하게 될 것이라는 것을 의미합니다.
 
-* '''마커의 바이트 값으로 단순히 0x00을 사용하지 않는 이유''': 그렇게 하면 입력도 출력도 없는 빈 트랜잭션이 (일부 테스트에서 사용되는) 새로운 직렬화된 데이터로 해석될 수 있습니다.
+* '''마커의 바이트 값으로 단순히 0x00 한 바이트만을 사용하지 않는 이유''': 그렇게 하면 입력도 출력도 없는 빈 트랜잭션이 (일부 테스트에서 사용되는) 새로운 직렬화된 데이터로 해석될 수 있습니다.
+
+<blockquote> This says that the 0x00 marker ''[https://en.wikipedia.org/wiki/Necessity_and_sufficiency is necessary but is not sufficient]'' to reliably distinguish pre-segwit transaction serialisation from segwit transaction serialisation. 
+- [https://bitcoin.stackexchange.com/questions/117788/which-value-is-appropriate-for-the-marker-field-of-a-segwit-tx-messages-0x00-or Which value is appropriate for the MARKER field of a segwit tx messages: 0x00 or nonzero?] </blockquote>
 
 * '''0x01 플래그 바이트의 이유''': 이를 통해 우리는 트랜잭션에 추가로 미확정(non-committed) 데이터를 쉽게 추가할 수 있습니다 (소비된 txout 등). 이는 비트 벡터로 해석될 수 있습니다.
 
