@@ -2,7 +2,7 @@
   BIP: 173
   레이어: 어플리케이션
   제목: v0-16 네이티브 증인 출력에 대한 Base32 주소 형식
-  저자: Pieter Wuille <pieter.wuille@gmail.com>
+  작성자: Pieter Wuille <pieter.wuille@gmail.com>
           Greg Maxwell <greg@xiph.org>
   코멘트 요약: No comments yet.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0173

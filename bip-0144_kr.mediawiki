@@ -2,7 +2,7 @@
   BIP: 144
   레이어: 피어 서비스
   제목: 세그윗 (피어 서비스)
-  저자: Eric Lombrozo <elombrozo@gmail.com>
+  작성자: Eric Lombrozo <elombrozo@gmail.com>
           Pieter Wuille <pieter.wuille@gmail.com>
   코멘트 요약: No comments yet.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0144
