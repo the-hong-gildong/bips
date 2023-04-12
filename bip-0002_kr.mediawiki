@@ -28,34 +28,35 @@ BIP는 버전 관리된 저장소의 텍스트 파일로 유지되기 때문에,
 
 ==BIP workflow==
 
-The BIP process begins with a new idea for Bitcoin. Each potential BIP must have a champion -- someone who writes the BIP using the style and format described below, shepherds the discussions in the appropriate forums, and attempts to build community consensus around the idea. The BIP champion (a.k.a. Author) should first attempt to ascertain whether the idea is BIP-able.
-Small enhancements or patches to a particular piece of software often don't require standardisation between multiple projects; these don't need a BIP and should be injected into the relevant project-specific development workflow with a patch submission to the applicable issue tracker.
-Additionally, many ideas have been brought forward for changing Bitcoin that have been rejected for various reasons.
-The first step should be to search past discussions to see if an idea has been considered before, and if so, what issues arose in its progression.
-After investigating past work, the best way to proceed is by posting about the new idea to the [https://lists.linuxfoundation.org/mailman/listinfo/bitcoin-dev Bitcoin development mailing list].
+BIP 프로세스는 비트코인을 위한 새로운 아이디어에서 시작됩니다. 각 잠재적인 BIP는 챔피언을 가져야 합니다. 이 챔피언은 아이디어를 아래에 설명된 스타일과 형식으로 작성하고 적절한 포럼에서 토론을 이끌며 커뮤니티 합의를 형성하려는 사람입니다. BIP 챔피언(또는 작성자)은 먼저 아이디어가 가능한 BIP(BIP-able)인지 확인해야 합니다.
+특정 소프트웨어의 작은 개선 또는 패치는 종종 여러 프로젝트 간의 표준화가 필요하지 않으며, 이러한 경우 BIP가 필요하지 않으며 해당 이슈 트래커에 패치 제출을 통해 해당 프로젝트별 개발 작업 흐름에 적용되어야 합니다.
+또한, 다양한 이유로 거부된 비트코인 개선 아이디어들이 있습니다. 
+따라서 새로운 아이디어가 제안되기 전에는, 과거에 이미 해당 아이디어가 논의되었는지, 그리고 그 과정에서 어떤 문제점들이 발생했는지 조사하는 것이 첫 번째 단계입니다.
+과거의 작업을 조사한 후에는, 새로운 아이디어에 대해 [https://lists.linuxfoundation.org/mailman/listinfo/bitcoin-dev 비트코인 개발 메일링 리스트]에 게시하는 것이 가장 좋은 방법입니다.
 
-Vetting an idea publicly before going as far as writing a BIP is meant to save both the potential author and the wider community time.
-Asking the Bitcoin community first if an idea is original helps prevent too much time being spent on something that is guaranteed to be rejected based on prior discussions (searching the internet does not always do the trick).
-It also helps to make sure the idea is applicable to the entire community and not just the author. Just because an idea sounds good to the author does not mean it will work for most people in most areas where Bitcoin is used.
+BIP 작성에 앞서 아이디어를 공개적으로 검토하는 것은 잠재적인 저자와 더 넓은 커뮤니티 모두의 시간을 절약하기 위한 것입니다. 
+이전 논의에 따라서 거부될 것이 확실한 아이디어는 시간이 낭비되지 않도록 미리 비트코인 커뮤니티에게 이에 대해 묻는 것이 도움이 됩니다. (인터넷 검색만으로 충분하지 않은 경우도 있습니다.)
+이는 또한 아이디어가 작성자만이 아니라 전체 커뮤니티에 적용 가능한지 여부를 확인하는 데 도움이 됩니다. 아이디어가 작성자에게 좋아 보이는 것만으로는 비트코인을 사용하는 대부분의 지역에서와 대다수의 사람들에게 통할 가능성이 있는 것은 아닙니다.
 
-Once the champion has asked the Bitcoin community as to whether an idea has any chance of acceptance, a draft BIP should be presented to the [https://lists.linuxfoundation.org/mailman/listinfo/bitcoin-dev Bitcoin development mailing list].
-This gives the author a chance to flesh out the draft BIP to make it properly formatted, of high quality, and to address additional concerns about the proposal.
-Following a discussion, the proposal should be submitted to the [https://github.com/bitcoin/bips BIPs git repository] as a pull request.
-This draft must be written in BIP style as described below, and named with an alias such as "bip-johndoe-infinitebitcoins" until an editor has assigned it a BIP number (authors MUST NOT self-assign BIP numbers).
+해당 아이디어가 수용될 가능성이 있는지 비트코인 커뮤니티에 물어보고 나면, 초안 BIP를 [https://lists.linuxfoundation.org/mailman/listinfo/bitcoin-dev 비트코인 개발 메일링 리스트]에 제출해야 합니다.
+이를 통해 작성자는 초안 BIP를 보완하여 제대로 서식이 지정되고, 고품질이 되도록 만들고, 제안에 대한 추가적인 우려 사항을 다룰 기회를 가집니다.
+토론을 거친 후, 제안서는 [https://github.com/bitcoin/bips BIPs git 저장소]에 풀 요청(pull request)으로 제출해야 합니다.
+이 초안은 아래에서 설명하는 BIP 스타일로 작성되어야 하며, "bip-johndoe-infinitebitcoins"와 같은 별칭으로 지정해야 하며, 편집자가 BIP 번호를 할당하기 전까지는 작성자가 직접 BIP 번호를 지정해서는 안 됩니다(MUST NOT).
 
-BIP authors are responsible for collecting community feedback on both the initial idea and the BIP before submitting it for review. However, wherever possible, long open-ended discussions on public mailing lists should be avoided. Strategies to keep the discussions efficient include: setting up a separate SIG mailing list for the topic, having the BIP author accept private comments in the early design phases, setting up a wiki page or git repository, etc. BIP authors should use their discretion here.
+BIP 작성자는 제안 초기 아이디어와 BIP에 대한 커뮤니티 피드백을 수집해야 할 책임이 있습니다. 그러나 가능한 경우, 공개 메일링 리스트에서의 긴 개방적인(open-ended) 토론은 피해야 합니다. 토론을 효율적으로 유지하기 위한 전략은 주제에 대한 별도의 SIG 메일링 리스트를 설정하거나, BIP 작성자가 초기 디자인 단계에서 개인적인 의견을 취합 하는 것, 위키 페이지 또는 git 저장소를 셋팅하는 등이 있습니다. BIP 작성자는 자기 재량에 따라 결정해야 합니다.
+<blockquote>open-ended discussions는 일방적으로 시작되어 언제 끝나는지 알 수 없는 논의를 의미합니다. 이러한 논의는 종종 명확한 목적이나 방향성이 없으며, 참여자들이 서로의 의견을 공유하고 논의를 확장시키는 것을 중점적으로 합니다. 이는 일반적으로 효율적이지 않으며, 목표를 달성하기 위해서는 명확한 계획과 방향성을 가진 논의가 필요합니다. by ChatGPT</blockquote>
 
-It is highly recommended that a single BIP contain a single key proposal or new idea. The more focused the BIP, the more successful it tends to be. If in doubt, split your BIP into several well-focused ones.
+하나의 BIP에 하나의 주요 제안 또는 하나의 새로운 아이디어만 포함되도록 강력히 권장합니다. BIP가 더 집중될수록 성공할 가능성이 높습니다. 의심스러운 경우, 여러 개의 중심을 잘 맞춘 BIP로 분할하세요.
 
-When the BIP draft is complete, a BIP editor will assign the BIP a number, label it as Standards Track, Informational, or Process, and merge the pull request to the BIPs git repository.
-The BIP editors will not unreasonably reject a BIP.
-Reasons for rejecting BIPs include duplication of effort, disregard for formatting rules, being too unfocused or too broad, being technically unsound, not providing proper motivation or addressing backwards compatibility, or not in keeping with the Bitcoin philosophy.
-For a BIP to be accepted it must meet certain minimum criteria.
-It must be a clear and complete description of the proposed enhancement.
-The enhancement must represent a net improvement.
-The proposed implementation, if applicable, must be solid and must not complicate the protocol unduly.
+BIP이 완성되면, BIP 편집자가 BIP에 번호를 할당하고 Standards Track, Informational 또는 Process로 레이블링한 다음 BIPs git 저장소에 풀 요청을 병합합니다.
+BIP 편집자는 비합리적으로 BIP를 거부하지 않습니다.
+BIP를 거부하는 이유는 중복된 노력이거나, 서식 규칙이 무시 되었거나, 너무 모호하거나 너무 광범위하거나, 기술적으로 부적절하거나, 올바른 동기 부여나 역 호환성에 대한 고려가 부족하거나, 비트코인 철학과 일치하지 않는 등이 있습니다.
+BIP가 허용되려면 일정한 최소 기준을 충족해야 합니다.
+제안된 개선 사항의 명확하고 완전한 설명이어야 합니다.
+개선 사항은 순 개선(net improvement)을 나타내야 합니다.
+적용 가능한 경우, 제안된 구현은 견고해야 하며 프로토콜을 지나치게 복잡하게 만들어서는 안 됩니다.
 
-The BIP author may update the draft as necessary in the git repository. Updates to drafts should also be submitted by the author as pull requests.
+BIP 작성자는 필요에 따라 git 저장소에서 초안을 업데이트할 수 있습니다. 초안 업데이트는 작성자가 풀 요청으로 제출해야 합니다.
 
 ===Transferring BIP Ownership===
 
