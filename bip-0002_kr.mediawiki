@@ -50,7 +50,7 @@ BIP 작성자는 제안 초기 아이디어와 BIP에 대한 커뮤니티 피드
 
 BIP이 완성되면, BIP 편집자가 BIP에 번호를 할당하고 Standards Track, Informational 또는 Process로 레이블링한 다음 BIPs git 저장소에 풀 요청을 병합합니다.
 BIP 편집자는 비합리적으로 BIP를 거부하지 않습니다.
-BIP를 거부하는 이유는 중복된 노력이거나, 서식 규칙이 무시 되었거나, 너무 모호하거나 너무 광범위하거나, 기술적으로 부적절하거나, 올바른 동기 부여나 역 호환성에 대한 고려가 부족하거나, 비트코인 철학과 일치하지 않는 등이 있습니다.
+BIP를 거부하는 이유는 중복된 노력이거나, 서식 규칙이 무시 되었거나, 너무 모호하거나 너무 광범위하거나, 기술적으로 부적절하거나, 올바른 동기 부여나 하위 호환성에 대한 고려가 부족하거나, 비트코인 철학과 일치하지 않는 등이 있습니다.
 BIP가 허용되려면 일정한 최소 기준을 충족해야 합니다.
 제안된 개선 사항의 명확하고 완전한 설명이어야 합니다.
 개선 사항은 순 개선(net improvement)을 나타내야 합니다.
@@ -73,121 +73,118 @@ BIP의 소유권을 맡고자 하는 경우, 기존 작성자와 BIP 편집자 �
 
 ===BIP Editor Responsibilities & Workflow===
 
-The BIP editors subscribe to the Bitcoin development mailing list.
-Off-list BIP-related correspondence should be sent (or CC'd) to the BIP editors.
+BIP 편집자는 Bitcoin 개발 메일링 리스트에 가입합니다.
+오프리스트(Off-list) BIP 관련 대화는 BIP 편집자에게 보내거나 참조(CC)되어야합니다.
 
-For each new BIP that comes in an editor does the following:
+새로운 BIP마다 편집자는 다음과 같은 작업을 수행합니다:
 
-* Read the BIP to check if it is ready: sound and complete. The ideas must make technical sense, even if they don't seem likely to be accepted.
-* The title should accurately describe the content.
-* The BIP draft must have been sent to the Bitcoin development mailing list for discussion.
-* Motivation and backward compatibility (when applicable) must be addressed.
-* The defined Layer header must be correctly assigned for the given specification.
-* Licensing terms must be acceptable for BIPs.
+* BIP가 준비되었는지(탄탄하고 완전한지)를 확인합니다. 기술적으로 의미가 있어야합니다. 심지어 받아들여지기 어려워 보이더라도 기술적으로 이치에 맞아야합니다.
+* 제목은 내용을 정확하게 설명해야합니다.
+* BIP 초안은 토론을 위해 개발 메일링 리스트에 전송되어야합니다.
+* 동기 및 하위 호환성(해당되는 경우)을 다루어야만합니다.
+* 주어진 명세에 대해 올바르게 레이어 헤더가 할당되어야 합니다.
+* 라이센스 조건은 BIP에 받아들일 수 있는 조건이어야 합니다.
 
-If the BIP isn't ready, the editor will send it back to the author for revision, with specific instructions.
+BIP가 적절히 준비되지 않았다면, 편집자는 구체적인 지시사항과 함께 수정을 위해 작성자에게 돌려보내게 됩니다.
 
-Once the BIP is ready for the repository it should be submitted as a "pull request" to the [https://github.com/bitcoin/bips BIPs git repository] where it may get further feedback.
+BIP이 저장소에 올릴 준비가 되면, [https://github.com/bitcoin/bips BIPs git 저장소]로 "풀 요청(pull request)"로 제출되어 더 많은 피드백을 받을 수 있습니다.
 
-The BIP editor will:
+BIP 편집자는 다음을 수행합니다:
 
-* Assign a BIP number in the pull request.
+* 풀 요청에서 BIP 번호를 할당합니다.
 
-* Merge the pull request when it is ready.
+* 준비가 되면 풀 요청를 병합합니다.
 
-* List the BIP in [[README.mediawiki]]
+* BIP를 [[README.mediawiki]]에 나열합니다.
 
-The BIP editors are intended to fulfill administrative and editorial responsibilities. The BIP editors monitor BIP changes, and update BIP headers as appropriate.
+BIP 편집자는 관리 및 편집 책임을 갖도록 의도되었습니다. BIP 편집자는 BIP 변경 사항을 모니터링하고 BIP 헤더를 적절히 업데이트합니다.
 
 ==BIP format and structure==
 
 ===Specification===
 
-BIPs should be written in mediawiki format.
+BIP는 mediawiki 형식으로 작성되어야 합니다.
 
-Each BIP should have the following parts:
+각 BIP는 다음과 같은 부분을 포함해야 합니다:
 
-* Preamble -- Headers containing metadata about the BIP ([[#BIP header preamble|see below]]).
+* Preamble -- BIP에 관한 메타데이터가 포함된 헤더 ([[#BIP header preamble|see below]]).
 
-* Abstract -- A short (~200 word) description of the technical issue being addressed.
+* Abstract --  다루게될 기술적 문제에 대한 간단한 (~200 단어) 설명.
 
-* Copyright -- The BIP must be explicitly licensed under acceptable copyright terms ([[#BIP licensing|see below]]).
+* Copyright -- BIP는 적용할 수 있는 저작권 조건에 따라 명시적으로 라이센스가 부여되어야만 합니다 ([[#BIP licensing|see below]]).
 
-* Specification -- The technical specification should describe the syntax and semantics of any new feature. The specification should be detailed enough to allow competing, interoperable implementations for any of the current Bitcoin platforms.
+* Specification -- 기술 명세는 새로운 기능의 구문(syntax) 및 의미(semantics)를 설명해야 합니다. 이 명세는 현재의 어느 비트코인 플랫폼에서 경쟁 가능하고 상호 운용 가능한 구현체가 가능하게끔 충분히 자세히 작성되어야 합니다.
 
-* Motivation -- The motivation is critical for BIPs that want to change the Bitcoin protocol. It should clearly explain why the existing protocol is inadequate to address the problem that the BIP solves.
+* Motivation -- 기존 Bitcoin 프로토콜을 변경하려는 BIP에 있어서 동기는 매우 중요합니다. 이 섹션은 BIP가 해결하려는 문제에 대해 기존 프로토콜이 부적합한 이유를 명확하게 설명해야 합니다.
 
-* Rationale -- The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work. The rationale should provide evidence of consensus within the community and discuss important objections or concerns raised during discussion.
+* Rationale -- 근거는 무엇이 설계의 동기가 되었고 왜 특정한 설계로 결정 되었는지 설명함으로써 명세를 구체화합니다. 고려했었던 설계 대안 및 관련된 작업을 설명해야 합니다. 근거는 커뮤니티 내의 합의에 대한 증거를 제공하고 토론 중에 제기된 중요한 이의나 우려 사항을 논의해야 합니다.
 
-* Backwards compatibility -- All BIPs that introduce backwards incompatibilities must include a section describing these incompatibilities and their severity. The BIP must explain how the author proposes to deal with these incompatibilities.
+* Backwards compatibility -- 하위 호환성을 소개하는 모든 BIP는 이러한 하위 호환성과 그것들의 심각성에 대해 설명하는 섹션을 포함해야만 합니다. BIP는 작성자가 이러한 하위 호환성을 어떻게 처리할 것인지 설명해야 합니다.
 
-* Reference implementation -- The reference implementation must be completed before any BIP is given status "Final", but it need not be completed before the BIP is accepted. It is better to finish the specification and rationale first and reach consensus on it before writing code. The final implementation must include test code and documentation appropriate for the Bitcoin protocol.
+* Reference implementation -- 참조 구현은 BIP에 "최종(Final)" 상태가 부여되기 전에 완료되어야 하지만, BIP가 승인되기 전에 완료될 필요는 없습니다. 코드를 작성하기 전에 명세와 근거에 대해 먼저 합의를 이루는 것이 좋습니다. 최종 구현은 비트코인 프로토콜에 적합한 테스트 코드와 문서화를 포함해야 합니다.
 
 ====BIP header preamble====
 
-Each BIP must begin with an RFC 822 style header preamble. The headers must appear in the following order. Headers marked with "*" are optional and are described below. All other headers are required.
+각 BIP는 RFC 822 스타일의 헤더 프리앰블로 시작해야 합니다. 다음 순서대로 헤더가 나타나야 합니다. "*"로 표시된 헤더는 선택적이며 아래에서 설명됩니다. 다른 모든 헤더는 필수입니다.
 
 <pre>
-  BIP: <BIP number, or "?" before being assigned>
-* Layer: <Consensus (soft fork) | Consensus (hard fork) | Peer Services | API/RPC | Applications>
-  Title: <BIP title; maximum 44 characters>
-  Author: <list of authors' real names and email addrs>
-* Discussions-To: <email address>
-* Comments-Summary: <summary tone>
-  Comments-URI: <links to wiki page for comments>
-  Status: <Draft | Active | Proposed | Deferred | Rejected |
-           Withdrawn | Final | Replaced | Obsolete>
-  Type: <Standards Track | Informational | Process>
-  Created: <date created on, in ISO 8601 (yyyy-mm-dd) format>
-  License: <abbreviation for approved license(s)>
-* License-Code: <abbreviation for code under different approved license(s)>
-* Post-History: <dates of postings to bitcoin mailing list, or link to thread in mailing list archive>
-* Requires: <BIP number(s)>
-* Replaces: <BIP number>
-* Superseded-By: <BIP number>
+  BIP: <BIP 번호, 또는 할당되기 전에는 "?" >
+* Layer: <컨센서스 (소프트 포크) | 컨센서스 (하드 포크) | 피어 서비스 | API/RPC | 어플리케이션>
+  제목: <BIP 제목; 최대 44 글자>
+  작성자: <작성자의 실명 과 이메일 주소 목록>
+* 논의: <이메일 주소>
+* 코멘트 요약: <요약 논조>
+  코멘트-URI: <커멘트를 위한 위키 페이지 링크>
+  상태: <초안(Draft) | 활성화된(Active) | 제안된(Proposed) | 연기된(Deferred) | 거절된(Rejected) |
+           중단된(Withdrawn) | 최종(Final) | 대체된(Replaced) | 구식의(Obsolete)>
+  타입: <표준 트랙(Standards Track) | 정보성(Informational) | 프로세스(Process)>
+  생성일: <생성된 날짜 ISO 8601 (yyyy-mm-dd) 형식>
+  라이센스: <승인된 라이센스의 약어>
+* 라이센스 코드: <다른 승인 된 라이센스에 따른 코드의 약어>
+* 게시 히스토리: <비트코인 메일링 리스트에 게시된 날짜 또는 메일링 리스트 아카이브의 쓰레드 링크>
+* 필요 사항: <BIP 번호(들)>
+* 대체: <BIP 번호>
+* 대체됨: <BIP 번호>
 </pre>
 
-The Layer header (only for Standards Track BIPs) documents which layer of Bitcoin the BIP applies to.
-See [[bip-0123.mediawiki|BIP 123]] for definitions of the various BIP layers. Activation of this BIP implies activation of BIP 123.
+레이어 헤더(표준 트랙 BIP에만 해당)는 BIP 가 비트코인의 어떤 레이어에 해당하는지를 문서화합니다. 각 BIP 레이어의 정의에 대해서는 [[bip-0123.mediawiki|BIP 123]]을 참조하세요. 이 BIP의 활성화는 BIP 123의 활성화를 의미합니다.
 
-The Author header lists the names and email addresses of all the authors/owners of the BIP.
-The format of the Author header value must be
+작성자 헤더는 BIP의 모든 작성자/소유자의 이름과 이메일 주소를 나열합니다. 작성자 헤더 값의 형식은 다음과 같아야합니다.
 
   Random J. User <address@dom.ain>
 
-If there are multiple authors, each should be on a separate line following RFC 2822 continuation line conventions.
+만약 여러 작성자가 있다면, 각각은 RFC 2822 계속 라인 규칙에 따라 개별 라인에 있어야 합니다.
 
-While a BIP is in private discussions (usually during the initial Draft phase), a Discussions-To header will indicate the mailing list or URL where the BIP is being discussed. No Discussions-To header is necessary if the BIP is being discussed privately with the author, or on the bitcoin email mailing lists.
+BIP가 개인적으로 논의(private discussions)(보통 초안 단계에서) 중인 경우, 논의 헤더는 BIP가 토론되는 메일링 리스트 또는 URL을 나타내야 합니다. BIP가 작성자와 비공개(discussed privately)로 논의되거나 비트코인 이메일 메일링 리스트에서 논의되고 있다면 논의 헤더는 필요하지 않습니다.
 
-The Type header specifies the type of BIP: Standards Track, Informational, or Process.
+타입 헤더는 BIP의 유형을 명시화 합니다: 표준 트랙(Standards Track), 정보성(Informational), 또는 절차(Process).
 
-The Created header records the date that the BIP was assigned a number, while Post-History is used to record when new versions of the BIP are posted to bitcoin mailing lists.
-Dates should be in yyyy-mm-dd format, e.g. 2001-08-14.
-Post-History is permitted to be a link to a specific thread in a mailing list archive.
+Created 헤더는 BIP에 번호가 할당된 날짜를 기록하며, Post-History는 BIP의 새 버전이 비트코인 메일링 리스트에 게시된 날짜를 기록하는 데 사용됩니다. 날짜는 yyyy-mm-dd 형식으로 작성되어야 합니다. 예: 2001-08-14
+Post-History는 메일링 리스트 아카이브의 특정 스레드로 링크될 수 있습니다.
 
-BIPs may have a Requires header, indicating the BIP numbers that this BIP depends on.
+BIPs에서 필요 사항 헤더는 이 BIP가 의존하는 BIP 번호를 나타냅니다.
 
-BIPs may also have a Superseded-By header indicating that a BIP has been rendered obsolete by a later document; the value is the number of the BIP that replaces the current document. The newer BIP must have a Replaces header containing the number of the BIP that it rendered obsolete.
+대체됨 헤더는 이 BIP가 더 이상 사용되지 않고, 다른 BIP에 의해 대체되었음을 나타냅니다. 그 값은 현재 문서를 대체하는 BIP의 번호입니다. 새로운 BIP는 더 이상 사용되지 않는 BIP 번호를 포함하는 대체 헤더를 가져야 합니다.
 
 ====Auxiliary Files====
 
-BIPs may include auxiliary files such as diagrams. Auxiliary files should be included in a subdirectory for that BIP, or must be named BIP-XXXX-Y.ext, where "XXXX" is the BIP number, "Y" is a serial number (starting at 1), and "ext" is replaced by the actual file extension (e.g. "png").
+BIP들은 다이어그램과 같은 보조 파일을 포함할 수 있습니다. 이러한 보조 파일은 해당 BIP의 하위 디렉토리에 포함되거나 BIP-XXXX-Y.ext와 같은 이름이 되어야 합니다. "XXXX" 는 BIP 번호, "Y" 는 1부터 시작하는 시리얼 넘버, 그리고 "ext"는 실제 파일의 확장자로 대체됩니다(예: "png").
 
 ==BIP types==
 
-There are three kinds of BIP:
+세 가지 종류의 BIP가 있습니다:
 
-* A Standards Track BIP describes any change that affects most or all Bitcoin implementations, such as a change to the network protocol, a change in block or transaction validity rules, or any change or addition that affects the interoperability of applications using Bitcoin. Standards Track BIPs consist of two parts, a design document and a reference implementation.
-* An Informational BIP describes a Bitcoin design issue, or provides general guidelines or information to the Bitcoin community, but does not propose a new feature. Informational BIPs do not necessarily represent a Bitcoin community consensus or recommendation, so users and implementors are free to ignore Informational BIPs or follow their advice.
-* A Process BIP describes a process surrounding Bitcoin, or proposes a change to (or an event in) a process. Process BIPs are like Standards Track BIPs but apply to areas other than the Bitcoin protocol itself. They may propose an implementation, but not to Bitcoin's codebase; they often require community consensus; unlike Informational BIPs, they are more than recommendations, and users are typically not free to ignore them. Examples include procedures, guidelines, changes to the decision-making process, and changes to the tools or environment used in Bitcoin development. Any meta-BIP is also considered a Process BIP.
+* 표준 트랙 BIP는 네트워크 프로토콜의 변경, 블록 또는 거래 유효성 규칙의 변경 또는 비트코인을 사용하는 응용 프로그램의 상호 운용성에 영향을 미치는 변경 사항과 같이 대부분 또는 모든 비트코인 구현에 영향을 주는 변경 사항을 설명합니다. 표준 트랙 BIP는 디자인 문서와 참조 구현 두 부분으로 구성됩니다.
+* 정보성 BIP는 비트코인 설계 이슈를 설명하거나 비트코인 커뮤니티에 일반적인 지침이나 정보를 제공하지만, 새로운 기능을 제안하지는 않습니다. 정보성 BIP는 비트코인 커뮤니티의 합의나 권장사항을 반영하는 것은 아니므로, 사용자나 구현자는 정보성 BIP를 무시하거나 조언에 따를 수 있습니다.
+* 프로세스 BIP는 비트코인 자체 프로토콜이 아닌 영역에 적용되는 표준 트랙 BIP와 유사하지만, 프로세스 자체를 묘사하거나 프로세스 내에서 변경을 제안합니다. 프로세스 BIP는 비트코인 프로토콜 이외의 영역에 적용되지만 표준 트랙 BIP와 유사합니다. 그것들은 구현을 제안할 수는 있지만 비트코인 코드베이스에는 제안하지 않습니다; 그것들은 종종 커뮤니티 합의를 요구합니다; 정보성 BIP와 다르게 그것들은 권고사항 그 이상이며 사용자는 일반적으로 그것들을 무시할 수 없습니다. 예를들어 프로시저, 가이드라인, 의사결정 과정 변경 및 비트코인 개발에 사용되는 도구 또는 환경 변경이 있습니다.모든 메타-BIP도 프로세스 BIP로 간주됩니다.
 
 ==BIP status field==
 
 ===Specification===
 
-The typical paths of the status of BIPs are as follows:
+BIP의 일반적인 상태의 경로는 다음과 같습니다:
 
-<img src="bip-0002/process.png"></img>
+<img src="bip-0002/process_kr.png"></img>
 
 Champions of a BIP may decide on their own to change the status between Draft, Deferred, or Withdrawn.
 A BIP editor may also change the status to Deferred when no progress is being made on the BIP.
