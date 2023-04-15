@@ -73,7 +73,7 @@ BIP의 소유권을 맡고자 하는 경우, 기존 작성자와 BIP 편집자 �
 
 ===BIP Editor Responsibilities & Workflow===
 
-BIP 편집자는 Bitcoin 개발 메일링 리스트에 가입합니다.
+BIP 편집자는 비트코인 개발 메일링 리스트에 가입합니다.
 오프리스트(Off-list) BIP 관련 대화는 BIP 편집자에게 보내거나 참조(CC)되어야합니다.
 
 새로운 BIP마다 편집자는 다음과 같은 작업을 수행합니다:
@@ -135,8 +135,8 @@ BIP는 mediawiki 형식으로 작성되어야 합니다.
 * 논의: <이메일 주소>
 * 코멘트 요약: <요약 논조>
   코멘트-URI: <커멘트를 위한 위키 페이지 링크>
-  상태: <초안(Draft) | 활성화된(Active) | 제안된(Proposed) | 연기된(Deferred) | 거절된(Rejected) |
-           중단된(Withdrawn) | 최종(Final) | 대체된(Replaced) | 구식의(Obsolete)>
+  상태: <초안(Draft) | 활성화됨(Active) | 제안됨(Proposed) | 연기됨(Deferred) | 거절됨(Rejected) |
+           중단됨(Withdrawn) | 최종(Final) | 대체됨(Replaced) | 폐기됨(Obsolete)>
   타입: <표준 트랙(Standards Track) | 정보성(Informational) | 프로세스(Process)>
   생성일: <생성된 날짜 ISO 8601 (yyyy-mm-dd) 형식>
   라이센스: <승인된 라이센스의 약어>
@@ -186,16 +186,16 @@ BIP의 일반적인 상태의 경로는 다음과 같습니다:
 
 <img src="bip-0002/process_kr.png"></img>
 
-Champions of a BIP may decide on their own to change the status between Draft, Deferred, or Withdrawn.
-A BIP editor may also change the status to Deferred when no progress is being made on the BIP.
+BIP의 챔피언들은 초안, 연기됨, 또는 중단됨 상태 중 하나로 상태 변경하는 것을 스스로 결정할 수 있습니다
+만약 BIP에 대한 진전이 없을 때 BIP 편집자는 상태를 연기됨으로 변경할 수도 있습니다.
 
-A BIP may only change status from Draft (or Rejected) to Proposed, when the author deems it is complete, has a working implementation (where applicable), and has community plans to progress it to the Final status.
+작성자가 BIP가 완료되었으며 동작하는 구현체(필요하다면) 및 최종 상태로 진행할 커뮤니티 계획이 있다고 판단했을 경우에만 초안(또는 거절됨)에서 제안된 상태로 변경됩니다.
 
-BIPs should be changed from Draft or Proposed status, to Rejected status, upon request by any person, if they have not made progress in three years. Such a BIP may be changed to Draft status if the champion provides revisions that meaningfully address public criticism of the proposal, or to Proposed status if it meets the criteria required as described in the previous paragraph.
+BIP가 3년 동안 진전이 없는 경우, 누구든지 요청하면 BIP는 초안 또는 제안된 상태에서 거절됨 상태로 변경되어야 합니다. 만약 챔피언이 제안서에 대한 공개적인 비판을 실질적으로 해결하는 개정안을 제공한다면, 해당 BIP는 초안 상태로 변경될 수 있습니다. 또는 이전 단락에서 설명한 기준을 충족한다면 제안된 상태로 변경될 수 있습니다.
 
-A Proposed BIP may progress to Final only when specific criteria reflecting real-world adoption has occurred. This is different for each BIP depending on the nature of its proposed changes, which will be expanded on below. Evaluation of this status change should be objectively verifiable, and/or be discussed on the development mailing list.
+제안된 BIP는 실세상에서 실제 채택을 반영하는 특정 기준이 충족된 경우에만 최종 단계로 진행될 수 있습니다. 이는 제안된 변경 사항의 성격에 따라 각 BIP마다 다르며, 아래에서 자세히 설명합니다. 이러한 상태 변경에 대한 평가는 객관적으로 검증할 수 있어야 하며, 개발 메일링 리스트에서 논의되어야 합니다.
 
-When a Final BIP is no longer relevant, its status may be changed to Replaced or Obsolete (which is equivalent to Replaced). This change must also be objectively verifiable and/or discussed.
+최종 BIP가 더 이상 관련성이 없는 경우, 그 상태는 대체됨 또는 폐기됨(대체됨과 동일)으로 변경될 수 있습니다. 이러한 변경은 객관적으로 검증이 가능거나(and/or) 논의되어야 합니다.
 
 A process BIP may change status from Draft to Active when it achieves rough consensus on the mailing list. Such a proposal is said to have rough consensus if it has been open to discussion on the development mailing list for at least one month, and no person maintains any unaddressed substantiated objections to it. Addressed or obstructive objections may be ignored/overruled by general agreement that they have been sufficiently addressed, but clear reasoning must be given in such circumstances.
 
