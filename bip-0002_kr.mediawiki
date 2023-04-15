@@ -131,7 +131,11 @@ BIP는 mediawiki 형식으로 작성되어야 합니다.
 * 코멘트-요약: <요약 논조(summary tone)>
   코멘트-URI: <커멘트를 위한 위키 페이지 링크>
   상태: <초안(Draft) | 활성화됨(Active) | 제안됨(Proposed) | 연기됨(Deferred) | 거절됨(Rejected) |
+<<<<<<< HEAD
         중단됨(Withdrawn) | 최종(Final) | 대체됨(Replaced) | 폐기됨(Obsolete)>
+=======
+           중단됨(Withdrawn) | 최종(Final) | 대체됨(Replaced) | 폐기됨(Obsolete)>
+>>>>>>> 672fcce (bip-0002 한글화)
   타입: <표준 트랙(Standards Track) | 정보성(Informational) | 프로세스(Process)>
   생성일: <생성된 날짜 ISO 8601 (yyyy-mm-dd) 형식>
   라이센스: <승인된 라이센스의 약어>
