@@ -197,40 +197,40 @@ BIP가 3년 동안 진전이 없는 경우, 누구든지 요청하면 BIP는 초
 
 최종 BIP가 더 이상 관련성이 없는 경우, 그 상태는 대체됨 또는 폐기됨(대체됨과 동일)으로 변경될 수 있습니다. 이러한 변경은 객관적으로 검증이 가능거나(and/or) 논의되어야 합니다.
 
-A process BIP may change status from Draft to Active when it achieves rough consensus on the mailing list. Such a proposal is said to have rough consensus if it has been open to discussion on the development mailing list for at least one month, and no person maintains any unaddressed substantiated objections to it. Addressed or obstructive objections may be ignored/overruled by general agreement that they have been sufficiently addressed, but clear reasoning must be given in such circumstances.
+프로세스 BIP는 메일링 리스트에서 대략적인 합의(rough consensus)가 이루어지면 초안에서 활성화됨으로 상태를 변경할 수 있습니다. 이러한 제안은 개발 메일링 리스트에서 최소 한 달 동안 토론이 공개되어 있고 이에 대해 해결되지 않은 입증된 이의를 제기하는 사람이 없는 경우 대략적인 합의(rough consensus)가 이루어진 것으로 간주됩니다. 충분히 다루어졌다는 일반적인 합의가 이루어졌다고 판단되는 이의 제기는 무시/무효화될 수 있지만, 이러한 경우에는 명확한 근거를 제시해야 합니다.
 
 ====Progression to Final status====
 
-A soft-fork BIP strictly requires a clear miner majority expressed by blockchain voting (eg, using BIP 9). In addition, if the economy seems willing to make a "no confidence" hard-fork (such as a change in proof-of-work algorithm), the soft-fork does not become Final for as long as such a hard-fork might have majority support, or at most three months. Soft-fork BIPs may also set additional requirements for their adoption. Because of the possibility of changes to miner dynamics, especially in light of delegated voting (mining pools), it is highly recommended that a supermajority vote around 95% be required by the BIP itself, unless rationale is given for a lower threshold.
+소프트포크 BIP는 블록체인 투표(예: BIP 9 사용)로 표현되는 명확한 채굴자들의 득표 차이(clear miner majority)를 요구합니다. 또한, 경제가 "확신 없음(no confidence)" 하드포크(예: 작업 증명 알고리즘 변경)를 할 의향이 있는 경우, 해당 하드포크가 대다수의 지지를 받을 수 있는 기간, 또는 최대 3개월 동안은 소프트포크가 최종 상태로로 변경되지 않습니다. 소프트포크 BIP는 채택을 위한 추가 요건을 설정할 수도 있습니다. 특히 위임 투표(마이닝 풀)를 고려할 때 마이너 역학 관계에 변화가 생길 수 있기 때문에, 더 낮은 임계값에 대한 근거가 제시되지 않는 한, BIP 자체에서 95% 정도의 초대다수 투표를 요구할 것을 적극 권장합니다.
 
-A hard-fork BIP requires adoption from the entire Bitcoin economy, particularly including those selling desirable goods and services in exchange for bitcoin payments, as well as Bitcoin holders who wish to spend or would spend their bitcoins (including selling for other currencies) differently in the event of such a hard-fork. Adoption must be expressed by de facto usage of the hard-fork in practice (ie, not merely expressing public support, although that is a good step to establish agreement before adoption of the BIP). This economic adoption cannot be established merely by a super-majority, except by literally forcing the minority to accept the hard-fork (whether this is viable or not is outside the scope of this document).
+하드포크 BIP는 하드포크 같은 사건에 의해 다르게 쓰거나 써야할 상황이 오게 될 비트코인 홀더들뿐만 아니라 비트코인 경제 전체, 특히 비트코인 결제를 통해 유망한 상품 및 서비스를 판매하는 사람들의 채택을 필요로 합니다. 이러한 채택은 하드포크를 실제로 사용함으로써 이루어져야 합니다(즉, 비록 그 전에 합의를 구하고 BIP를 채택하기 전에는 좋은 방법일 지라도 단순히 공개적인 지지만 표명하는 것만으로는 불충분합니다). 이러한 경제적 수용은 단순한 초대다수로는 확립될 수 없으며, 소수를 강제로 하드포크를 받아들이도록 하는 것 외에는 가능하지 않습니다(이것이 실행 가능한지 여부는 이 문서의 범위를 벗어납니다).
 
-Peer services BIPs should be observed to be adopted by at least 1% of public listening nodes for one month.
+Peer 서비스 BIP는 공개 리스닝 노드의 1% 이상에서 한 달간 채택되었음을 확인해야 합니다.
 
-API/RPC and application layer BIPs must be implemented by at least two independent and compatible software applications.
+API/RPC 및 응용 프로그램 계층 BIP는 최소한 두 개의 독립적이고 호환 가능한 소프트웨어 애플리케이션에서 구현되어야 합니다.
 
-Software authors are encouraged to publish summaries of what BIPs their software supports to aid in verification of status changes. Good examples of this at the time of writing this BIP, can be observed in [https://github.com/bitcoin/bitcoin/blob/master/doc/bips.md Bitcoin Core's doc/bips.md file] as well as [https://github.com/bitcoin-wallet/bitcoin-wallet/blob/master/wallet/README.specs.md Bitcoin Wallet for Android's wallet/README.specs.md file].
+소프트웨어 작성자들은 상태 변경 검증을 위해 소프트웨어가 지원하는 BIP의 요약본을 게시하는 것이 권장됩니다. 이러한 예시는 이 BIP를 작성하는 시점에서 [https://github.com/bitcoin-wallet/bitcoin-wallet/blob/master/wallet/README.specs.md Android용 Bitcoin Wallet의 wallet/README.specs.md 파일]뿐만 아니라 [https://github.com/bitcoin/bitcoin/blob/master/doc/bips.md Bitcoin Core의 doc/bips.md 파일]에서도 확인할 수 있습니다.
 
-These criteria are considered objective ways to observe the de facto adoption of the BIP, and are not to be used as reasons to oppose or reject a BIP. Should a BIP become actually and unambiguously adopted despite not meeting the criteria outlined here, it should still be updated to Final status.
+이러한 기준은 BIP의 실제 채택을 객관적으로 관찰하기 위한 것으로, BIP를 반대하거나 거부하는 이유로 사용해서는 안됩니다. 여기에서 설명된 기준을 충족하지 못하더라도 BIP가 실제로 명확하게 채택된 경우 최종 상태로 업데이트되어야 합니다.
 
 ===Rationale===
 
-Why is this necessary at all?
+그래서 이게 다 왜 필요한가요?
 
-* BIP 1 defines an ambiguous criteria for the Status field of BIPs, which is often a source of confusion. As a result, many BIPs with significant real-world use have been left as Draft or Proposed status longer than appropriate. By giving objective criteria to judge the progression of BIPs, this proposal aims to help keep the Status accurate and up-to-date.
+* BIP 1은 BIP의 상태 필드에 대해 모호한 기준을 정의하고 있으며, 이는 종종 혼란의 원인이 됩니다. 결과적으로, 실제 세계에서 중요한 역할을 하는 많은 BIP들이 적절한 기간보다 더 길게 초안 또는 제안됨 상태로 남아 있게 됩니다. BIP의 진행상황을 판단하기 위한 객관적인 기준을 제공함으로써, 이 제안은 BIP의 상태를 정확하고 최신 상태로 유지하는 데 도움을 주고자 합니다.
 
-How is the entire Bitcoin economy defined by people selling goods/services and holders?
+사람들이 상품/서비스를 판매하고 보유함으로써, 전체 비트코인 경제는 어떻게 정의될까요?
 
-* For Bitcoin to function as a currency, it must be accepted as payment. Bitcoins have no value if you cannot acquire anything in exchange for them. If everyone accepting such payments requires a particular set of consensus rules, "bitcoins" are de facto defined by that set of rules - this is already the case today. If those consensus rules are expected to broaden (as with a hard-fork), those merchants need to accept payments made under the new set of rules, or they will reject "bitcoins" as invalid. Holders are relevant to the degree in that they choose the merchants they wish to spend their bitcoins with, and could also as a whole decide to sell under one set of consensus rules or the other, thus flooding the market with bitcoins and crashing the price.
+* 비트코인이 통화(currency)로 작동하기 위해서는 결제 수단으로 인정받아야 합니다. 당신이 만약 비트코인으로 어떤 것도 교환하여 얻을 수 없다면 비트코인은 가치는 것입니다. 만약 이러한 결제를 수락하는 모든 사람들이 특정 합의 규칙을 요구하다면, "비트코인"은 사실상 해당 규칙에 의해 정의되며, 이는 이미 오늘날의 경우와 마찬가지입니다. 만약 (하드포크와 함께) 합의 규칙이 확장될 것으로 예상되는 경우, 해당 판매자는 새로운 규칙에 따른 결제를 수락해야 하며, 그렇지 않으면 "비트코인"을 유효하지 않은 것으로 간주하여 거부할 것입니다. 보유자는 비트코인을 사용할 판매자를 선택한다는 점에서 관련이 있으며, 전체적으로는 한 합의 규칙 또는 다른 합의 규칙에 따라 판매하기로 결정하여 시장에 비트코인이 넘쳐나고 가격이 폭락할 수도 있습니다.
 
-Why aren't <x> included in the economy?
+<nowiki><x></nowiki>는 왜 경제에 포함되지 않나요?
 
-* Some entities may, to some degree, also be involved in offering goods and/or services in exchange for bitcoins, thus in that capacity (but not their capacity as <x>) be involved in the economy.
-* Miners are not included in the economy, because they merely *rely on* others to sell/spend their otherwise-worthless mined produce. Therefore, they must accept everyone else's direction in deciding the consensus rules.
-* Exchanges are not included in the economy, because they merely provide services of connecting the merchants and users who wish to trade. Even if all exchanges were to defect from Bitcoin, those merchants and users can always trade directly and/or establish their own exchanges.
-* Developers are not included in the economy, since they merely write code, and it is up to others to decide to use that code or not.
+* 어떤 개체들은 일부 물품 및/또는 서비스를 비트코인으로 교환하는 일에 관여할 수도 있으므로, 이러한 역할에서 (하지만 <nowiki><x></nowiki>의 역할에서는 아닌) 경제에 관여할 수 있습니다.
+* 채굴자는 가치가 없는 채굴 생산물을 판매하거나 소비하기 위해 다른 사람에게 *의존*할 뿐이므로 경제에 포함되지 않습니다. 따라서 이들은 합의 규칙을 결정할 때 다른 모든 사람의 지시를 받아들여야 합니다.
+*거래소는 거래를 원하는 판매자와 사용자를 연결하는 서비스를 제공할 뿐이므로 경제에 포함되지 않습니다. 모든 거래소가 비트코인 거래를 중지시키더라도 판매자와 사용자는 언제든지 직접 거래하거나 자체 거래소를 설립할 수 있습니다.
+* 개발자는 단지 코드를 작성할 뿐이며, 그 코드를 사용할지 여부는 다른 사람들이 결정하기 때문에 경제에 포함되지 않습니다.
 
-But they're doing something important and have invested a lot in Bitcoin! Shouldn't they be included in such an important decision?
+하지만 그들은 중요한 일을 하고 있고 비트코인에 많은 투자를 했습니다! 이런 중요한 결정에 그들도 포함되어야 하지 않을까요?
 
 * This BIP does not aim to address what "should" be the basis of decisions. Such a statement, no matter how perfect in its justification, would be futile without some way to force others to use it. The BIP process does not aim to be a kind of forceful "governance" of Bitcoin, merely to provide a collaborative repository for proposing and providing information on standards, which people may voluntarily adopt or not. It can only hope to achieve accuracy in regard to the "Status" field by striving to reflect the reality of *how things actually are*, rather than *how they should be*.
 
