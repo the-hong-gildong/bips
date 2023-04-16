@@ -2,10 +2,10 @@
   BIP: 2
   제목: BIP 프로세스, 수정된
   작성자: Luke Dashjr <luke+bip@dashjr.org>
-  코멘트 요약: No comments yet.
+  코멘트 요약: 아직 코멘트 없음.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0002
-  상태: Active
-  타입: Process
+  상태: 활성화됨(Active)
+  타입: 프로세스(Process)
   생성일: 2016-02-03
   라이센스: BSD-2-Clause
            OPL
@@ -140,8 +140,8 @@ BIP는 mediawiki 형식으로 작성되어야 합니다.
   타입: <표준 트랙(Standards Track) | 정보성(Informational) | 프로세스(Process)>
   생성일: <생성된 날짜 ISO 8601 (yyyy-mm-dd) 형식>
   라이센스: <승인된 라이센스의 약어>
-* 라이센스 코드: <다른 승인 된 라이센스에 따른 코드의 약어>
-* 게시 히스토리: <비트코인 메일링 리스트에 게시된 날짜 또는 메일링 리스트 아카이브의 쓰레드 링크>
+* 라이센스-코드: <다른 승인 된 라이센스에 따른 코드의 약어>
+* 게시-히스토리: <비트코인 메일링 리스트에 게시된 날짜 또는 메일링 리스트 아카이브의 쓰레드 링크>
 * 필요 사항: <BIP 번호(들)>
 * 대체: <BIP 번호>
 * 대체됨: <BIP 번호>
@@ -318,36 +318,36 @@ BIP 댓글이 검열되거나 특정 참가자/'전문가'로 제한되나요?
 
 ===Specification===
 
-New BIPs may be accepted with the following licenses. Each new BIP must identify at least one acceptable license in its preamble. The License header in the preamble must be placed after the Created header. Each license must be referenced by their respective abbreviation given below.
+새로운 BIP는 다음 라이센스와 함께 채택될 수 있습니다. 각 새 BIP는 프리앰블에서 허용 가능한 라이센스를 하나 이상 명시해야 합니다. 프리앰블의 라이센스 헤더는 생성일(Created) 헤더 뒤에 위치해야 합니다. 각 라이센스는 아래에 제시된 각각의 약어를 참조해야 합니다.
 
-For example, a preamble might include the following License header:
+예를 들어, 프리앰블에는 다음과 같은 라이선스 헤더가 포함될 수 있습니다:
 
-    License: BSD-2-Clause
+    라이센스: BSD-2-Clause
              GNU-All-Permissive
 
-In this case, the BIP text is fully licensed under both the OSI-approved BSD 2-clause license as well as the GNU All-Permissive License, and anyone may modify and redistribute the text provided they comply with the terms of *either* license. In other words, the license list is an "OR choice", not an "AND also" requirement.
+이 경우, BIP 텍스트는 OSI가 승인한 BSD-2-Clause 라이센스와 GNU All-Permissive License 라이센스 모두에 따라 완전히 라이센스가 부여되며, 누구든지 *어느 하나*의 라이센스 조건을 준수한다면 텍스트를 수정하고 재배포할 수 있습니다. 다른 말로, 라이센스 목록은 "또는 선택(OR choice)"이며 "그리고 또한(AND also)" 요구사항이 아닙니다.
 
-It is also possible to license source code differently from the BIP text. An optional License-Code header is placed after the License header. Again, each license must be referenced by their respective abbreviation given below.
+소스 코드에 BIP 텍스트와 다르게 라이센스를 부여할 수도 있습니다. 선택 사항인 라이센스-코드 헤더는 라이센스 헤더 뒤에 배치됩니다. 다시 말하지만, 각 라이센스는 아래에 제시된 각각의 약어를 참조해야 합니다.
 
-For example, a preamble specifying the optional License-Code header might look like:
+예를 들어, 라이센스-코드 헤더(선택 사항)를 명시하는 프리앰블은 다음과 같을 수 있습니다:
 
-    License: BSD-2-Clause
+    라이센스: BSD-2-Clause
              GNU-All-Permissive
-    License-Code: GPL-2.0+
+    라이센스-코드: GPL-2.0+
 
-In this case, the code in the BIP is not available under the BSD or All-Permissive licenses, but only under the terms of the GNU General Public License (GPL), version 2 or newer.
-If the code were to be available under *only* version 2 exactly, the "+" symbol should be removed from the license abbreviation.
-For a later version (eg, GPL 3.0), you would increase the version number (and retain or remove the "+" depending on intent).
+이 경우 BIP의 코드는 BSD 또는 All-Permissive 라이센스에 따라 사용할 수 없으며, GNU General Public License (GPL) 버전 2 이상의 조건에 따라서만 사용할 수 있습니다.
+코드를 *오직* 버전 2에서만 사용하려면 라이선스 약어에서 "+" 기호를 제거해야 합니다.
+나중에 버전이 올라간 경우(예: GPL 3.0), 버전 번호를 올리고 의도에 따라 "+"를 유지하거나 제거합니다.
 
-    License-Code: GPL-2.0   # This refers to GPL v2.0 *only*, no later license versions are acceptable.
-    License-Code: GPL-2.0+  # This refers to GPL v2.0 *or later*.
-    License-Code: GPL-3.0   # This refers to GPL v3.0 *only*, no later license versions are acceptable.
-    License-Code: GPL-3.0+  # This refers to GPL v3.0 *or later*.
+    라이센스-코드: GPL-2.0   # *오직* GPL v2.0, 이후 버전 허용 안 함.
+    라이센스-코드: GPL-2.0+  # GPL v2.0 *또는 이후 버전*.
+    라이센스-코드: GPL-3.0   # *오직* GPL v3.0, 이후 버전 허용 안 함.
+    라이센스-코드: GPL-3.0+  # GPL v3.0 *또는 이후 버전*.
 
-In the event that the licensing for the text or code is too complicated to express with a simple list of alternatives, the list should instead be replaced with the single term "Complex". In all cases, details of the licensing terms must be provided in the Copyright section of the BIP.
+텍스트 또는 코드에 대한 라이선스가 너무 복잡하여 간단한 대체 목록으로 표현할 수 없는 경우, 목록 대신 "복합(Complex)"이라는 단일 용어로 대체해야 합니다. 모든 경우에 라이센스 조건에 대한 자세한 내용은 BIP의 저작권(Copyright) 섹션에 제공해야 합니다.
 
-BIPs are not required to be *exclusively* licensed under approved terms, and may also be licensed under unacceptable licenses *in addition to* at least one acceptable license.
-In this case, only the acceptable license(s) should be listed in the License and License-Code headers.
+BIP는 승인된 조건은 *독점적으로* 라이센스를 취득할 필요는 없으며, 최소한 하나 이상의 허용되는 라이센스에 *추가하여* 허용되지 않는 라이센스로도 라이센스를 취득할 수 있습니다.
+이 경우, 라이센스 및 라이센스-코드 헤더에는 허용되는 라이선스만 나열되어야 합니다.
 
 ====Recommended licenses====
 
@@ -356,7 +356,7 @@ In this case, only the acceptable license(s) should be listed in the License and
 * CC0-1.0: [https://creativecommons.org/publicdomain/zero/1.0/ Creative Commons CC0 1.0 Universal]
 * GNU-All-Permissive: [http://www.gnu.org/prep/maintain/html_node/License-Notices-for-Other-Files.html GNU All-Permissive License]
 
-In addition, it is recommended that literal code included in the BIP be dual-licensed under the same license terms as the project it modifies. For example, literal code intended for Bitcoin Core would ideally be dual-licensed under the MIT license terms as well as one of the above with the rest of the BIP text.
+또한, BIP에 포함된 리터럴 코드는 수정하는 프로젝트와 동일한 라이센스 조건에 따라 이중 라이센스를 받을 것을 권장합니다. 예를들어, 비트코인 코어를 위한 리터럴 코드는 나머지 BIP 텍스트에 대해 위에서 어느 한 라이센스 뿐만 아니라 MIT 라이센스 조건에 따라 이중 라이센스를 받는 것이 이상적입니다.
 
 ====Not recommended, but acceptable licenses====
 
@@ -372,43 +372,43 @@ In addition, it is recommended that literal code included in the BIP be dual-lic
 
 ====Not acceptable licenses====
 
-All licenses not explicitly included in the above lists are not acceptable terms for a Bitcoin Improvement Proposal unless a later BIP extends this one to add them.
-However, BIPs predating the acceptance of this BIP were allowed under other terms, and should use these abbreviation when no other license is granted:
+위의 목록에 명시적으로 포함되지 않은 모든 라이선스는 추후 BIP에서 이를 추가하기 위해 확장하지 않는 한 비트코인 개선 제안에 허용되는 조건이 아닙니다.
+단, 본 BIP의 수락 이전에 다른 조건에 따라 허용된 BIP는 다른 라이선스가 부여되지 않은 경우 이 약어를 사용해야 합니다:
 
 * OPL: [http://opencontent.org/openpub/ Open Publication License, version 1.0]
-* PD: Released into the public domain
+* PD: 퍼블릭 도메인으로 릴리즈 됨
 
 ===Rationale===
 
-BIP 1 allowed the Open Publication License or releasing into the public domain; was this insufficient?
+BIP 1은 오픈 퍼블리싱 라이센스 또는 퍼블릭 도메인에 공개하는 것을 허용했는데, 이것만으로는 충분하지 않았나요?
 
-* The OPL is generally regarded as obsolete, and not a license suitable for new publications.
-* Many are unfamiliar with the OPL terms, and may just prefer to use the public domain rather than license under uncertain terms.
-* The OPL license terms allowed for the author to prevent publication and derived works, which was widely considered inappropriate for Bitcoin standards.
-* Public domain is not universally recognised as a legitimate action, thus it is inadvisable.
+* OPL은 일반적으로 더 이상 사용되지 않는 라이센스로 간주되며 새로운 출판물에 적합한 라이센스가 아닙니다.
+* 많은 사람들이 OPL 용어에 익숙하지 않으며, 불확실한 조건의 라이센스보다는 퍼블릭 도메인을 사용하는 것을 선호할 수 있습니다.
+* OPL 라이센스 조건은 작성자가 출판 및 파생 저작물을 금지할 수 있도록 허용했는데, 이는 비트코인 표준에 부적절하다고 널리 간주되었습니다.
+* 퍼블릭 도메인은 보편적으로 합법적인 행위로 인정되지 않으므로 바람직하지 않습니다.
 
-Why are there software licenses included?
+소프트웨어 라이센스가 포함된 이유는 무엇인가요?
 
-* Some BIPs, especially consensus layer, may include literal code in the BIP itself which may not be available under the exact license terms of the BIP.
-* Despite this, not all software licenses would be acceptable for content included in BIPs.
+* 일부 BIP, 특히 컨센서스 레이어에는 BIP의 정확한 라이센스 조건에 따라 제공되지 않을 수 있는 리터럴 코드가 BIP 자체에 포함될 수 있습니다.
+* 그럼에도 불구하고 모든 소프트웨어 라이센스가 BIP에 포함된 콘텐츠에 허용되는 것은 아닙니다.
 
-Why is Public Domain no longer acceptable for new BIPs?
+퍼블릭 도메인이 더 이상 새로운 BIP에 허용되지 않는 이유는 무엇인가요?
 
-* In some jurisdictions, public domain is not recognised as a legitimate legal action, leaving the BIP simply copyrighted with no redistribution or modification allowed at all.
+* 일부 관할권에서는 퍼블릭 도메인을 합법적인 법적 조치로 인정하지 않기 때문에 BIP는 재배포나 수정이 전혀 허용되지 않고 단순히 저작권만 보유하게 됩니다.
 
 ==Changes from BIP 1==
 
-* Acceptable licenses are entirely rechosen, allowing a wide variety of open licenses, while prohibiting the problematic older choices.
-* Accepted Status has been renamed to Proposed.
-* An implementation is now required (when applicable) before BIPs can proceed to Proposed Status.
-* BIP Comments are newly introduced.
-* The License preamble headers have been added.
-* The Layer header is included from BIP 123.
-* Non-image auxiliary files are permitted in the bip-XXXX subdirectory.
-* Email addresses are now required for authors.
-* The Post-History header may be provided as a link instead of a simple date.
-* Markdown format is no longer permitted for BIPs.
-* The Resolution header has been dropped, as it is not applicable to a decentralised system where no authority exists to make final decisions.
+* 허용되는 라이센스가 전면 재선정되고 다양한 오픈 라이센스를 허용하는 동시에 문제가 되는 이전 라이센스는 금지되었습니다.
+* 수락됨 상태가 제안됨으로 이름이 변경되었습니다.
+* 이제 BIP가 제안됨 상태로 진행되려면 (해당되는 경우) 구현이 필요합니다.
+* BIP 코멘트가 새롭게 도입되었습니다.
+* 라이선스 프리앰블 헤더가 추가되었습니다.
+* 레이어 헤더는 BIP 123부터 포함되어 있습니다.
+* 이미지가 아닌 보조 파일은 bip-XXXX 하위 디렉터리에 허용됩니다.
+* 이제 작성자에게 이메일 주소가 필수입니다.
+* 게시-히스토리 헤더는 단순한 날짜 대신 링크로 제공될 수 있습니다.
+* 마크다운 형식은 더 이상 BIP에 허용되지 않습니다.
+* 최종 결정을 내릴 권한이 없는 탈중앙화 시스템에는 해당하지 않으므로 해결 헤더가 삭제되었습니다.
 
 ==See Also==
 
