@@ -34,7 +34,7 @@ BIP 프로세스는 비트코인을 위한 새로운 아이디어에서 시작�
 따라서 새로운 아이디어가 제안되기 전에는, 과거에 이미 해당 아이디어가 논의되었는지, 그리고 그 과정에서 어떤 문제점들이 발생했는지 조사하는 것이 첫 번째 단계입니다.
 과거의 작업을 조사한 후에는, 새로운 아이디어에 대해 [https://lists.linuxfoundation.org/mailman/listinfo/bitcoin-dev 비트코인 개발 메일링 리스트]에 게시하는 것이 가장 좋은 방법입니다.
 
-BIP 작성에 앞서 아이디어를 공개적으로 검토하는 것은 잠재적인 작성자와 더 넓은 커뮤니티 모두의 시간을 절약하기 위한 것입니다. 
+BIP 작성에 앞서 아이디어를 공개적으로 리뷰하는 것은 잠재적인 작성자와 더 넓은 커뮤니티 모두의 시간을 절약하기 위한 것입니다. 
 이전 논의에 따라서 거부될 것이 확실한 아이디어는 시간이 낭비되지 않도록 미리 비트코인 커뮤니티에게 이에 대해 묻는 것이 도움이 됩니다. (인터넷 검색만으로 충분하지 않은 경우도 있습니다.)
 이는 또한 아이디어가 작성자만이 아니라 전체 커뮤니티에 적용 가능한지 여부를 확인하는 데 도움이 됩니다. 아이디어가 작성자에게 좋아 보이는 것만으로는 비트코인을 사용하는 대부분의 지역에서와 대다수의 사람들에게 통할 가능성이 있는 것은 아닙니다.
 
@@ -133,7 +133,7 @@ BIP는 mediawiki 형식으로 작성되어야 합니다.
   제목: <BIP 제목; 최대 44 글자>
   작성자: <작성자의 실명 과 이메일 주소 목록>
 * 논의: <이메일 주소>
-* 코멘트 요약: <요약 논조>
+* 코멘트 요약: <요약 논조(summary tone)>
   코멘트-URI: <커멘트를 위한 위키 페이지 링크>
   상태: <초안(Draft) | 활성화됨(Active) | 제안됨(Proposed) | 연기됨(Deferred) | 거절됨(Rejected) |
            중단됨(Withdrawn) | 최종(Final) | 대체됨(Replaced) | 폐기됨(Obsolete)>
@@ -268,51 +268,51 @@ API/RPC 및 응용 프로그램 계층 BIP는 최소한 두 개의 독립적이�
 
 ===Specification===
 
-Each BIP should, in its preamble, link to a public wiki page with a summary tone of the comments on that page.
-Reviewers of the BIP who consider themselves qualified, should post their own comments on this wiki page.
-The comments page should generally only be used to post final comments for a completed BIP.
-If a BIP is not yet completed, reviewers should instead post on the applicable development mailing list thread to allow the BIP author(s) to address any concerns or problems pointed out by the review.
+각 BIP는 프리앰블에서 해당 페이지의 의견을 요약한 공개 위키 페이지로 링크해야 합니다.
+스스로 자격이 있다고 생각되는 BIP 리뷰어는 이 위키 페이지에 자신의 의견을 게시해야 합니다.
+코멘트 페이지는 일반적으로 완료된 BIP에 대한 최종 코멘트를 게시할 때만 사용해야 합니다.
+BIP가 아직 완료되지 않은 경우, 리뷰어는 대신 해당 개발 메일링 리스트 스레드에 게시하여 리뷰에서 지적한 우려 사항이나 문제를 BIP 작성자(들)가 해결할 수 있도록 해야 합니다.
 
-Some BIPs receive exposure outside the development community prior to completion, and other BIPs might not be completed at all. To avoid a situation where critical BIP reviews may go unnoticed during this period, reviewers may, at their option, still post their review on the comments page, provided they first post it to the mailing list and plan to later remove or revise it as applicable based on the completed version. Such revisions should be made by editing the previous review and updating the timestamp. Reviews made prior to the complete version may be removed if they are no longer applicable and have not been updated in a timely manner (eg, within one month).
+일부 BIP는 완료되기 전에 개발 커뮤니티 외부에 노출되며, 일부 BIP는 결국 완료되지 않을 수도 있습니다. 이 기간 동안 중요한 BIP 리뷰가 눈에 띄지 않는 상황을 피하기 위해 리뷰어는 자신의 선택에 따라 먼저 메일링 리스트에 리뷰를 게시하고 나중에 완료된 버전에 따라 해당되는 경우 리뷰를 삭제하거나 수정할 계획이라면 코멘트 페이지에 리뷰를 게시할 수 있습니다. 이러한 수정은 이전 리뷰를 편집하고 타임스탬프를 업데이트하는 방식으로 이루어져야 합니다. 정식 버전 이전에 작성된 리뷰는 더 이상 적용되지 않고 적시에 업데이트되지 않은 경우(예: 1개월 이내) 삭제될 수 있습니다.
 
-Pages must be named after the full BIP number (eg, "BIP 0001") and placed in the "Comments" namespace.
-For example, the link for BIP 1 will be https://github.com/bitcoin/bips/wiki/Comments:BIP-0001 .
+페이지는 전체 BIP 번호(예: "BIP 0001")의 이름을 따서 "코멘트" 네임스페이스에 배치해야 합니다.
+예를들어, BIP 1의 링크는 https://github.com/bitcoin/bips/wiki/Comments:BIP-0001가 될 것입니다.
 
-Comments posted to this wiki should use the following format:
+이 위키에 게시되는 코멘트는 다음 형식을 사용해야 합니다:
 
     <Your opinion> --<Your name>, <Date of posting, as YYYY-MM-DD>
 
-BIPs may also choose to list a second forum for BIP comments, in addition to the BIPs wiki.
-In this case, the second forum's URI should be listed below the primary wiki's URI.
+BIP는 BIP 위키 외에도 BIP 의견을 위한 두 번째 포럼을 명시할 수도 있습니다.
+이 경우 두 번째 포럼의 URI는 기본 위키의 URI 아래에 나열되어야 합니다.
 
-After some time, the BIP itself may be updated with a summary tone of the comments.
-Summary tones may be chosen from the following, but this BIP does not intend to cover all possible nuances and other summaries may be used as needed:
+시간이 지나면 BIP 자체에 코멘트의 요약 논조로 업데이트될 수 있습니다.
+요약 논조는 다음 중에서 선택할 수 있지만, 이 BIP는 가능한 모든 뉘앙스를 다루지 않으며 필요에 따라 다른 요약을 사용할 수 있습니다:
 
-* No comments yet.
-* Unanimously Recommended for implementation
-* Unanimously Discourage for implementation
-* Mostly Recommended for implementation, with some Discouragement
-* Mostly Discouraged for implementation, with some Recommendation
+* 아직 코멘트 없음.
+* 만장일치로 구현을 권장함
+* 만장일치로 구현을 추천하지 않음
+* 대체로 구현을 권장하나 일부는 추천하지 않음
+* 대체로 구현을 추천하지 않으나 일부는 권장함
 
-For example, the preamble to BIP 1 might be updated to include the line:
+예를 들어, BIP 1의 프리앰블은 해당 줄을 포함하도록 업데이트할 수 있습니다:
 
-    Comments-Summary: No comments yet.
-    Comments-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0001
+    코멘트 요약: 아직 코멘트 없음.
+    코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0001
                   https://some-other-wiki.org/BIP_1_Comments
 
-These fields must follow the "Discussions-To" header defined in BIP 1 (if that header is not present, it should follow the position where it would be present; generally this is immediately above the Status header).
+이러한 필드는 BIP 1에 정의된 '논의' 헤더에 뒤따라야 합니다(해당 헤더가 없는 경우 헤더가 있어야할 위치에 있어야 합니다; 일반적으로 상태 헤더 위에).
 
-To avoid doubt: comments and status are unrelated metrics to judge a BIP, and neither should be directly influencing the other.
+의심의 여지를 없애기 위해: 코멘트와 상태는 BIP를 판단하는 데 있어 서로 관련이 없는 지표이며, 어느 쪽도 다른 쪽에 직접적인 영향을 미쳐서는 안 됩니다.
 
 ===Rationale===
 
-What is the purpose of BIP comments?
+BIP 코멘트의 목적은 무엇인가요?
 
-* Various BIPs have been adopted (the criteria required for "Final" Status) despite being considered generally inadvisable. Some presently regard BIPs as a "good idea" simply by virtue of them being assigned a BIP number. Due to the low barrier of entry for submission of new BIPs, it seems advisable for a way for reviewers to express their opinions on them in a way that is consumable to the public without needing to review the entire development discussion.
+* 일반적으로 권할 만하지 않은 것으로 간주됨에도 불구하고 다양한 BIP("최종" 상태에 필요한 기준)가 채택되었습니다. 현재 일부에서는 BIP 번호가 부여되었다는 이유만으로 BIP를 "좋은 아이디어"로 간주하기도 합니다. 새로운 BIP 제출에 대한 진입 장벽이 낮기 때문에, 검토자가 전체 개발 논의를 검토할 필요 없이 대중에게 소비 가능한 방식으로 의견을 표명할 수 있는 방법을 마련하는 것이 바람직해 보입니다.
 
-Will BIP comments be censored or limited to particular participants/"experts"?
+BIP 댓글이 검열되거나 특정 참가자/'전문가'로 제한되나요?
 
-* Participants should freely refrain from commenting outside of their area of knowledge or expertise. However, comments should not be censored, and participation should be open to the public.
+* 참가자는 자신의 지식이나 전문 분야를 벗어난 댓글을 자유롭게 자제해야 합니다. 그러나 댓글이 검열되어서는 안 되며, 참여는 대중에게 공개되어야 합니다.
 
 ==BIP licensing==
 
