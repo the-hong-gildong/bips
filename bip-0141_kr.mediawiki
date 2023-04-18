@@ -5,10 +5,10 @@
   작성자: Eric Lombrozo <elombrozo@gmail.com>
           Johnson Lau <jl2012@xbt.hk>
           Pieter Wuille <pieter.wuille@gmail.com>
-  코멘트-요약: No comments yet.
+  코멘트-요약: 아직 코멘트 없음.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0141
-  상태: Final
-  타입: Standards Track
+  상태: 최종
+  타입: 표준 트랙
   생성일: 2015-12-21
   라이센스: PD
 </pre>
