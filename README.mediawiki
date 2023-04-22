@@ -7,12 +7,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 제안자는 결국 비트코인 사용자의 합의에 따라 동의가 결정될 수 있다는 것을 고려해야 합니다. (참고: [https://en.bitcoin.it/wiki/Economic_majority 경제적 다수주의(economic majority)]).
 
 {| class="wikitable sortable" style="width: auto; text-align: center; font-size: smaller; table-layout: fixed;"
-!Number
-!Layer
-!Title
-!Owner
-!Type
-!Status
+!번호
+!레이어
+!제목
+!작성자
+!타입
+!상태
 |- style="background-color: #ffcfcf"
 | [[bip-0001.mediawiki|1]]
 |
@@ -21,12 +21,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Process
 | Replaced
 |- style="background-color: #cfffcf"
-| [[bip-0002.mediawiki|2]]
+| [[bip-0002_kr.mediawiki|2(kr)]]
 |
-| BIP process, revised
+| BIP 프로세스, 수정된
 | Luke Dashjr
-| Process
-| Active
+| 프로세스
+| 활성화됨
 |-
 | [[bip-0008.mediawiki|8]]
 |
@@ -652,12 +652,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Draft
 |- style="background-color: #cfffcf"
-| [[bip-0123.mediawiki|123]]
+| [[bip-0123_kr.mediawiki|123(kr)]]
 |
-| BIP Classification
+| BIP 분류
 | Eric Lombrozo
-| Process
-| Active
+| 프로세스
+| 활성화됨
 |- style="background-color: #ffcfcf"
 | [[bip-0124.mediawiki|124]]
 | Applications
@@ -758,11 +758,11 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Rejected
 |- style="background-color: #cfffcf"
 | [[bip-0141_kr.mediawiki|141(kr)]]
-| Consensus (soft fork)
-| Segregated Witness (Consensus layer)
+| 컨센서스 (소프트 포크)
+| 세그윗 (컨센서스 레이어)
 | Eric Lombrozo, Johnson Lau, Pieter Wuille
-| Standard
-| Final
+| 표준
+| 최종
 |- style="background-color: #ffcfcf"
 | [[bip-0142.mediawiki|142]]
 | Applications
@@ -772,18 +772,18 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Withdrawn
 |- style="background-color: #cfffcf"
 | [[bip-0143_kr.mediawiki|143(kr)]]
-| Consensus (soft fork)
-| Transaction Signature Verification for Version 0 Witness Program
+| 컨센서스 (소프트 포크)
+| 버전 0 증인 프로그램을 위한 트랜잭션 서명 검증
 | Johnson Lau, Pieter Wuille
-| Standard
-| Final
+| 표준
+| 최종
 |- style="background-color: #cfffcf"
 | [[bip-0144_kr.mediawiki|144(kr)]]
-| Peer Services
-| Segregated Witness (Peer Services)
+| 피어 서비스
+| 세그윗 (피어 서비스)
 | Eric Lombrozo, Pieter Wuille
-| Standard
-| Final
+| 표준
+| 최종
 |- style="background-color: #cfffcf"
 | [[bip-0145.mediawiki|145]]
 | API/RPC
@@ -891,11 +891,11 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Rejected
 |- style="background-color: #cfffcf"
 | [[bip-0173(kr).mediawiki|173(kr)]]
-| Applications
-| Base32 address format for native v0-16 witness outputs
+| 애플리케이션
+| v0-16 네이티브 증인 출력에 대한 Base32 주소 형식
 | Pieter Wuille, Greg Maxwell
-| Informational
-| Final
+| 정보성
+| 최종
 |- style="background-color: #cfffcf"
 | [[bip-0174.mediawiki|174]]
 | Applications
