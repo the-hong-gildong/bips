@@ -31,58 +31,59 @@ BIP는 상호 운용성 요구 사항이 더 복잡한 하위 레이어로 구�
 
 ==Specification==
 
-Standards BIPs are placed in one of four layers:
+표준 BIP는 네 가지 레이어 중 하나에 배치됩니다:
 
-# Consensus
-# Peer Services
+# 컨센서스(Consensus)
+# 피어 서비스(Peer Services)
 # API/RPC
-# Applications
+# 애플리케이션(Applications)
 
-Non-standards BIPs may be placed in these layers, or none at all.
+비표준 BIP는 이러한 레이어에 배치되거나 아예 배치되지 않을 수 있습니다.
 
 ===1. Consensus Layer===
 
-The consensus layer defines cryptographic commitment structures. Its purpose is ensuring that anyone can locally evaluate whether a particular state and history is valid, providing settlement guarantees, and assuring eventual convergence.
+컨센서스 레이어는 암호학적 커미트먼트 구조를 정의합니다. 이 레이어의 목적은 누구나 특정 상태와 이력이 유효한지 로컬에서 평가하고 세틀먼트를 보장하며, 최종적인 수렴을 보장하는 것입니다.
 
-The consensus layer is not concerned with how messages are propagated on a network.
+컨센서스 레이어는 네트워크에서 메세지가 전파되는 방식에는 관여하지 않습니다.
 
-Disagreements over the consensus layer can result in network partitioning, or forks, where different nodes might end up accepting different incompatible histories. We further subdivide consensus layer changes into soft forks and hard forks.
+컨센서스 레이어에 대한 의견 불일치로 인해 네트워크 분할 또는 포크가 발생할 수 있으며 이 경우 서로 다른 노드가 호환되지 않는 서로 다른 이력을 받아들이게 될 수 있습니다. 컨센서스 레이어 변경은 소프트 포크와 하드 포크로 세분화됩니다.
 
 ====Soft Forks====
 
-In a soft fork, some structures that were valid under the old rules are no longer valid under the new rules. Structures that were invalid under the old rules continue to be invalid under the new rules.
+소프트 포크에서는 이전 규칙에서 유효했던 일부 구조가 새 규칙에서는 더 이상 유효하지 않습니다. 이전 규칙에서 유효하지 않았던 구조는 새 규칙에서도 계속 유효하지 않습니다.
 
 ====Hard Forks====
 
-In a hard fork, structures that were invalid under the old rules become valid under the new rules.
+하드 포크에서는 이전 규칙에 따라 유효하지 않았던 구조가 새로운 규칙에 따라 유효하게 됩니다.
 
 ===2. Peer Services Layer===
 
-The peer services layer specifies how nodes find each other and propagate messages.
+피어 서비스 레이어는 노드가 서로를 찾고 메시지를 전파하는 방법을 명시합니다.
 
-Only a subset of all specified peer services are required for basic node interoperability. Nodes can support further optional extensions.
+명시되는 모든 피어 서비스의 유일한 하위 집합은 기본적인 노드간 상호 운용성만을 요구합니다. 노드는 추가로 선택적 확장성을 지원할 수 있습니다.
 
-It is always possible to add new services without breaking compatibility with existing services, then gradually deprecate older services. In this manner, the entire network can be upgraded without serious risks of service disruption.
+기존 서비스와의 호환성을 깨뜨리지 않으면서 새로운 서비스를 추가한 다음, 이전 서비스를 점진적으로 사용하지 않는 것이 언제나 가능합니다. 이러한 방식으로 서비스 중단의 심각한 위험 없이 전체 네트워크를 업그레이드할 수 있습니다.
 
 ===3. API/RPC Layer===
 
-The API/RPC layer specifies higher level calls accessible to applications. Support for these BIPs is not required for basic network interoperability but might be expected by some client applications.
+API/RPC 레이어는 애플리케이션에 액세스할 수 있는 상위 수준의 호출을 명시합니다. 
+The API/RPC layer specifies higher level calls accessible to applications. 이러한 BIP에 대한 지원은 기본적인 네트워크 상호 운용성을 위해 반드시 필요한 것은 아니지만 일부 클라이언트 애플리케이션에서는 필요할 수 있습니다.
 
-There's room at this layer to allow for competing standards without breaking basic network interoperability.
+이 계층에는 기본적인 네트워크 상호 운용성을 해치지 않으면서 경쟁하는 표준을 허용할 수 있는 여지가 있습니다.
 
 ===4. Applications Layer===
 
-The applications layer specifies high level structures, abstractions, and conventions that allow different applications to support similar features and share data. 
+애플리케이션 레이어는 서로 다른 애플리케이션이 유사한 기능을 지원하고 데이터를 공유할 수 있도록 하는 상위 수준의 구조, 추상화 및 컨벤션을 지정합니다.
 
 ==Classification of existing BIPs==
 
 {| class="wikitable sortable" style="width: auto; text-align: center; font-size: smaller; table-layout: fixed;"
-!Number
-!Layer
-!Title
-!Owner
-!Type
-!Status
+!번호
+!레이어
+!제목
+!작성자
+!타입
+!상태
 |- style="background-color: #cfffcf"
 | [[bip-0001.mediawiki|1]]
 |
@@ -91,12 +92,12 @@ The applications layer specifies high level structures, abstractions, and conven
 | Process
 | Active
 |-
-| [[bip-0002.mediawiki|2]]
+| [[bip-0002_kr.mediawiki|2(kr)]]
 |
-| BIP process, revised
+| BIP 프로세스, 수정된
 | Luke Dashjr
-| Process
-| Draft
+| 프로세스
+| 초안
 |- style="background-color: #cfffcf"
 | [[bip-0009.mediawiki|9]]
 |
@@ -623,12 +624,12 @@ The applications layer specifies high level structures, abstractions, and conven
 | Standard
 | Draft
 |-
-| [[bip-0141.mediawiki|141]]
-| Consensus (soft fork)
-| Segregated Witness (Consensus layer)
+| [[bip-0141_kr.mediawiki|141(kr)]]
+| 컨센서스 (소프트 포크)
+| 세그윗 (컨센서스 레이어)
 | Eric Lombrozo, Johnson Lau, Pieter Wuille
-| Standard
-| Draft
+| 표준
+| 초안
 |-
 | [[bip-0142.mediawiki|142]]
 | Applications
@@ -637,19 +638,19 @@ The applications layer specifies high level structures, abstractions, and conven
 | Standard
 | Deferred
 |-
-| [[bip-0143.mediawiki|143]]
-| Consensus (soft fork)
-| Transaction Signature Verification for Version 0 Witness Program
+| [[bip-0143_kr.mediawiki|143(kr)]]
+| 컨센서스 (소프트 포크)
+| 버전 0 증인 프로그램을 위한 트랜잭션 서명 검증
 | Johnson Lau, Pieter Wuille
-| Standard
-| Draft
+| 표준
+| 초안
 |-
 | [[bip-0144.mediawiki|144]]
-| Peer Services
-| Segregated Witness (Peer Services)
+| 피어 서비스
+| 세그윗 (피어 서비스)
 | Eric Lombrozo, Pieter Wuille
-| Standard
-| Draft
+| 표준
+| 초안
 |-
 | [[bip-0145.mediawiki|145]]
 | API/RPC
