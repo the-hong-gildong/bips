@@ -1,13 +1,13 @@
 <pre>
   BIP: 173
-  레이어: 어플리케이션
+  레이어: 애플리케이션
   제목: v0-16 네이티브 증인 출력에 대한 Base32 주소 형식
   작성자: Pieter Wuille <pieter.wuille@gmail.com>
           Greg Maxwell <greg@xiph.org>
-  코멘트 요약: No comments yet.
+  코멘트 요약: 아직 코멘트 없음.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0173
-  상태: Final
-  타입: Informational
+  상태: 최종
+  타입: 정보성
   생성일: 2017-03-20
   라이센스: BSD-2-Clause
   대체: 142
@@ -33,7 +33,7 @@
 * 오류 검출 코드에 대한 대부분의 연구는 (58이 아닌) [https://en.wikipedia.org/wiki/Prime_power 소수 거듭제곱(prime power)]인 문자 집합 크기에 적용되기 때문에, 이 경우에는 적용할 수 없습니다.
 * Base58 디코딩은 복잡하고 비교적 느립니다.
 
-세그윗 제안에는 새로운 클래스의 출력(증인 프로그램, [https://github.com/MyLifeForB/bips/blob/master/bip-0141_kr.mediawiki BIP141] 참조)과 그것의 두 인스턴스("P2WPKH"와 "P2WSH", [https://github.com/MyLifeForB/bips/blob/master/bip-0143_kr.mediawiki BIP143] 참조)가 포함됩니다. 이들의 기능은 P2SH 출력에 포함되어 구현이 가능하지만, 최적의 효율성과 보안을 위해서는 세그윗을 직접 사용하는 것이 좋습니다. 이 문서에서는 네이티브 증인 출력에 대한 새로운 주소 형식을 제안합니다(현재 및 미래 버전 모두).
+세그윗 제안에는 새로운 클래스의 출력(증인 프로그램, [https://github.com/MyLifeForB/bips/blob/master/bip-0141_kr.mediawiki BIP141(kr)] 참조)과 그것의 두 인스턴스("P2WPKH"와 "P2WSH", [https://github.com/MyLifeForB/bips/blob/master/bip-0143_kr.mediawiki BIP143(kr)] 참조)가 포함됩니다. 이들의 기능은 P2SH 출력에 포함되어 구현이 가능하지만, 최적의 효율성과 보안을 위해서는 세그윗을 직접 사용하는 것이 좋습니다. 이 문서에서는 네이티브 증인 출력에 대한 새로운 주소 형식을 제안합니다(현재 및 미래 버전 모두).
 
 이는 [https://github.com/bitcoin/bips/blob/master/bip-0142.mediawiki BIP142]를 대체하며, 이전에 [https://bitcoincore.org/logs/2016-05-zurich-meeting-notes.html#base32 여기]에서 논의되었습니다([https://bitcoincore.org/en/meetings/2016/05/20/#error-correcting-codes-for-future-address-types 여기]에 요약되어있습니다).
 
