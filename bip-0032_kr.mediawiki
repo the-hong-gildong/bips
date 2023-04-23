@@ -43,20 +43,20 @@ RECENT CHANGES:
 
 ===Conventions===
 
-In the rest of this text we will assume the public key cryptography used in Bitcoin, namely elliptic curve cryptography using the field and curve parameters defined by secp256k1 (http://www.secg.org/sec2-v2.pdf). Variables below are either:
-* Integers modulo the order of the curve (referred to as n).
-* Coordinates of points on the curve.
-* Byte sequences.
+이 글의 나머지 부분에서는 비트코인에서 사용되는 공개 키 암호화, 즉 secp256k1에 정의된 필드와 커브 파라미터를 사용하는 타원 곡선 암호화를 가정하겠습니다. (http://www.secg.org/sec2-v2.pdf). 아래 변수도 마찬가지 입니다:
+* 커브의 오더(n)를 모듈로 연산 한 정수.
+* 커브 위에 있는 포인트(point)의 좌표.
+* 바이트 시퀀스.
 
-Addition (+) of two coordinate pair is defined as application of the EC group operation.
-Concatenation (||) is the operation of appending one byte sequence onto another.
+두 좌표쌍의 덧셈 (+)은 EC 군 연산의 응용으로 정의됩니다.
+연결(concatenation) (||)은 한 바이트 시퀀스를 다른 바이트 시퀀스에 추가하는 연산입니다.
 
-As standard conversion functions, we assume:
-* point(p): returns the coordinate pair resulting from EC point multiplication (repeated application of the EC group operation) of the secp256k1 base point with the integer p.
-* ser<sub>32</sub>(i): serialize a 32-bit unsigned integer i as a 4-byte sequence, most significant byte first.
-* ser<sub>256</sub>(p): serializes the integer p as a 32-byte sequence, most significant byte first.
-* ser<sub>P</sub>(P): serializes the coordinate pair P = (x,y) as a byte sequence using SEC1's compressed form: (0x02 or 0x03) || ser<sub>256</sub>(x), where the header byte depends on the parity of the omitted y coordinate.
-* parse<sub>256</sub>(p): interprets a 32-byte sequence as a 256-bit number, most significant byte first.
+표준 변환 함수처럼, 우리는 다음과 같이 정의합니다:
+* point(p): secp256k1 기준점과 정수 p의 EC 포인트 곱셈(EC 군 연산의 반복 적용)으로 인한 좌표 쌍을 반환합니다.
+* ser<sub>32</sub>(i): 32비트 부호 없는 정수 i를 4바이트 시퀀스로 직렬화합니다. 가장 앞이 MSB(most significant byte) 입니다.
+* ser<sub>256</sub>(p): 정수 p를 32바이트 시퀀스로 직렬화합니다. 가장 앞이 MSB(most significant byte) 입니다.
+* ser<sub>P</sub>(P): 좌표쌍 P = (x,y) 를 SEC1 압축 형식: (0x02 or 0x03) || ser<sub>256</sub>(x) 바이트 시퀀스로 직렬화합니다. 여기서 헤더 바이트는 생략된 y 좌표의 패리티에 따라 달라집니다.
+* parse<sub>256</sub>(p): 32바이트 시퀀스를 256비트 숫자로 해석합니다. 가장 앞이 MSB(most significant byte) 입니다.
 
 
 ===Extended keys===
