@@ -62,11 +62,19 @@ RECENT CHANGES:
 
 ===Extended keys===
 
+<<<<<<< HEAD
 다음으로, 하나의 부모키에서 여러 개의 자식키를 유도하는 함수를 정의합니다. 이러한 함수가 키 자체에만 의존하는 것을 방지하기 위해 먼저 개인키와 공개키를 추가적인 256 비트의 엔트로피로 확장합니다. 체인 코드라고 불리는 이 확장은 대응하는 개인키와 공개키에 대해 동일하며 32 바이트로 구성됩니다.
 
 확장 개인키를 (k, c)로 표현하며, 여기서 k는 일반 개인키, c는 체인 코드입니다. 확장 공개키는 (K, c)로 표현하며, K = point(k), c는 체인 코드입니다.
 
 각 확장키에는 일반 자식키 2<sup>31</sup>개와 강화 자식키 2<sup>31</sup>개가 있습니다. 이러한 각 자식키는 인덱스를 갖고 있습니다. 일반 자식키는 인덱스로 0 부터 2<sup>31</sup>-1 까지 사용합니다. 강화 자식키는 인덱스로 2<sup>31</sup> 부터 2<sup>32</sup>-1 까지 사용합니다. 강화 키 표기를 쉽게 하기 위해 i+2<sup>31</sup>를 i<sub>H</sub>로 표현합니다.
+=======
+다음으로 하나의 부모키에서 여러 개의 자식키를 유도하는 함수를 정의합니다. 이러한 함수가 키 자체에만 의존하는 것을 방지하기 위해 먼저 개인키와 공개키를 추가적인 256 비트의 엔트로피로 확장합니다. 체인 코드라고 불리는 이 확장은 대응하는 개인키와 공개키에 대해 동일하며 32 바이트로 구성됩니다.
+
+확장 개인키를 (k, c)로 표현하며, 여기서 k는 일반 개인키, c는 체인 코드입니다. 확장 공개키는 (K, c)로 표현하며, K = point(k), c는 체인 코드입니다.
+
+각 확장키에는 일반 자식키 2<sup>31</sup>개와 강화된 자식키 2<sup>31</sup>개가 있습니다. 이러한 각 자식키는 인덱스를 갖고 있습니다. 일반 자식키는 인덱스로 0 부터 2<sup>31</sup>-1 까지 사용합니다. 강화된 자식키는 인덱스로 2<sup>31</sup> 부터 2<sup>32</sup>-1 까지 사용합니다. 강화된 키 표기를 쉽게 하기 위해 i+2<sup>31</sup>를 i<sub>H</sub>로 표현합니다.
+>>>>>>> de64549 (bip-0032 한글화)
 
 ===Child key derivation (CKD) functions===
 
@@ -75,6 +83,7 @@ RECENT CHANGES:
 ====Private parent key &rarr; private child key====
 
 함수 CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub>, c<sub>i</sub>) 는 부모 확장 개인키에서 자식 확장 개인키를 계산합니다.:
+<<<<<<< HEAD
 * i ≥ 2<sup>31</sup> 인지 체크합니다(자식이 강화 키인지).
 ** 강화 자식: I = HMAC-SHA512(Key = c<sub>par</sub>, Data = 0x00 || ser<sub>256</sub>(k<sub>par</sub>) || ser<sub>32</sub>(i)). (참고: 0x00은 개인 키의 길이를 33바이트로 만들기 위해 패딩합니다.)
 ** 일반 자식: I = HMAC-SHA512(Key = c<sub>par</sub>, Data = ser<sub>P</sub>(point(k<sub>par</sub>)) || ser<sub>32</sub>(i)).
@@ -82,6 +91,15 @@ RECENT CHANGES:
 * 반환된 자식키 k<sub>i</sub> 는 parse<sub>256</sub>(I<sub>L</sub>) + k<sub>par</sub> (mod n).
 * 반환된 체인 코드 c<sub>i</sub> 는 I<sub>R</sub>.
 * parse<sub>256</sub>(I<sub>L</sub>) ≥ n 또는 k<sub>i</sub> = 0 일 경우, 결과키는 유효하지 않고 i의 다음 값으로 진행해야 합니다. (참고: 이것은 2<sup>127</sup> 분의 1 보다 낮은 확률로 발생합니다.)
+=======
+* i ≥ 2<sup>31</sup> 인지 체크하세요(자식이 강화된 키인지).
+** 강화된 자식: I = HMAC-SHA512(Key = c<sub>par</sub>, Data = 0x00 || ser<sub>256</sub>(k<sub>par</sub>) || ser<sub>32</sub>(i)). (참고: 0x00은 개인 키의 길이를 33바이트로 만들기 위해 패딩합니다.)
+** 일반 자식: I = HMAC-SHA512(Key = c<sub>par</sub>, Data = ser<sub>P</sub>(point(k<sub>par</sub>)) || ser<sub>32</sub>(i)).
+* I 를 두 개의 32바이트 시퀀스 I<sub>L</sub> 와 I<sub>R</sub>로 분할합니다.
+* 반환하는 자식키 k<sub>i</sub> 는 parse<sub>256</sub>(I<sub>L</sub>) + k<sub>par</sub> (mod n).
+* 반환하는 체인 코드 c<sub>i</sub> 는 I<sub>R</sub>.
+* parse<sub>256</sub>(I<sub>L</sub>) ≥ n 또는 k<sub>i</sub> = 0 일 경우, 결과키는 유효하지 않으므로 i의 다음 값으로 진행해야 합니다. (참고: 이것은 2<sup>127</sup> 분의 1 보다 낮은 확률로 발생합니다.)
+>>>>>>> de64549 (bip-0032 한글화)
 
 HMAC-SHA512 한수는 [http://tools.ietf.org/html/rfc4231 RFC 4231]에 명시되어 있습니다.
 
