@@ -146,54 +146,54 @@ HMAC-SHA512 한수는 [http://tools.ietf.org/html/rfc4231 RFC 4231]에 명시되
 
 ===Master key generation===
 
-The total number of possible extended keypairs is almost 2<sup>512</sup>, but the produced keys are only 256 bits long, and offer about half of that in terms of security. Therefore, master keys are not generated directly, but instead from a potentially short seed value.
+가능한 확장 키 쌍의 총 개수는 거의 2<sup>512</sup>개이지만, 생성된 키의 길이는 256비트에 불과하며 보안 측면에서 그 절반 정도에 불과합니다. 따라서 마스터 키는 직접 생성되지 않고 잠재적으로 짧은 시드 값에서 생성됩니다.
 
-* Generate a seed byte sequence S of a chosen length (between 128 and 512 bits; 256 bits is advised) from a (P)RNG.
-* Calculate I = HMAC-SHA512(Key = "Bitcoin seed", Data = S)
-* Split I into two 32-byte sequences, I<sub>L</sub> and I<sub>R</sub>.
-* Use parse<sub>256</sub>(I<sub>L</sub>) as master secret key, and I<sub>R</sub> as master chain code.
-In case parse<sub>256</sub>(I<sub>L</sub>) is 0 or parse<sub>256</sub>(I<sub>L</sub>) ≥ n, the master key is invalid.
+* 선택한 길이(128~512비트 사이, 256비트가 권장됨)의 시드 바이트 시퀀스 S를 (P)RNG에서 생성합니다.
+* I = HMAC-SHA512(Key = "Bitcoin seed", Data = S) 를 계산합니다.
+* I 를 두 개의 32바이트 시퀀스 I<sub>L</sub> 와 I<sub>R</sub>로 분할합니다.
+* parse<sub>256</sub>(I<sub>L</sub>) 를 마스터 비밀키로 그리고 I<sub>R</sub> 를 마스터 체인 코드로 사용합니다.
+parse<sub>256</sub>(I<sub>L</sub>) 이 0 이거나 parse<sub>256</sub>(I<sub>L</sub>) ≥ n 이면, 마스터 키는 유효하지 않습니다.
 
 <img src=bip-0032/derivation.png></img>
 
 ==Specification: Wallet structure==
 
-The previous sections specified key trees and their nodes. The next step is imposing a wallet structure on this tree. The layout defined in this section is a default only, though clients are encouraged to mimic it for compatibility, even if not all features are supported.
+이전 섹션에서는 키 트리와 노드가 명세되었습니다. 다음 단계는 이 트리에 지갑 구조를 부과하는 것입니다. 이 섹션에서 정의한 레이아웃은 기본값일 뿐이며, 모든 기능이 지원되지 않더라도 클라이언트는 호환성을 위해 이 레이아웃을 모방하는 것이 좋습니다.
 
 ===The default wallet layout===
 
-An HDW is organized as several 'accounts'. Accounts are numbered, the default account ("") being number 0. Clients are not required to support more than one account - if not, they only use the default account.
+HDW는 여러 개의 '계좌'로 구성됩니다. 계좌들은 번호가 매겨지며 기본 계정("")은 0번입니다. 클라이언트는 두 개 이상의 계좌를 지원할 필요는 없습니다 - 지원하지 않는 경우 기본 계좌만 사용합니다.
 
-Each account is composed of two keypair chains: an internal and an external one. The external keychain is used to generate new public addresses, while the internal keychain is used for all other operations (change addresses, generation addresses, ..., anything that doesn't need to be communicated). Clients that do not support separate keychains for these should use the external one for everything.
-* m/i<sub>H</sub>/0/k corresponds to the k'th keypair of the external chain of account number i of the HDW derived from master m.
-* m/i<sub>H</sub>/1/k corresponds to the k'th keypair of the internal chain of account number i of the HDW derived from master m.
+각 계좌는 내부 키체인과 외부 키체인의 두 가지 키쌍 체인으로 구성됩니다. 외부 키체인은 새 공개 주소를 생성하는 데 사용되며, 내부 키체인은 그 외의 모든 작업(주소 변경, 주소 생성 등..., 통신할 필요가 없는 모든 작업)에 사용됩니다. 분리된 키체인을 지원하지 않는 클라이언트는 모든 작업에 외부 키체인을 사용해야 합니다.
+* m/i<sub>H</sub>/0/k 는 마스터 m에서 파생된 HDW의 계좌 번호 i의 외부 체인의 k번째 키쌍에 해당합니다.
+* m/i<sub>H</sub>/1/k 는 마스터 m에서 파생된 HDW의 계정 번호 i 내부 체인의 k'번째 키쌍에 해당합니다.
 
 ===Use cases===
 
 ====Full wallet sharing: m====
 
-In cases where two systems need to access a single shared wallet, and both need to be able to perform spendings, one needs to share the master private extended key. Nodes can keep a pool of N look-ahead keys cached for external chains, to watch for incoming payments. The look-ahead for internal chains can be very small, as no gaps are to be expected here. An extra look-ahead could be active for the first unused account's chains - triggering the creation of a new account when used. Note that the name of the account will still need to be entered manually and cannot be synchronized via the block chain.
+두 시스템이 하나의 공유 지갑에 액세스해야 하고 둘 다 지출을 수행할 수 있어야 하는 경우, 한 시스템은 마스터 확장 개인키를 공유해야 합니다. 노드는 들어오는 결제를 감시하기 위해 외부 체인을 위한 N개의 룩-어헤드 키 풀을 캐시를 유지할 수 있습니다. 내부 체인에 대한 룩-어헤드는 매우 작을 수 있는데, 여기에는 공백이 예상되지 않기 때문입니다. 사용되지 않은 첫 번째 계좌의 체인에서 추가적인 룩-어헤드를 활성화할 수 있습니다 - 사용될 때 새 계좌 생성을 트리거합니다. 계좌 이름은 여전히 수동으로 입력해야 하며 블록체인을 통해 동기화될 수 없다는 것을 주의하세요.
 
 ====Audits: N(m/*)====
 
-In case an auditor needs full access to the list of incoming and outgoing payments, one can share all account public extended keys. This will allow the auditor to see all transactions from and to the wallet, in all accounts, but not a single secret key.
+만약 감사인이 수신 및 발신 결제 목록에 대한 완전한 접근 권한이 필요한 경우, 모든 계좌의 확장 공개키를 공유할 수 있습니다. 이렇게 하면 감사인은 모든 계좌에서 지갑으로의 모든 거래를 볼 수 있지만, 단 하나의 비밀 키도 확인할 수 없습니다.
 
 ====Per-office balances: m/i<sub>H</sub>====
 
-When a business has several independent offices, they can all use wallets derived from a single master. This will allow the headquarters to maintain a super-wallet that sees all incoming and outgoing transactions of all offices, and even permit moving money between the offices.
+여러 독립적인 사무실을 운영하는 비즈니스에서는 모든 사무실에서 단일 마스터로부터 파생된 지갑을 사용할 수 있습니다. 이렇게 하면 본사에서 모든 사무실의 모든 수입 및 지출 거래를 볼 수있는 슈퍼 지갑을 유지할 수 있으며, 사무실 간의 자금 이동도 허용할 수 있습니다.
 
 ====Recurrent business-to-business transactions: N(m/i<sub>H</sub>/0)====
 
-In case two business partners often transfer money, one can use the extended public key for the external chain of a specific account (M/i h/0) as a sort of "super address", allowing frequent transactions that cannot (easily) be associated, but without needing to request a new address for each payment.
-Such a mechanism could also be used by mining pool operators as variable payout address.
+비즈니스 파트너 간 자주 자금을 이체하는 경우, 특정 계좌 (M/i<sub>H</sub>/0)의 외부 체인에 대한 확장 공개키를 "슈퍼 주소"로 사용하여 각각의 결제마다 새로운 주소를 요청하지 않고도 (쉽게) 연관되지 않는 빈번한 트랜잭션을 허용합니다. 
+이러한 방식은 채굴 풀 운영자가 가변적인 지급 주소로 사용할 수도 있습니다.
 
 ====Unsecure money receiver: N(m/i<sub>H</sub>/0)====
 
-When an unsecure webserver is used to run an e-commerce site, it needs to know public addresses that are used to receive payments. The webserver only needs to know the public extended key of the external chain of a single account. This means someone illegally obtaining access to the webserver can at most see all incoming payments but will not be able to steal the money, will not (trivially) be able to distinguish outgoing transactions, nor be able to see payments received by other webservers if there are several.
+보안되지 않은 웹서버를 사용하여 전자상거래 사이트를 운영하는 경우, 결제 수취에 사용되는 공개 주소를 알아야 합니다. 웹서버는 단일 계좌의 외부 체인의 확장 공개키만 알면 됩니다. 즉, 웹서버에 불법적으로 액세스하는 사람은 기껏해야 들어오는 모든 결제를 볼 수 있을 뿐 돈을 훔칠 수는 없으며, 나가는 거래를 (사소하게) 구분할 수 없으며, 다른 웹서버가 여러 개 있더라도 다른 웹서버가 받은 결제를 볼 수 없습니다.
 
 ==Compatibility==
 
-To comply with this standard, a client must at least be able to import an extended public or private key, to give access to its direct descendants as wallet keys. The wallet structure (master/account/chain/subchain) presented in the second part of the specification is advisory only, but is suggested as a minimal structure for easy compatibility - even when no separate accounts or distinction between internal and external chains is made. However, implementations may deviate from it for specific needs; more complex applications may call for a more complex tree structure.
+이 표준을 준수하려면 클라이언트는 최소한 확장 공개키 또는 개인키를 임포트해 직계 자손에게 지갑 키로 액세스 권한을 부여할 수 있어야 합니다. 명세서의 두 번째 부분에 제시된 지갑 구조(마스터/계정/체인/서브체인)는 권고 사항일 뿐이며, 구분된 계좌나 내부와 외부 체인을 구분하지 않더라도 쉽게 호환할 수 있도록 최소한의 구조로 제안되었습니다. 그러나 특정 요구사항에 따라 구현이 달라질 수 있으며, 더 복잡한 애플리케이션의 경우 더 복잡한 트리 구조가 필요할 수 있습니다.
 
 ==Security==
 
