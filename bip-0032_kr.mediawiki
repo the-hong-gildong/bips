@@ -61,11 +61,11 @@ RECENT CHANGES:
 
 ===Extended keys===
 
-다음으로 하나의 부모키에서 여러 개의 자식키를 유도하는 함수를 정의합니다. 이러한 함수가 키 자체에만 의존하는 것을 방지하기 위해 먼저 개인키와 공개키를 추가적인 256 비트의 엔트로피로 확장합니다. 체인 코드라고 불리는 이 확장은 대응하는 개인키와 공개키에 대해 동일하며 32 바이트로 구성됩니다.
+다음으로, 하나의 부모키에서 여러 개의 자식키를 유도하는 함수를 정의합니다. 이러한 함수가 키 자체에만 의존하는 것을 방지하기 위해 먼저 개인키와 공개키를 추가적인 256 비트의 엔트로피로 확장합니다. 체인 코드라고 불리는 이 확장은 대응하는 개인키와 공개키에 대해 동일하며 32 바이트로 구성됩니다.
 
 확장 개인키를 (k, c)로 표현하며, 여기서 k는 일반 개인키, c는 체인 코드입니다. 확장 공개키는 (K, c)로 표현하며, K = point(k), c는 체인 코드입니다.
 
-각 확장키에는 일반 자식키 2<sup>31</sup>개와 강화된 자식키 2<sup>31</sup>개가 있습니다. 이러한 각 자식키는 인덱스를 갖고 있습니다. 일반 자식키는 인덱스로 0 부터 2<sup>31</sup>-1 까지 사용합니다. 강화된 자식키는 인덱스로 2<sup>31</sup> 부터 2<sup>32</sup>-1 까지 사용합니다. 강화된 키 표기를 쉽게 하기 위해 i+2<sup>31</sup>를 i<sub>H</sub>로 표현합니다.
+각 확장키에는 일반 자식키 2<sup>31</sup>개와 강화 자식키 2<sup>31</sup>개가 있습니다. 이러한 각 자식키는 인덱스를 갖고 있습니다. 일반 자식키는 인덱스로 0 부터 2<sup>31</sup>-1 까지 사용합니다. 강화 자식키는 인덱스로 2<sup>31</sup> 부터 2<sup>32</sup>-1 까지 사용합니다. 강화 키 표기를 쉽게 하기 위해 i+2<sup>31</sup>를 i<sub>H</sub>로 표현합니다.
 
 ===Child key derivation (CKD) functions===
 
@@ -74,74 +74,75 @@ RECENT CHANGES:
 ====Private parent key &rarr; private child key====
 
 함수 CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i) &rarr; (k<sub>i</sub>, c<sub>i</sub>) 는 부모 확장 개인키에서 자식 확장 개인키를 계산합니다.:
-* i ≥ 2<sup>31</sup> 인지 체크하세요(자식이 강화된 키인지).
-** 강화된 자식: I = HMAC-SHA512(Key = c<sub>par</sub>, Data = 0x00 || ser<sub>256</sub>(k<sub>par</sub>) || ser<sub>32</sub>(i)). (참고: 0x00은 개인 키의 길이를 33바이트로 만들기 위해 패딩합니다.)
+* i ≥ 2<sup>31</sup> 인지 체크합니다(자식이 강화 키인지).
+** 강화 자식: I = HMAC-SHA512(Key = c<sub>par</sub>, Data = 0x00 || ser<sub>256</sub>(k<sub>par</sub>) || ser<sub>32</sub>(i)). (참고: 0x00은 개인 키의 길이를 33바이트로 만들기 위해 패딩합니다.)
 ** 일반 자식: I = HMAC-SHA512(Key = c<sub>par</sub>, Data = ser<sub>P</sub>(point(k<sub>par</sub>)) || ser<sub>32</sub>(i)).
 * I 를 두 개의 32바이트 시퀀스 I<sub>L</sub> 와 I<sub>R</sub>로 분할합니다.
-* 반환하는 자식키 k<sub>i</sub> 는 parse<sub>256</sub>(I<sub>L</sub>) + k<sub>par</sub> (mod n).
-* 반환하는 체인 코드 c<sub>i</sub> 는 I<sub>R</sub>.
-* parse<sub>256</sub>(I<sub>L</sub>) ≥ n 또는 k<sub>i</sub> = 0 일 경우, 결과키는 유효하지 않으므로 i의 다음 값으로 진행해야 합니다. (참고: 이것은 2<sup>127</sup> 분의 1 보다 낮은 확률로 발생합니다.)
+* 반환된 자식키 k<sub>i</sub> 는 parse<sub>256</sub>(I<sub>L</sub>) + k<sub>par</sub> (mod n).
+* 반환된 체인 코드 c<sub>i</sub> 는 I<sub>R</sub>.
+* parse<sub>256</sub>(I<sub>L</sub>) ≥ n 또는 k<sub>i</sub> = 0 일 경우, 결과키는 유효하지 않고 i의 다음 값으로 진행해야 합니다. (참고: 이것은 2<sup>127</sup> 분의 1 보다 낮은 확률로 발생합니다.)
 
 HMAC-SHA512 한수는 [http://tools.ietf.org/html/rfc4231 RFC 4231]에 명시되어 있습니다.
 
 ====Public parent key &rarr; public child key====
 
-The function CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>, c<sub>i</sub>) computes a child extended public key from the parent extended public key. It is only defined for non-hardened child keys.
-* Check whether i ≥ 2<sup>31</sup> (whether the child is a hardened key).
-** If so (hardened child): return failure
-** If not (normal child): let I = HMAC-SHA512(Key = c<sub>par</sub>, Data = ser<sub>P</sub>(K<sub>par</sub>) || ser<sub>32</sub>(i)).
-* Split I into two 32-byte sequences, I<sub>L</sub> and I<sub>R</sub>.
-* The returned child key K<sub>i</sub> is point(parse<sub>256</sub>(I<sub>L</sub>)) + K<sub>par</sub>.
-* The returned chain code c<sub>i</sub> is I<sub>R</sub>.
-* In case parse<sub>256</sub>(I<sub>L</sub>) ≥ n or K<sub>i</sub> is the point at infinity, the resulting key is invalid, and one should proceed with the next value for i.
+함수 CKDpub((K<sub>par</sub>, c<sub>par</sub>), i) &rarr; (K<sub>i</sub>, c<sub>i</sub>) 는 부모 확장 공개키로부터 자식 확장 공개키를 계산합니다. 이것은 비강화 자식키인 경우에만 정의됩니다.
+* i ≥ 2<sup>31</sup> 인지 체크합니다(자식이 강화 키인지).
+** 강화 자식: 실패를 반환
+** 일반 자식이 아닐 경우: I = HMAC-SHA512(Key = c<sub>par</sub>, Data = ser<sub>P</sub>(K<sub>par</sub>) || ser<sub>32</sub>(i)).
+* I 를 두 개의 32바이트 시퀀스 I<sub>L</sub> 와 I<sub>R</sub>로 분할합니다.
+* 반환된 자식키 K<sub>i</sub> 는 point(parse<sub>256</sub>(I<sub>L</sub>)) + K<sub>par</sub>.
+* 반환된 체인 코드 c<sub>i</sub> 는 I<sub>R</sub>.
+* parse<sub>256</sub>(I<sub>L</sub>) ≥ n 또는 K<sub>i</sub> 무한원점일 경우, 결과키는 유효하지 않고 i의 다음 값으로 진행해야 합니다.
 
 ====Private parent key &rarr; public child key====
 
-The function N((k, c)) &rarr; (K, c) computes the extended public key corresponding to an extended private key (the "neutered" version, as it removes the ability to sign transactions).
-* The returned key K is point(k).
-* The returned chain code c is just the passed chain code.
+함수 N((k, c)) &rarr; (K, c) 는 확장 개인키에 해당하는 확장 공개키를 계산합니다("중성화된(neutered)" 버전, 트랜잭션 서명 기능을 제거하였기 때문에 "중성화된" 버전이라고 함).
+* 반환된 키 K 는 point(k).
+* 반환된 체인 코드 c 는 전달된 바로 그 체인코드.
 
-To compute the public child key of a parent private key:
-* N(CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i)) (works always).
-* CKDpub(N(k<sub>par</sub>, c<sub>par</sub>), i) (works only for non-hardened child keys).
-The fact that they are equivalent is what makes non-hardened keys useful (one can derive child public keys of a given parent key without knowing any private key), and also what distinguishes them from hardened keys. The reason for not always using non-hardened keys (which are more useful) is security; see further for more information.
+부모 개인키의 자식 공개키를 계산하기 위해서:
+* N(CKDpriv((k<sub>par</sub>, c<sub>par</sub>), i)) (항상 동작합니다).
+* CKDpub(N(k<sub>par</sub>, c<sub>par</sub>), i) (비강화 자식키일 때만 동작합니다).
+
+이 두 키가 동등하다는 사실이 비강화 키를 유용하게 만드는 이유이며(개인키를 몰라도 주어진 부모키의 자식 공개키를 유도할 수 있음), 강화 키와 구별되는 이유이기도 합니다. (더 유용한) 비강화 키를 항상 사용하지 않는 이유는 보안 때문입니다. 자세한 내용은 아래를 참조하세요.
 
 ====Public parent key &rarr; private child key====
 
-This is not possible.
+이것은 불가능 합니다.
 
 ===The key tree===
 
-The next step is cascading several CKD constructions to build a tree. We start with one root, the master extended key m. By evaluating CKDpriv(m,i) for several values of i, we get a number of level-1 derived nodes. As each of these is again an extended key, CKDpriv can be applied to those as well.
+다음 단계는 여러 개의 CKD 구조를 연결하여 트리를 구축하는 것입니다. 하나의 루트인 마스터 확장 키 m에서 시작하여 여러 값 i에 대해 CKDpriv(m,i)를 평가하면 여러 개의 레벨-1 파생 노드를 얻을 수 있습니다. 이들 각각은 다시 확장 키이므로 CKDpriv는 이들에도 적용될 수 있습니다.
 
-To shorten notation, we will write CKDpriv(CKDpriv(CKDpriv(m,3<sub>H</sub>),2),5) as m/3<sub>H</sub>/2/5. Equivalently for public keys, we write CKDpub(CKDpub(CKDpub(M,3),2),5) as M/3/2/5. This results in the following identities:
+표기를 줄이기 위해, 우리는 CKDpriv(CKDpriv(CKDpriv(m,3<sub>H</sub>),2),5) 를 m/3<sub>H</sub>/2/5 로 표기할 것입니다. 공개키에도 동일하게, CKDpub(CKDpub(CKDpub(M,3),2),5)을 M/3/2/5 로 표기합니다. 그 결과 다음과 같은 동일성(identity)이 생성됩니다:
 * N(m/a/b/c) = N(m/a/b)/c = N(m/a)/b/c = N(m)/a/b/c = M/a/b/c.
 * N(m/a<sub>H</sub>/b/c) = N(m/a<sub>H</sub>/b)/c = N(m/a<sub>H</sub>)/b/c.
-However, N(m/a<sub>H</sub>) cannot be rewritten as N(m)/a<sub>H</sub>, as the latter is not possible.
+하지만 N(m/a<sub>H</sub>)은 N(m)/a<sub>H</sub>로 다시 쓸 수 없습니다. 후자는 불가능하기 때문입니다.
 
-Each leaf node in the tree corresponds to an actual key, while the internal nodes correspond to the collections of keys that descend from them. The chain codes of the leaf nodes are ignored, and only their embedded private or public key is relevant. Because of this construction, knowing an extended private key allows reconstruction of all descendant private keys and public keys, and knowing an extended public key allows reconstruction of all descendant non-hardened public keys.
+트리의 각 리프 노드는 실제 키에 해당하며, 내부 노드는 리프 노드에서 내려오는 키 콜렉션에 해당합니다. 리프 노드의 체인 코드는 무시되며, 내장된 개인키 또는 공개키만 관련이 있습니다. 이러한 구조로 인해 확장 개인키를 알면 모든 하위 개인키와 공개키를 재구성할 수 있고, 확장 공개키를 알면 모든 하위 비강화 공개키를 재구성할 수 있습니다.
 
 ===Key identifiers===
 
-Extended keys can be identified by the Hash160 (RIPEMD160 after SHA256) of the serialized ECDSA public key K, ignoring the chain code. This corresponds exactly to the data used in traditional Bitcoin addresses. It is not advised to represent this data in base58 format though, as it may be interpreted as an address that way (and wallet software is not required to accept payment to the chain key itself).
+확장 키는 체인 코드를 무시하고 직렬화된 ECDSA 공개 키 K의 Hssh160(SHA256 뒤의 RIPEMD160)으로 식별할 수 있습니다. 이는 기존 비트코인 주소에 사용된 데이터와 정확히 일치합니다. 하지만 이 데이터는 주소로 해석될 수 있으므로 base58 형식으로 표현하는 것은 권장하지 않습니다(지갑 소프트웨어가 체인 키 자체에 대한 결제를 수락할 필요는 없습니다).
 
-The first 32 bits of the identifier are called the key fingerprint.
+식별자의 처음 32비트를 키 지문(fingerprint)이라고 합니다.
 
 ===Serialization format===
 
-Extended public and private keys are serialized as follows:
-* 4 byte: version bytes (mainnet: 0x0488B21E public, 0x0488ADE4 private; testnet: 0x043587CF public, 0x04358394 private)
-* 1 byte: depth: 0x00 for master nodes, 0x01 for level-1 derived keys, ....
-* 4 bytes: the fingerprint of the parent's key (0x00000000 if master key)
-* 4 bytes: child number. This is ser<sub>32</sub>(i) for i in x<sub>i</sub> = x<sub>par</sub>/i, with x<sub>i</sub> the key being serialized. (0x00000000 if master key)
-* 32 bytes: the chain code
-* 33 bytes: the public key or private key data (ser<sub>P</sub>(K) for public keys, 0x00 || ser<sub>256</sub>(k) for private keys)
+확장 공개키와 개인키는 다음과 같이 직렬화됩니다.
+* 4 바이트: 버전 바이트 (메인넷: 0x0488B21E 공개, 0x0488ADE4 개인; 테스트넷: 0x043587CF 공개, 0x04358394 개인)
+* 1 바이트: 깊이: 마스터 노드 0x00 , 레벨-1 파생 키 0x01, ....
+* 4 바이트: 부모 키의 지문 (마스터 키라면 0x00000000)
+* 4 바이트: 자식 번호. 직렬화 되고 있는 키 x<sub>i</sub>에 대해 x<sub>i</sub> = x<sub>par</sub>/i 안의 i를 위한 ser<sub>32</sub>(i) 입니다.
+* 32 바이트: 체인 코드
+* 33 바이트: 공개키 또는 개인키 데이터 (공개키는 ser<sub>P</sub>(K), 개인키는 0x00 || ser<sub>256</sub>(k))
 
-This 78 byte structure can be encoded like other Bitcoin data in Base58, by first adding 32 checksum bits (derived from the double SHA-256 checksum), and then converting to the Base58 representation. This results in a Base58-encoded string of up to 112 characters. Because of the choice of the version bytes, the Base58 representation will start with "xprv" or "xpub" on mainnet, "tprv" or "tpub" on testnet.
+이 78바이트 구조는 Base58로 인코딩된 다른 비트코인 데이터와 마찬가지로 먼저 32개의 체크섬 비트(이중 SHA-256 체크섬에서 파생됨)를 추가한 다음 Base58로 변환할 수 있습니다. This results in a 그 결과 최대 112자의 Base58 인코딩 문자열이 생성됩니다. 버전 바이트의 선택으로 인해 Base58 표현은 메인넷에서는 "xprv" 또는 "xpub", 테스트넷에서는 "tprv" 또는 "tpub"로 시작됩니다.
 
-Note that the fingerprint of the parent only serves as a fast way to detect parent and child nodes in software, and software must be willing to deal with collisions. Internally, the full 160-bit identifier could be used.
+부모 노드의 지문은 소프트웨어에서 부모 노드와 자식 노드를 빠르게 감지하는 방법으로만 사용되며, 소프트웨어가 충돌을 처리할 수 있어야 한다는 점에 유의하세요. 내부적으로는 전체 160비트 식별자를 사용할 수 있습니다.
 
-When importing a serialized extended public key, implementations must verify whether the X coordinate in the public key data corresponds to a point on the curve. If not, the extended public key is invalid.
+직렬화된 확장 공개키를 가져올 때, 구현체는 공개키 데이터의 X 좌표가 곡선의 한 지점에 해당하는지 확인해야 합니다. 그렇지 않으면 확장 공개키가 유효하지 않습니다.
 
 ===Master key generation===
 
