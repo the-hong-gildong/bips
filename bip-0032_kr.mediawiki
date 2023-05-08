@@ -1,10 +1,10 @@
 RECENT CHANGES:
-* (16 Apr 2013) Added private derivation for i ≥ 0x80000000 (less risk of parent private key leakage)
-* (30 Apr 2013) Switched from multiplication by I<sub>L</sub> to addition of I<sub>L</sub> (faster, easier implementation)
-* (25 May 2013) Added test vectors
-* (15 Jan 2014) Rename keys with index ≥ 0x80000000 to hardened keys, and add explicit conversion functions.
-* (24 Feb 2017) Added test vectors for hardened derivation with leading zeros
-* (4 Nov 2020) Added new test vectors for hardened derivation with leading zeros
+* (2013년 4월 16일) i ≥ 0x80000000에 대한 private derivation 추가 (부모 프라이빗 키 유출 위험 감소)
+* (2013 4월 40일) I<sub>L</sub>의 곱셈에서 I<sub>L</sub>의 덧셈으로 전환 (더 빠르고 쉬운 구현)
+* (2013 5월 25일) 테스트 벡터 추가
+* (2014 1월 15일) 인덱스 ≥ 0x80000000인 키를 강화된 키(hardened key)로 이름 변경하고 명시적인 변환 함수 추가.
+* (2017년 2월 24일) 선행 0이 있는 강화 유도에 대한 테스트 벡터 추가
+* (2020년 11월 4일) 선행 0이 있는 강화 유도에 대한 새로운 테스트 벡터 추가
 
 <pre>
   BIP: 32
@@ -162,11 +162,11 @@ parse<sub>256</sub>(I<sub>L</sub>) 이 0 이거나 parse<sub>256</sub>(I<sub>L</
 
 ===The default wallet layout===
 
-HDW는 여러 개의 '계좌'로 구성됩니다. 계좌들은 번호가 매겨지며 기본 계정("")은 0번입니다. 클라이언트는 두 개 이상의 계좌를 지원할 필요는 없습니다 - 지원하지 않는 경우 기본 계좌만 사용합니다.
+HDW는 여러 개의 '계좌'로 구성됩니다. 계좌들은 번호가 매겨지며 기본 계좌("")는 0번입니다. 클라이언트는 두 개 이상의 계좌를 지원할 필요는 없습니다 - 지원하지 않는 경우 기본 계좌만 사용합니다.
 
 각 계좌는 내부 키체인과 외부 키체인의 두 가지 키쌍 체인으로 구성됩니다. 외부 키체인은 새 공개 주소를 생성하는 데 사용되며, 내부 키체인은 그 외의 모든 작업(주소 변경, 주소 생성 등..., 통신할 필요가 없는 모든 작업)에 사용됩니다. 분리된 키체인을 지원하지 않는 클라이언트는 모든 작업에 외부 키체인을 사용해야 합니다.
 * m/i<sub>H</sub>/0/k 는 마스터 m에서 파생된 HDW의 계좌 번호 i의 외부 체인의 k번째 키쌍에 해당합니다.
-* m/i<sub>H</sub>/1/k 는 마스터 m에서 파생된 HDW의 계정 번호 i 내부 체인의 k'번째 키쌍에 해당합니다.
+* m/i<sub>H</sub>/1/k 는 마스터 m에서 파생된 HDW의 계좌 번호 i 내부 체인의 k'번째 키쌍에 해당합니다.
 
 ===Use cases===
 
@@ -197,23 +197,23 @@ HDW는 여러 개의 '계좌'로 구성됩니다. 계좌들은 번호가 매겨�
 
 ==Security==
 
-In addition to the expectations from the EC public-key cryptography itself:
-* Given a public key K, an attacker cannot find the corresponding private key more efficiently than by solving the EC discrete logarithm problem (assumed to require 2<sup>128</sup> group operations).
-the intended security properties of this standard are:
-* Given a child extended private key (k<sub>i</sub>,c<sub>i</sub>) and the integer i, an attacker cannot find the parent private key k<sub>par</sub> more efficiently than a 2<sup>256</sup> brute force of HMAC-SHA512.
-* Given any number (2 ≤ N ≤ 2<sup>32</sup>-1) of (index, extended private key) tuples (i<sub>j</sub>,(k<sub>i<sub>j</sub></sub>,c<sub>i<sub>j</sub></sub>)), with distinct i<sub>j</sub>'s, determining whether they are derived from a common parent extended private key (i.e., whether there exists a (k<sub>par</sub>,c<sub>par</sub>) such that for each j in (0..N-1) CKDpriv((k<sub>par</sub>,c<sub>par</sub>),i<sub>j</sub>)=(k<sub>i<sub>j</sub></sub>,c<sub>i<sub>j</sub></sub>)), cannot be done more efficiently than a 2<sup>256</sup> brute force of HMAC-SHA512.
-Note however that the following properties do not exist:
-* Given a parent extended public key (K<sub>par</sub>,c<sub>par</sub>) and a child public key (K<sub>i</sub>), it is hard to find i.
-* Given a parent extended public key (K<sub>par</sub>,c<sub>par</sub>) and a non-hardened child private key (k<sub>i</sub>), it is hard to find k<sub>par</sub>.
+EC 공개키 암호화 자체에서 기대할 수 있는 것 외에도:
+* 공개키 K가 주어지더라도 공격자는 EC 이산 로그 문제를 푸는 것보다 더 효율적으로 해당 개인 키를 찾을 수 없습니다. (2<sup>128</sup>개의 군 연산이 필요하다고 추정합니다.).
+이 표준의 의도된 보안 속성은 다음과 같습니다:
+* 자식 확장 개인키 (k<sub>i</sub>,c<sub>i</sub>) 와 정수 i가 주어지더라도, 공격자는  HMAC-SHA512의 2<sup>256</sup> 브루트포스보다 더 효율적으로 부모 개인 키 k<sub>par</sub>를 찾을 수 없습니다.
+* 서로 다른 i<sub>j</sub>와 (2 ≤ N ≤ 2<sup>32</sup>-1)에 대해 (인덱스, 확장 개인키) 튜플 (i<sub>j</sub>,(k<sub>i<sub>j</sub></sub>,c<sub>i<sub>j</sub></sub>))가 주어지더라도, 이것들이 공통된 부모 확장 개인키에서 유도되었는지 확인하는 것(예를 들어, 각 j에 대해 CKDpriv((k<sub>par</sub>,c<sub>par</sub>),i<sub>j</sub>)=(k<sub>i<sub>j</sub></sub>,c<sub>i<sub>j</sub></sub>)이 성립하는 (k<sub>par</sub>,c<sub>par</sub>)이 존재하는 경우)은 HMAC-SHA512의 2<sup>256</sup> 브루트 포스보다 더 효율적으로 수행할 수 없습니다.
+단, 다음 속성은 존재하지 않습니다:
+* 부모 확장 공개키(K<sub>par</sub>, c<sub>par</sub>)와 자식 공개키(K<sub>i</sub>)가 주어졌을 때, i를 찾는 것이 어렵습니다.
+* 부모 확장 공개키(K<sub>par</sub>, c<sub>par</sub>)와 비-강화 자식 개인키(k<sub>i</sub>)가 주어졌을 때, k<sub>par</sub>를 찾는 것이 어렵습니다.
 
 ===Implications===
 
-Private and public keys must be kept safe as usual. Leaking a private key means access to coins - leaking a public key can mean loss of privacy.
+개인키와 공개키는 여전히 안전하게 보관되어야 합니다. 개인키가 유출되면 코인에 대한 접근이 가능해지고, 공개키가 유출되면 개인정보가 노출될 수 있습니다.
 
-Somewhat more care must be taken regarding extended keys, as these correspond to an entire (sub)tree of keys.
+확장 키의 경우 전체 (하위) 키 트리에 해당하기 때문에 더욱 신경 써야 합니다.
 
-One weakness that may not be immediately obvious, is that knowledge of a parent extended public key plus any non-hardened private key descending from it is equivalent to knowing the parent extended private key (and thus every private and public key descending from it). This means that extended public keys must be treated more carefully than regular public keys.
-It is also the reason for the existence of hardened keys, and why they are used for the account level in the tree. This way, a leak of account-specific (or below) private key never risks compromising the master or other accounts.
+즉시 명확하지 않을 수 있는 한 가지 약점은 부모 확장 공개키와 이 키에서 내려오는 어떤 비강화 개인키를 아는 것은 부모 확장 개인키(따라서 이 키에서 내려오는 모든 개인 키와 공개 키)를 아는 것과 같다는 것입니다. 이는 확장 공개키를 일반 공개키보다 더 신중하게 취급해야 한다는 것을 의미합니다.
+이는 강화 키가 존재하는 이유이기도 하며, 트리에서 계좌 레벨에 사용되는 이유이기도 합니다. 이렇게 하면 계좌별(또는 그 이하) 개인키가 유출되더라도 마스터 또는 다른 계좌가 손상될 위험이 없습니다.
 
 
 ==Test Vectors==
@@ -312,7 +312,7 @@ These vectors test that invalid extended keys are recognized as invalid.
 
 ==Acknowledgements==
 
-* Gregory Maxwell for the original idea of type-2 deterministic wallets, and many discussions about it.
-* Alan Reiner for the implementation of this scheme in Armory, and the suggestions that followed from that.
-* Eric Lombrozo for reviewing and revising this BIP.
-* Mike Caldwell for the version bytes to obtain human-recognizable Base58 strings.
+* 유형 2 결정론적 지갑에 대한 독창적인 아이디어와 이에 대한 많은 토론을 제공한 Gregory Maxwell.
+* Armory에서 이 방식을 구현하고 이후 제안을 해준 Alan Reiner.
+* 이 BIP를 검토하고 수정해준 Eric Lombrozo.
+* 사람이 인식할 수 있는 Base58 문자열을 얻기 위한 버전 바이트를 제공한 Mike Caldwell.
