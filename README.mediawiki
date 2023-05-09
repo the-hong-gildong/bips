@@ -154,12 +154,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Final
 |- style="background-color: #cfffcf"
-| [[bip-0032.mediawiki|32]]
-| Applications
-| Hierarchical Deterministic Wallets
+| [[bip-0032_kr.mediawiki|32(kr)]]
+| 애플리케이션
+| 계층적 결정론적 지갑
 | Pieter Wuille
-| Informational
-| Final
+| 정보성
+| 최종
 |- style="background-color: #ffcfcf"
 | [[bip-0033.mediawiki|33]]
 | Peer Services
