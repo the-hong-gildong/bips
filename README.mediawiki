@@ -231,12 +231,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Final
 |- style="background-color: #cfffcf"
-| [[bip-0043.mediawiki|43]]
-| Applications
-| Purpose Field for Deterministic Wallets
+| [[bip-0043_kr.mediawiki|43(kr)]]
+| 애플리케이션
+| 결정론적 지갑을 위한 목적 필드
 | Marek Palatinus, Pavol Rusnak
-| Informational
-| Final
+| 정보성
+| 최종
 |- style="background-color: #ffffcf"
 | [[bip-0044.mediawiki|44]]
 | Applications
