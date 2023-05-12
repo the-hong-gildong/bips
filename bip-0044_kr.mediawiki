@@ -389,25 +389,25 @@ is required and a pull request to the above file should be created.
 >>>>>>> 0dddeda (bip-0044 번역 완료)
 |-
 |비트코인
-|첫 번쨰
+|첫 번째
 |외부
-|첫 번쨰
+|첫 번째
 |m / 44' / 0' / 0' / 0 / 0
 |-
 |비트코인
-|첫 번쨰
+|첫 번째
 |외부
 |두 번째
 |m / 44' / 0' / 0' / 0 / 1
 |-
 |비트코인
-|첫 번쨰
+|첫 번째
 |잔돈
-|첫 번쨰
+|첫 번째
 |m / 44' / 0' / 0' / 1 / 0
 |-
 |비트코인
-|첫 번쨰
+|첫 번째
 |잔돈
 |두 번째
 |m / 44' / 0' / 0' / 1 / 1
@@ -415,7 +415,7 @@ is required and a pull request to the above file should be created.
 |비트코인
 |두 번째
 |외부
-|첫 번쨰
+|첫 번째
 |m / 44' / 0' / 1' / 0 / 0
 |-
 |비트코인
@@ -427,7 +427,7 @@ is required and a pull request to the above file should be created.
 |비트코인
 |두 번째
 |잔돈
-|첫 번쨰
+|첫 번째
 |m / 44' / 0' / 1' / 1 / 0
 |-
 |비트코인
@@ -437,25 +437,25 @@ is required and a pull request to the above file should be created.
 |m / 44' / 0' / 1' / 1 / 1
 |-
 |비트코인 테스트넷
-|첫 번쨰
+|첫 번째
 |외부
-|첫 번쨰
+|첫 번째
 |m / 44' / 1' / 0' / 0 / 0
 |-
 |비트코인 테스트넷
-|첫 번쨰
+|첫 번째
 |외부
 |두 번째
 |m / 44' / 1' / 0' / 0 / 1
 |-
 |비트코인 테스트넷
-|첫 번쨰
+|첫 번째
 |잔돈
-|첫 번쨰
+|첫 번째
 |m / 44' / 1' / 0' / 1 / 0
 |-
 |비트코인 테스트넷
-|첫 번쨰
+|첫 번째
 |잔돈
 |두 번째
 |m / 44' / 1' / 0' / 1 / 1
@@ -463,7 +463,7 @@ is required and a pull request to the above file should be created.
 |비트코인 테스트넷
 |두 번째
 |외부
-|첫 번쨰
+|첫 번째
 |m / 44' / 1' / 1' / 0 / 0
 |-
 |비트코인 테스트넷
@@ -475,7 +475,7 @@ is required and a pull request to the above file should be created.
 |비트코인 테스트넷
 |두 번째
 |잔돈
-|첫 번쨰
+|첫 번째
 |m / 44' / 1' / 1' / 1 / 0
 |-
 <<<<<<< HEAD
