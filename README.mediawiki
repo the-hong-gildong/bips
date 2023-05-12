@@ -238,12 +238,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | 정보성
 | 최종
 |- style="background-color: #ffffcf"
-| [[bip-0044.mediawiki|44]]
-| Applications
-| Multi-Account Hierarchy for Deterministic Wallets
+| [[bip-0044_kr.mediawiki|44(kr)]]
+| 애플리케이션
+| 결정론적 지갑을 위한 다중-계좌 계층
 | Marek Palatinus, Pavol Rusnak
-| Standard
-| Proposed
+| 표준
+| 제안됨
 |- style="background-color: #ffffcf"
 | [[bip-0045.mediawiki|45]]
 | Applications
