@@ -266,12 +266,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Proposed
 |- style="background-color: #cfffcf"
-| [[bip-0049.mediawiki|49]]
-| Applications
-| Derivation scheme for P2WPKH-nested-in-P2SH based accounts
+| [[bip-0049_kr.mediawiki|49(kr)]]
+| 애플리케이션
+| P2WPKH-nested-in-P2SH 기반 계좌를 위한 유도 체계
 | Daniel Weigl
-| Informational
-| Final
+| 정보성
+| 최종
 |- style="background-color: #cfffcf"
 | [[bip-0050.mediawiki|50]]
 |
