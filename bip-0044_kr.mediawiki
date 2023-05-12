@@ -2,10 +2,10 @@
   BIP: 44
   레이어: 애플리케이션
   제목: 결정론적 지갑을 위한 다중-계좌 계층
-  Author: Marek Palatinus <slush@satoshilabs.com>
+  작성자: Marek Palatinus <slush@satoshilabs.com>
           Pavol Rusnak <stick@satoshilabs.com>
   코멘트-요약: 혼합 리뷰 (한 사람)
-  코멘크-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0044
+  코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0044
   상태: 제안됨
   타입: 표준 트랙
   생성일: 2014-04-24
@@ -13,255 +13,224 @@
 
 ==Abstract==
 
-본 BIP는 BIP-0032(이후 BIP32)에 설명된 알고리즘과 BIP-0043(이후 BIP43)에 설명된 목적 체계를 기반으로 결정론적 지갑의 논리적 계층구조를 정의합니다.
+본 BIP는 BIP-0032(이후 BIP32)에 설명된 알고리즘과 BIP-0043(이후 BIP43)에 설명된 목적(purpose) 체계를 기반으로 결정론적 지갑의 논리적 계층구조를 정의합니다.
 
 이 BIP는 BIP43의 특정 애플리케이션입니다.
 
 ==Motivation==
 
-The hierarchy proposed in this paper is quite comprehensive. It allows the handling of
-multiple coins, multiple accounts, external and internal chains per account and
-millions of addresses per chain.
+본 문서에서 제안한 계층 구조는 매우 포괄적입니다. 이를 통해 여러 코인, 여러 계좌, 계좌당 외부 및 내부 체인, 체인당 수백만 개의 주소를 관리할 수 있습니다.
 
 ==Path levels==
 
-We define the following 5 levels in BIP32 path:
+BIP32 경로안에서 다음 5가지 레벨을 정의합니다:
 
 <pre>
 m / purpose' / coin_type' / account' / change / address_index
 </pre>
 
-Apostrophe in the path indicates that BIP32 hardened derivation is used.
+경로의 작은 따옴표는 BIP32 강화 유도가 사용되었음을 나타냅니다.
 
-Each level has a special meaning, described in the chapters below.
+각 레벨에는 아래 챕터에 설명된 특별한 의미가 있습니다.
 
 ===Purpose===
 
-Purpose is a constant set to 44' (or 0x8000002C) following the BIP43 recommendation.
-It indicates that the subtree of this node is used according to this specification.
+목적(purpose)은 BIP43 권장 사항에 따라 44'(또는 0x8000002C)로 설정된 상수입니다.
+이 노드의 하위 트리가 이 사양에 따라 사용됨을 나타냅니다.
 
-Hardened derivation is used at this level.
+이 레벨에서는 강화 유도가 사용됩니다.
 
 ===Coin type===
 
-One master node (seed) can be used for unlimited number of independent
-cryptocoins such as Bitcoin, Litecoin or Namecoin. However, sharing the same
-space for various cryptocoins has some disadvantages.
+하나의 마스터 노드(시드)는 비트코인, 라이트코인, 네임코인과 같은 독립적인 암호코인(cryptocoin)에 무제한으로 사용할 수 있습니다. 하지만 여러 암호코인이 같은 공간을 공유하면 몇 가지 단점이 있습니다.
 
-This level creates a separate subtree for every cryptocoin, avoiding
-reusing addresses across cryptocoins and improving privacy issues.
+이 레벨에서는 모든 암호코인에 대해 별도의 하위 트리를 생성하여 여러 암호코인에서 주소를 재사용하는 것을 방지하고 프라이버시 문제를 개선합니다.
 
-Coin type is a constant, set for each cryptocoin. Cryptocoin developers may ask
-for registering unused number for their project.
+코인 유형은 각 암호코인마다 설정되는 상수입니다. 암호코인 개발자는 아직 사용되지 않은 번호를 그들의 프로젝트를 위해 등록하도록 요청할 수 있습니다.
 
-The list of already allocated coin types is in the chapter
-"Registered coin types" below.
+이미 할당된 코인 유형 목록은 아래의 "등록된 코인 유형(Registered coin types)" 장에 나와 있습니다.
 
-Hardened derivation is used at this level.
+이 레벨에서는 강화 유도가 사용됩니다.
 
 ===Account===
 
-This level splits the key space into independent user identities,
-so the wallet never mixes the coins across different accounts.
+이 레벨에서는 키 공간을 독립적인 사용자 ID로 분할하므로 지갑이 여러 계좌간에 코인을 절대로 섞지 않습니다.
 
-Users can use these accounts to organize the funds in the same
-fashion as bank accounts; for donation purposes (where all
-addresses are considered public), for saving purposes,
-for common expenses etc.
+사용자는 이러한 계좌를 사용하여 은행 계좌와 동일한 방식으로 자금을 관리할 수 있습니다; 기부 목적(모든 주소가 공개되는 경우), 저축 목적, 일반 경비 등.
 
-Accounts are numbered from index 0 in sequentially increasing manner.
-This number is used as child index in BIP32 derivation.
+계좌는 인덱스 0부터 순차적으로 증가하는 방식으로 번호가 매겨집니다. 이 번호는 BIP32 유도처럼 자식 인덱스로 사용됩니다.
 
-Hardened derivation is used at this level.
+이 레벨에서는 강화 유도가 사용됩니다.
 
-Software should prevent a creation of an account if a previous account does not
-have a transaction history (meaning none of its addresses have been used before).
+소프트웨어는 이전 계좌에 거래 내역이 없는 경우(즉, 이전에 사용된 주소가 없는 경우) 계좌 생성을 막아야 합니다.
 
-Software needs to discover all used accounts after importing the seed from
-an external source. Such an algorithm is described in "Account discovery" chapter.
+소프트웨어는 외부 소스에서 시드를 가져온 후 사용된 모든 계좌를 검색해야 합니다. 이러한 알고리즘은 '계좌 검색(Account discovery)' 장에 설명되어 있습니다.
 
 ===Change===
 
-Constant 0 is used for external chain and constant 1 for internal chain (also
-known as change addresses). External chain is used for addresses that are meant
-to be visible outside of the wallet (e.g. for receiving payments). Internal
-chain is used for addresses which are not meant to be visible outside of the
-wallet and is used for return transaction change.
+상수 0은 외부 체인에, 상수 1은 내부 체인(잔돈 주소라고도 함)에 사용됩니다. 외부 체인은 지갑 외부에서 볼 수 있는 주소에 사용됩니다(예: 대금 수령). 내부 체인은 지갑 외부에 표시되지 않아야 하는 주소에 사용되며, 잔돈 반환 거래에 사용됩니다.
 
-Public derivation is used at this level.
+이 레벨에서는 공개 유도가 사용됩니다.
 
 ===Index===
 
-Addresses are numbered from index 0 in sequentially increasing manner.
-This number is used as child index in BIP32 derivation.
+주소는 인덱스 0부터 순차적으로 증가하는 방식으로 번호가 매겨집니다. 이 번호는 BIP32 유도처럼 자식 인덱스로 사용됩니다.
 
-Public derivation is used at this level.
+이 레벨에서는 공개 유도가 사용됩니다.
 
 ==Account discovery==
 
-When the master seed is imported from an external source the software should
-start to discover the accounts in the following manner:
+외부 소스에서 마스터 시드를 가져오면 소프트웨어가 다음과 같은 방식으로 계좌를 검색하기 시작합니다:
 
-# derive the first account's node (index = 0)
-# derive the external chain node of this account
-# scan addresses of the external chain; respect the gap limit described below
-# if no transactions are found on the external chain, stop discovery
-# if there are some transactions, increase the account index and go to step 1
+# 첫 번째 계좌의 노드를 유도합니다(인덱스 = 0).
+# 이 계좌의 외부 체인 노드를 유도합니다.
+# 외부 체인의 주소를 스캔하고 아래에 설명된 간격 제한을 준수합니다.
+# 외부 체인에서 트랜잭션이 발견되지 않으면 검색을 중지합니다.
+# 몇개의 거래가 있는 경우 계정 인덱스를 높이고 1단계로 이동합니다.
 
-This algorithm is successful because software should disallow creation of new
-accounts if previous one has no transaction history, as described in chapter
-"Account" above.
+이 알고리즘은 위의 '계좌(Account)' 장에서 설명한 대로 이전 계좌에 거래 내역이 없는 경우 소프트웨어가 새 계좌 생성을 허용하지 않아야 하기 때문에 성공할 수 있습니다.
 
-Please note that the algorithm works with the transaction history, not account
-balances, so you can have an account with 0 total coins and the algorithm will
-still continue with discovery.
+알고리즘은 계좌 잔액이 아닌 거래 내역으로 작동하므로 총 코인이 0인 계정을 보유해도 알고리즘은 계속 검색을 진행한다는 것에 주목하세요.
 
 ===Address gap limit===
 
-Address gap limit is currently set to 20. If the software hits 20 unused
-addresses in a row, it expects there are no used addresses beyond this point
-and stops searching the address chain. We scan just the external chains, because
-internal chains receive only coins that come from the associated external chains.
+주소 간격 제한은 현재 20으로 설정되어 있습니다. 소프트웨어는 사용하지 않은 주소가 연속으로 20개에 도달하면 이 시점 이후에는 사용된 주소가 없을 것으로 예상하고 주소 체인 검색을 중지합니다. 내부 체인은 연결된 외부 체인에서 나온 코인만 받기 때문에 외부 체인만 검색합니다.
 
-Wallet software should warn when the user is trying to exceed the gap limit on
-an external chain by generating a new address.
+지갑 소프트웨어는 사용자가 새 주소를 생성하여 외부 체인의 갭 한도를 초과하려고 할 때 경고해야 합니다.
 
 ==Registered coin types==
 
-These are the default registered coin types for usage in level 2 of BIP44
-described in chapter "Coin type" above.
+위의 "코인 유형(Coin type)" 장에서 설명한 BIP44 레벨 2에서 사용할 수 있는 기본으로(default) 등록된 코인 유형입니다.
 
-All these constants are used as hardened derivation.
+이 모든 상수는 강화 유도로 사용됩니다.
 
 {|
-!index
-!hexa
-!coin
+!인덱스
+!헥사
+!코인
 |-
 |0
 |0x80000000
-|Bitcoin
+|비트코인
 |-
 |1
 |0x80000001
-|Bitcoin Testnet
+|비트코인 테스트넷
 |}
 
-This BIP is not a central directory for the registered coin types, please
-visit SatoshiLabs that maintains the full list:
+이 BIP는 등록된 코인 유형에 대한 중앙 디렉토리가 아니며, 전체 목록을 관리하는 사토시랩스를 방문하시기 바랍니다:
 
 [[https://github.com/satoshilabs/slips/blob/master/slip-0044.md|SLIP-0044 : Registered coin types for BIP-0044]]
 
-To register a new coin type, an existing wallet that implements the standard
-is required and a pull request to the above file should be created.
+새로운 코인 유형을 등록하려면 해당 표준을 구현하는 기존 지갑이 필요하며 위 파일에 대한 풀 리퀘스트를 생성해야 합니다.
 
 ==Examples==
 
 {|
-!coin
-!account
-!chain
-!address
-!path
+!코인
+!계좌
+!체인
+!주소
+!경로
 |-
-|Bitcoin
-|first
-|external
-|first
+|비트코인
+|첫 번쨰
+|외부
+|첫 번쨰
 |m / 44' / 0' / 0' / 0 / 0
 |-
-|Bitcoin
-|first
-|external
-|second
+|비트코인
+|첫 번쨰
+|외부
+|두 번째
 |m / 44' / 0' / 0' / 0 / 1
 |-
-|Bitcoin
-|first
-|change
-|first
+|비트코인
+|첫 번쨰
+|잔돈
+|첫 번쨰
 |m / 44' / 0' / 0' / 1 / 0
 |-
-|Bitcoin
-|first
-|change
-|second
+|비트코인
+|첫 번쨰
+|잔돈
+|두 번째
 |m / 44' / 0' / 0' / 1 / 1
 |-
-|Bitcoin
-|second
-|external
-|first
+|비트코인
+|두 번째
+|외부
+|첫 번쨰
 |m / 44' / 0' / 1' / 0 / 0
 |-
-|Bitcoin
-|second
-|external
-|second
+|비트코인
+|두 번째
+|외부
+|두 번째
 |m / 44' / 0' / 1' / 0 / 1
 |-
-|Bitcoin
-|second
-|change
-|first
+|비트코인
+|두 번째
+|잔돈
+|첫 번쨰
 |m / 44' / 0' / 1' / 1 / 0
 |-
-|Bitcoin
-|second
-|change
-|second
+|비트코인
+|두 번째
+|잔돈
+|두 번째
 |m / 44' / 0' / 1' / 1 / 1
 |-
-|Bitcoin Testnet
-|first
-|external
-|first
+|비트코인 테스트넷
+|첫 번쨰
+|외부
+|첫 번쨰
 |m / 44' / 1' / 0' / 0 / 0
 |-
-|Bitcoin Testnet
-|first
-|external
-|second
+|비트코인 테스트넷
+|첫 번쨰
+|외부
+|두 번째
 |m / 44' / 1' / 0' / 0 / 1
 |-
-|Bitcoin Testnet
-|first
-|change
-|first
+|비트코인 테스트넷
+|첫 번쨰
+|잔돈
+|첫 번쨰
 |m / 44' / 1' / 0' / 1 / 0
 |-
-|Bitcoin Testnet
-|first
-|change
-|second
+|비트코인 테스트넷
+|첫 번쨰
+|잔돈
+|두 번째
 |m / 44' / 1' / 0' / 1 / 1
 |-
-|Bitcoin Testnet
-|second
-|external
-|first
+|비트코인 테스트넷
+|두 번째
+|외부
+|첫 번쨰
 |m / 44' / 1' / 1' / 0 / 0
 |-
-|Bitcoin Testnet
-|second
-|external
-|second
+|비트코인 테스트넷
+|두 번째
+|외부
+|두 번째
 |m / 44' / 1' / 1' / 0 / 1
 |-
-|Bitcoin Testnet
-|second
-|change
-|first
+|비트코인 테스트넷
+|두 번째
+|잔돈
+|첫 번쨰
 |m / 44' / 1' / 1' / 1 / 0
 |-
-|Bitcoin Testnet
-|second
-|change
-|second
+|비트코인 테스트넷
+|두 번째
+|잔돈
+|두 번째
 |m / 44' / 1' / 1' / 1 / 1
 |}
 
 ==Reference==
 
-* [[bip-0032.mediawiki|BIP32 - Hierarchical Deterministic Wallets]]
-* [[bip-0043.mediawiki|BIP43 - Purpose Field for Deterministic Wallets]]
+* [[bip-0032_kr.mediawiki|BIP32 - 계층적 결정론적 지갑]]
+* [[bip-0043_kr.mediawiki|BIP43 - 결정론적 지갑을 위한 목적 필드]]
