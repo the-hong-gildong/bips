@@ -23,6 +23,18 @@
   상태: 제안됨
   타입: 표준 트랙
   생성일: 2014-04-24
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
+=======
+  Author: Marek Palatinus <slush@satoshilabs.com>
+=======
+  작성자: Marek Palatinus <slush@satoshilabs.com>
+>>>>>>> 0dddeda (bip-0044 번역 완료)
+          Pavol Rusnak <stick@satoshilabs.com>
+  코멘트-요약: 혼합 리뷰 (한 사람)
+  코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0044
+  상태: 제안됨
+  타입: 표준 트랙
+  생성일: 2014-04-24
 >>>>>>> d19c7b1 (bip-0044_kr 파일 추가)
 </pre>
 
@@ -73,6 +85,7 @@ m / purpose' / coin_type' / account' / change / address_index
 <<<<<<< HEAD
 <<<<<<< HEAD
 경로의 작은 따옴표는 BIP32 강화 유도가 사용되었음을 나타냅니다.
+>>>>>>> 0dddeda (bip-0044 번역 완료)
 
 각 레벨에는 아래 챕터에 설명된 특별한 의미가 있습니다.
 
@@ -231,7 +244,7 @@ Apostrophe in the path indicates that BIP32 hardened derivation is used.
 
 이 알고리즘은 위의 '계좌(Account)' 장에서 설명한 대로 이전 계좌에 거래 내역이 없는 경우 소프트웨어가 새 계좌 생성을 허용하지 않아야 하기 때문에 성공할 수 있습니다.
 
-알고리즘은 계좌 잔액이 아닌 거래 내역으로 작동하므로 총 코인이 0인 계정을 보유해도 알고리즘은 계속 검색을 진행한다는 것에 주목하세요.
+알고리즘은 계좌 잔액이 아닌 거래 내역으로 작동하므로 총 코인이 0인 계좌를 보유해도 알고리즘은 계속 검색을 진행한다는 것에 주목하세요.
 
 ===Address gap limit===
 
