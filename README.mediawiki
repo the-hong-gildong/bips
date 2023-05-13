@@ -435,12 +435,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Rejected
 |-
-| [[bip-0084.mediawiki|84]]
-| Applications
-| Derivation scheme for P2WPKH based accounts
+| [[bip-0084_kr.mediawiki|84(kr)]]
+| 애플리케이션
+| P2WPKH 기반 계좌를 위한 유도 체계
 | Pavol Rusnak
-| Informational
-| Draft
+| 정보성
+| 최종
 |-
 | [[bip-0085.mediawiki|85]]
 | Applications
