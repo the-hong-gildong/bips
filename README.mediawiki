@@ -203,12 +203,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Draft
 |- style="background-color: #ffffcf"
-| [[bip-0039.mediawiki|39]]
-| Applications
-| Mnemonic code for generating deterministic keys
+| [[bip-0039.mediawiki|39(kr)]]
+| 애플리케이션
+| 결정론적 키를 생성하기 위한 니모닉 코드
 | Marek Palatinus, Pavol Rusnak, Aaron Voisine, Sean Bowe
-| Standard
-| Proposed
+| 표준
+| 제안됨
 |-
 | 40
 | API/RPC
