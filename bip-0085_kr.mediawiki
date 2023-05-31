@@ -37,7 +37,7 @@ HD 키체인은 본질적으로 초기 엔트로피에서 유도되므로, 본 �
 
 대부분의 지갑은 BIP32 루트 키를 사용해 키체인을 유도하는 방법을 정의한 BIP32를 지원합니다. 따라서 BIP32 루트 키만 백업하면 이 키에서 파생된 모든 키를 포괄할 수 있습니다. BIP32는 BIP32 루트 키(또는 일반적으로 BIP32 확장 키)의 인간 친화적인 직렬화가 없기 때문에 종이 백업이나 수동으로 키를 복원할 때 오류가 발생하기 쉽습니다. BIP39는 이 문제를 해결하기 위해 설계되었지만, BIP32 루트 키를 직렬화하는 대신 약간의 엔트로피를 사용하여 '시드 니모닉'으로 인코딩한 다음 해시하여 BIP32 루트 키로 변환할 수 있는 BIP39 시드를 도출해냅니다. BIP39 니모닉을 저장하는 것만으로도 전체 BIP32 키체인을 재구성할 수 있지만, BIP32 루트 키는 다시 BIP39 니모닉으로 되돌릴 수 없습니다.
 
-<blockquote> [https://github.com/MyLifeForB/bips/blob/master/bip-0032_kr.mediawiki#master-key-generation BIP 32(kr)] 에 따르면 생성된 시드 바이트 시퀀스 S를 HMAC-SHA512(Key = "Bitcoin seed", Data = S) 계산에 이용하여 마스터 키(루트 키)를 생성함. </blockquote>
+<blockquote> [https://github.com/MyLifeForB/bips/blob/master/bip-0032_kr.mediawiki#master-key-generation BIP 32(kr)] 에 따르면 생성된 시드 바이트 시퀀스 S를 HMAC-SHA512(Key = "Bitcoin seed", Data = S) 계산에 이용하여 마스터 키(루트 키)를 생성합니다. 따라서 BIP32 루트 키가 다시 BIP39 니모닉으로 되돌아 갈 수 없습니다. (역자 추가) </blockquote>
 
 대부분의 지갑은 BIP39를 구현하므로 초기화 또는 복원 시 사용자는 BIP39 니모닉과 상호 작용해야 합니다. 대부분의 지갑은 BIP32 확장 개인키를 지원하지 않으므로, 각 지갑은 동일한 BIP39 니모닉을 공유하거나 완전히 별도의 BIP39 니모닉을 사용해야 합니다. 두 시나리오 모두 보안상의 이유로 특별히 만족스럽지 않습니다. 예를 들어 스마트폰의 핫월렛, 조인 마켓 서버, 라이트닝 네트워크 노드 등 일부 지갑은 본질적으로 보안이 취약할 수 있습니다. 특히 서로 다른 지리적 위치에서 분할 키 또는 이중화 백업에 의존하는 사용자에게는 여러 개의 시드를 보유하는 것이 바람직하지 않을 수 있습니다. 추가가 필연적으로 어렵고 사용자가 후속 키에 더 게으르게 되어 보안이 손상되거나 키가 분실될 수 있습니다.
 
@@ -47,11 +47,11 @@ HD 키체인은 본질적으로 초기 엔트로피에서 유도되므로, 본 �
 
 ==Specification==
 
-We assume a single BIP32 master root key. This specification is not concerned with how this was derived (e.g. directly or via a mnemonic scheme such as BIP39).
+여기서는 단일 BIP32 마스터 루트 키를 가정합니다. 이 명세에서는 이 키가 어떻게 유도되었는지는 중요하지 않습니다(예: 직접 또는 BIP39와 같은 니모닉 체계를 통해).
 
-For each application that requires its own wallet, a unique private key is derived from the BIP32 master root key using a fully hardened derivation path. The resulting private key (k) is then processed with HMAC-SHA512, where the key is "bip-entropy-from-k", and the message payload is the private key k: <code>HMAC-SHA512(key="bip-entropy-from-k", msg=k)</code>. The result produces 512 bits of entropy. Each application SHOULD use up to the required number of bits necessary for their operation truncating the rest.
+자체 지갑이 필요한 각 애플리케이션은 완전한(fully) 경화 유도 경로를 사용하여 BIP32 마스터 루트 키에서 고유한 개인키를 유도합니다. 그 다음 개인 키(k)는 HMAC-SHA512로 처리되며, 여기서 키는 "bip-entropy-from-k"이고 메시지 페이로드는 개인 키 k 입니다: <code>HMAC-SHA512(key="bip-entropy-from-k", msg=k)</code>. 그 결과 512 비트의 엔트로피가 생성됩니다. 각 애플리케이션은 작업에 필요한 비트 수까지만 사용하고 나머지는 잘라내야 합니다.
 
-The HMAC-SHA512 function is specified in [http://tools.ietf.org/html/rfc4231 RFC 4231].
+HMAC-SHA512 기능은 [http://tools.ietf.org/html/rfc4231 RFC 4231]에 명시되어 있습니다.
 
 ===Test vectors===
 
@@ -75,9 +75,9 @@ OUTPUT
 
 ==BIP85-DRNG==
 
-BIP85-DRNG-SHAKE256 is a deterministic random number generator for cryptographic functions that require deterministic outputs, but where the input to that function requires more than the 64 bytes provided by BIP85's HMAC output. BIP85-DRNG-SHAKE256 uses BIP85 to seed a SHAKE256 stream (from the SHA-3 standard). The input must be exactly 64 bytes long (from the BIP85 HMAC output).
+BIP85-DRNG-SHAKE256은 결정론적 출력이 필요한 암호학적 기능을 위한 결정론적 난수 발생기입니다. 그러나 해당 기능에 대한 입력이 BIP85의 HMAC 출력으로 제공되는 64바이트 외에 더 많은 경우에 사용됩니다. BIP85-DRNG-SHAKE256은 BIP85을 사용하여 SHA-3 표준의 SHAKE256 스트림을 시드로 사용합니다. 입력은 정확히 64바이트여야 합니다 (BIP85 HMAC 출력으로부터 나온 값입니다).
 
-RSA key generation is an example of a function that requires orders of magnitude more than 64 bytes of random input. Further, it is not possible to precalculate the amount of random input required until the function has completed.
+RSA 키 생성은 64바이트 이상의 무작위 입력이 필요한 함수의 예입니다. 또한 함수가 완료될 때까지 필요한 임의 입력의 양을 미리 계산할 수 없습니다.
 
     drng_reader = BIP85DRNG.new(bip85_entropy)
     rsa_key = RSA.generate_key(4096, drng_reader.read())
@@ -95,94 +95,94 @@ OUTPUT
 
 ==Reference Implementation==
 
-* Python library implementation: [https://github.com/ethankosakovsky/bip85]
-* JavaScript library implementation: [https://github.com/hoganri/bip85-js]
+* Python 라이브러리 구현체: [https://github.com/ethankosakovsky/bip85]
+* JavaScript 라이브러리 구현체: [https://github.com/hoganri/bip85-js]
 
 ===Other Implementations===
 
-* JavaScript library implementation: [https://github.com/hoganri/bip85-js]
+* JavaScript 라이브러리 구현체: [https://github.com/hoganri/bip85-js]
 
-* Coldcard Firmware: [https://github.com/Coldcard/firmware/pull/39]
+* 콜드카드(Coldcard) 펌웨어: [https://github.com/Coldcard/firmware/pull/39]
 
-* Ian Coleman's Mnemonic Code Converter: [https://github.com/iancoleman/bip39] and [https://iancoleman.io/bip39/]
+* Ian Coleman의 니모닉 코드 변환기: [https://github.com/iancoleman/bip39] and [https://iancoleman.io/bip39/]
 
-* AirGap Vault: [https://github.com/airgap-it/airgap-vault/commit/d64332fc2f332be622a1229acb27f621e23774d6]
+* 에어갭 볼트(AirGap Vault): [https://github.com/airgap-it/airgap-vault/commit/d64332fc2f332be622a1229acb27f621e23774d6]
 
 btc_hd_wallet: [https://github.com/scgbckbone/btc-hd-wallet]
 
 ==Applications==
 
-The Application number defines how entropy will be used post processing. Some basic examples follow:
+애플리케이션 번호는 엔트로피가 후처리에 사용되는 방식을 정의합니다. 다음은 몇 가지 기본적인 예입니다:
 
-Derivation path uses the format <code>m/83696968'/{app_no}'/{index}'</code> where ''{app_no}'' is the path for the application, and ''{index}'' is the index.
+유도 경로는 <code>m/83696968'/{app_no}'/{index}'</code> 형식을 사용하며, 여기서 ''{app_no}'' 는 애플리케이션의 경로이고 ''{index}'' 는 인덱스입니다.
 
 ===BIP39===
-Application number: 39'
+애플리케이션 번호: 39'
 
-Truncate trailing (least significant) bytes of the entropy to the number of bits required to map to the relevant word length: 128 bits for 12 words, 256 bits for 24 words.
+엔트로피의 최하위(least significant) 바이트를 관련 단어 길이에 매핑하는 데 필요한 비트 수가 되도록 잘라냅니다: 12단어의 경우 128비트, 24단어의 경우 256비트.
 
-The derivation path format is: <code>m/83696968'/39'/{language}'/{words}'/{index}'</code>
+유도 경로 형식은 다음과 같습니다: <code>m/83696968'/39'/{language}'/{words}'/{index}'</code>
 
-Example: a BIP39 mnemonic with 12 English words (first index) would have the path <code>m/83696968'/39'/0'/12'/0'</code>, the next key would be <code>m/83696968'/39'/0'/12'/1'</code> etc.
+예시: 영어 단어 12개(첫 번째 인덱스)가 있는 BIP39 니모닉의 경로가 <code>m/83696968'/39'/0'/12'/0'</code> 이면 다음 키는 <code>m/83696968'/39'/0'/12'/1'</code> 등이 됩니다.
 
-Language Table
+언어 테이블
 
 {|
-!Wordlist
-!Code
+!단어 목록
+!코드
 |-
-| English
+| 영어
 | 0'
 |-
-| Japanese
+| 일본어
 | 1'
 |-
-| Korean
+| 한국어
 | 2'
 |-
-| Spanish
+| 스페인어
 | 3'
 |-
-| Chinese (Simplified)
+| 중국어 (간체)
 | 4'
 |-
-| Chinese (Traditional)
+| 중국어 (번체)
 | 5'
 |-
-| French
+| 프랑스어
 | 6'
 |-
-| Italian
+| 이탈리아어
 | 7'
 |-
-| Czech
+| 체코어
 | 8'
 |}
 
-Words Table
+단어 테이블
 
 {|
-!Words
-!Entropy
-!Code
+!단어
+!엔트로피
+!코드
 |-
-| 12 words
-| 128 bits
+| 12 단어
+| 128 비트
 | 12'
 |-
-| 18 words
-| 192 bits
+| 18 단어
+| 192 비트
 | 18'
 |-
-| 24 words
-| 256 bits
+| 24 단어
+| 256 비트
 | 24'
 |}
 
 ====12 English words====
-BIP39 English 12 word mnemonic seed
+BIP39 영어 12 단어 니모닉 시드
 
-128 bits of entropy as input to BIP39 to derive 12 word mnemonic
+128 비트의 엔트로피를 BIP39에 입력하여 12 단어 니모닉을 유도합니다
 
 INPUT:
 * MASTER BIP32 ROOT KEY: xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
@@ -193,9 +193,9 @@ OUTPUT:
 * DERIVED BIP39 MNEMONIC=girl mad pet galaxy egg matter matrix prison refuse sense ordinary nose
 
 ====18 English words====
-BIP39 English 18 word mnemonic seed
+BIP39 영어 18 단어 니모닉 시드
 
-196 bits of entropy as input to BIP39 to derive 18 word mnemonic
+196 비트의 엔트로피를 BIP39에 입력하여 18 단어 니모닉을 유도합니다
 
 INPUT:
 * MASTER BIP32 ROOT KEY: xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
@@ -206,9 +206,9 @@ OUTPUT:
 * DERIVED BIP39 MNEMONIC=near account window bike charge season chef number sketch tomorrow excuse sniff circle vital hockey outdoor supply token
 
 ====24 English words====
-Derives 24 word BIP39 mnemonic seed
+BIP39 영어 24 단어 니모닉 시드
 
-256 bits of entropy as input to BIP39 to derive 24 word mnemonic
+256 비트의 엔트로피를 BIP39에 입력하여 24 단어 니모닉을 유도합니다
 
 INPUT:
 * MASTER BIP32 ROOT KEY: xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
@@ -219,11 +219,11 @@ OUTPUT:
 * DERIVED BIP39 MNEMONIC=puppy ocean match cereal symbol another shed magic wrap hammer bulb intact gadget divorce twin tonight reason outdoor destroy simple truth cigar social volcano
 
 ===HD-Seed WIF===
-Application number: 2'
+애플리케이션 번호: 2'
 
-Uses 256 bits[1] of entropy as the secret exponent to derive a private key and encode as a compressed WIF which will be used as the hdseed for Bitcoin Core wallets.
+256 bits[1]의 엔트로피를 비밀 지수로 사용해 개인키를 유도하고 비트코인 코어 지갑의 hdseed로 사용될 압축 WIF로 인코딩합니다.
 
-Path format is <code>m/83696968'/2'/{index}'</code>
+경로 형식은 다음과 같습니다: <code>m/83696968'/2'/{index}'</code>
 
 INPUT:
 * MASTER BIP32 ROOT KEY: xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
@@ -234,11 +234,11 @@ OUTPUT
 * DERIVED WIF=Kzyv4uF39d4Jrw2W7UryTHwZr1zQVNk4dAFyqE6BuMrMh1Za7uhp
 
 ===XPRV===
-Application number: 32'
+애플리케이션 번호: 32'
 
-Taking 64 bytes of the HMAC digest, the first 32 bytes are the chain code, and second 32 bytes[1] are the private key for BIP32 XPRV value. Child number, depth, and parent fingerprint are forced to zero.
+64바이트의 HMAC 다이제스트에서 처음 32바이트는 체인 코드이고, 두 번째 32바이트[1]는 BIP32 XPRV 값에 대한 개인키입니다. 자식 번호, 깊이 및 부모 지문(fingerprint)은 0으로 강제 설정됩니다.
 
-Path format is <code>m/83696968'/32'/{index}'</code>
+경로 형식은 다음과 같습니다: <code>m/83696968'/32'/{index}'</code>
 
 INPUT:
 * MASTER BIP32 ROOT KEY: xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
@@ -249,13 +249,13 @@ OUTPUT
 * DERIVED WIF=xprv9s21ZrQH143K2srSbCSg4m4kLvPMzcWydgmKEnMmoZUurYuBuYG46c6P71UGXMzmriLzCCBvKQWBUv3vPB3m1SATMhp3uEjXHJ42jFg7myX
 
 ===HEX===
-Application number: 128169'
+애플리케이션 번호: 128169'
 
-The derivation path format is: <code>m/83696968'/128169'/{num_bytes}'/{index}'</code>
+유도 경로 형식은 다음과 같습니다: <code>m/83696968'/128169'/{num_bytes}'/{index}'</code>
 
 `16 <= num_bytes <= 64`
 
-Truncate trailing (least significant) bytes of the entropy after `num_bytes`.
+`num_bytes` 뒤의 엔트로피의 최하위(least significant) 바이트를 잘라냅니다.
 
 INPUT:
 * MASTER BIP32 ROOT KEY: xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
@@ -266,11 +266,11 @@ OUTPUT
 
 ===RSA===
 
-Application number: 828365'
+애플리케이션 번호: 828365'
 
-The derivation path format is: <code>m/83696968'/828365'/{key_bits}'/{key_index}'</code>
+유도 경로 형식은 다음과 같습니다: <code>m/83696968'/828365'/{key_bits}'/{key_index}'</code>
 
-The RSA key generator should use BIP85-DRNG as the input RNG function.
+RSA 키 생성기는 입력 RNG 기능으로 BIP85-DRNG를 사용해야 합니다.
 
 ===RSA GPG===
 
