@@ -442,12 +442,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | 정보성
 | 최종
 |-
-| [[bip-0085.mediawiki|85]]
-| Applications
-| Deterministic Entropy From BIP32 Keychains
+| [[bip-0085_kr.mediawiki|85(kr)]]
+| 애플리케이션
+| BIP32 키체인으로부터 유도한 결정론적 엔트로피
 | Ethan Kosakovsky
 | Informational
-| Draft
+| 초안
 |-
 | [[bip-0086.mediawiki|86]]
 | Applications
