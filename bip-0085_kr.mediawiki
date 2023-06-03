@@ -49,7 +49,7 @@ HD 키체인은 본질적으로 초기 엔트로피에서 유도되므로, 본 �
 
 여기서는 단일 BIP32 마스터 루트 키를 가정합니다. 이 명세에서는 이 키가 어떻게 유도되었는지는 중요하지 않습니다(예: 직접 또는 BIP39와 같은 니모닉 체계를 통해).
 
-자체 지갑이 필요한 각 애플리케이션은 완전한(fully) 경화 유도 경로를 사용하여 BIP32 마스터 루트 키에서 고유한 개인키를 유도합니다. 그 다음 개인 키(k)는 HMAC-SHA512로 처리되며, 여기서 키는 "bip-entropy-from-k"이고 메시지 페이로드는 개인 키 k 입니다: <code>HMAC-SHA512(key="bip-entropy-from-k", msg=k)</code>. 그 결과 512 비트의 엔트로피가 생성됩니다. 각 애플리케이션은 작업에 필요한 비트 수까지만 사용하고 나머지는 잘라내야 합니다.
+자체 지갑이 필요한 각 애플리케이션은 완전한(fully) 경화 유도 경로를 사용하여 BIP32 마스터 루트 키에서 고유한 개인키를 유도합니다. 그 다음 개인키(k)는 HMAC-SHA512로 처리되며, 여기서 키는 "bip-entropy-from-k"이고 메시지 페이로드는 개인키 k 입니다: <code>HMAC-SHA512(key="bip-entropy-from-k", msg=k)</code>. 그 결과 512 비트의 엔트로피가 생성됩니다. 각 애플리케이션은 작업에 필요한 비트 수까지만 사용하고 나머지는 잘라내야 합니다.
 
 HMAC-SHA512 기능은 [http://tools.ietf.org/html/rfc4231 RFC 4231]에 명시되어 있습니다.
 
@@ -274,7 +274,7 @@ RSA 키 생성기는 입력 RNG 기능으로 BIP85-DRNG를 사용해야 합니�
 
 ===RSA GPG===
 
-Keys allocated for RSA-GPG purposes use the following scheme:
+RSA-GPG 용도로 할당된 키는 다음과 같은 체계를 사용합니다:
 
  - Main key <code>m/83696968'/828365'/{key_bits}'/{key_index}'</code>
  - Sub keys:  <code>m/83696968'/828365'/{key_bits}'/{key_index}'/{sub_key}'</code>
@@ -284,29 +284,29 @@ Keys allocated for RSA-GPG purposes use the following scheme:
     - sub_key <code>1'</code> is used as the AUTHENTICATION key
     - sub_key <code>2'</code> is usually used as SIGNATURE key
 
-Note on timestamps:
+타임스탬프에 대한 참고 사항:
 
-The resulting RSA key can be used to create a GPG key where the creation date MUST be fixed to unix Epoch timestamp 1231006505 (the Bitcoin genesis block time <code>'2009-01-03 18:05:05'</code> UTC) because the key fingerprint is affected by the creation date (Epoch timestamp 0 was not chosen because of legacy behavior in GNUPG implementations for older keys). Additionally, when importing sub-keys under a key in GNUPG, the system time must be frozen to the same timestamp before importing (e.g. by use of <code>faketime</code>).
+생성된 RSA 키는 키 지문이 생성 날짜의 영향을 받기 때문에 생성 날짜를 유닉스 에포크 타임스탬프 1231006505(비트코인 제네시스 블록 시간 <code>'2009-01-03 18:05:05'</code> UTC)로 고정해야 하는 GPG 키를 만드는 데 사용할 수 있습니다(이전 키에 대한 GNUPG 구현의 레거시 동작 때문에 에포크 타임스탬프 0은 선택되지 않았습니다). 또한 GNUPG에서 키 아래의 하위 키를 가져올 때는 가져오기 전에 시스템 시간을 동일한 타임스탬프로 고정해야 합니다(예: <code>faketime</code> 사용).
 
-Note on GPG key capabilities on smartcard/hardware devices:
+스마트카드/하드웨어 장치의 GPG 키 기능에 대한 참고 사항:
 
-GPG capable smart-cards SHOULD be be loaded as follows: The encryption slot SHOULD be loaded with the ENCRYPTION capable key; the authentication slot SHOULD be loaded with the AUTHENTICATION capable key. The signature capable slot SHOULD be loaded with the SIGNATURE capable key.
+GPG 지원 스마트카드는 다음과 같이 로드해야 합니다: 암호화 슬롯에는 암호화(ENCRYPTION) 가능 키가 로드되어야 하고(SHOULD), 인증 슬롯에는 인증(AUTHENTICATION) 가능 키가 로드되어야 합니다(SHOULD). 서명 가능 슬롯에는 서명(SIGNATURE) 가능 키가 로드되어야 합니다(SHOULD).
 
-However, depending on available slots on the smart-card, and preferred policy, the CERTIFY capable key MAY be flagged with CERTIFY and SIGNATURE capabilities and loaded into the SIGNATURE capable slot (for example where the smart-card has only three slots and the CERTIFY capability is required on the same card). In this case, the SIGNATURE capable sub-key would be disregarded because the CERTIFY capable key serves a dual purpose.
+그러나 스마트 카드의 사용 가능한 슬롯 및 선호 정책에 따라, 자격증명 가능 키는 자격증명(CERTIFY) 및 서명(SIGNATURE) 기능으로 플래그가 지정되고 서명 가능 슬롯에 로드될 수 있습니다(MAY)(예: 스마트 카드에 슬롯이 3개만 있고 동일한 카드에 자격증명(CERTIFY) 기능이 필요한 경우). 이 경우, 서명(SIGNATURE) 가능 하위 키는 무시되는데, 이는 자격증명(CERTIFY) 가능 키가 이중 용도로 사용되기 때문입니다.
 
 ==Backwards Compatibility==
 
-This specification is not backwards compatible with any other existing specification.
+이 명세는 다른 기존 명세와 역호환되지 않습니다.
 
-This specification relies on BIP32 but is agnostic to how the BIP32 root key is derived. As such, this standard is able to derive wallets with initialization schemes like BIP39 or Electrum wallet style mnemonics.
+이 명세는 BIP32에 의존하지만, BIP32 루트 키가 어떻게 유도되는지에 대해서는 무관합니다. 따라서 이 표준은 BIP39나 일렉트럼 지갑 스타일 니모닉과 같은 초기화 체계를 가진 지갑을 도출할 수 있습니다.
 
 ==Discussion==
 
-The reason for running the derived key through HMAC-SHA512 and truncating the result as necessary is to prevent leakage of the parent tree should the derived key (''k'') be compromized. While the specification requires the use of hardended key derivation which would prevent this, we cannot enforce hardened derivation, so this method ensures the derived entropy is hardened. Also, from a semantic point of view, since the purpose is to derive entropy and not a private key, we are required to transform the child key. This is done out of an abundance of caution, in order to ward off unwanted side effects should ''k'' be used for a dual purpose, including as a nonce ''hash(k)'', where undesirable and unforeseen interactions could occur.
+HMAC-SHA512를 통해 파생된 키를 실행하고 필요에 따라 결과를 잘라내는 이유는 유도된 키(''k'')가 침해될 경우 상위 트리의 누출을 방지하기 위해서입니다. 명세는 이를 방지하기 위해 강화 키 유도를 사용하도록 요구하지만, 강화 유도를 강제할 수는 없으므로 이 방법은 유도된 엔트로피가 강화되도록 보장합니다. 또한 의미론적 관점에서 볼 때, 개인키가 아닌 엔트로피를 유도하는 것이 목적이므로 자식 키를 변환해야 합니다. 이는 ''k''가 원치 않는 예기치 않은 상호 작용이 발생할 수 있는 논스 ''hash(k)''를 포함하여 이중 목적으로 사용될 경우 원치 않는 부작용을 방지하기 위해 많은 주의를 기울이기 위해 수행됩니다.
 
 ==Acknowledgements==
 
-Many thanks to Peter Gray and Christopher Allen for their input, and to Peter for suggesting extra application use cases.
+의견을 제공해 주신 Peter Gray와 Christopher Allen에게 감사드리며, 추가 애플리케이션 사용 사례를 제안해 주신 Peter에게도 감사드립니다.
 
 ==References==
 
@@ -314,11 +314,11 @@ BIP32, BIP39
 
 ==Footnotes==
 
-[1] There is a very small chance that you'll make an invalid key that is zero or bigger than the order of the curve. If this occurs, software should hard fail (forcing users to iterate to the next index).
+[1] 0이거나 커브의 위수보다 큰 유효하지 않은 키를 만들 가능성은 매우 적습니다. 이 경우 소프트웨어는 하드 페일(hard fail, 사용자가 다음 인덱스로 강제로 반복해야 함)해야 합니다.
 
-From BIP32:
-In case parse<sub>256</sub>(I<sub>L</sub>) is 0 or ≥ n, the resulting key is invalid, and one should proceed with the next value for i. (Note: this has probability lower than 1 in 2<sup>127</sup>.)
+BIP32에서:
+parse<sub>256</sub>(I<sub>L</sub>)이 0 또는 ≥ n인 경우 결과 키가 유효하지 않으므로 i의 다음 값으로 진행해야 합니다. (참고: 2<sup>127</sup>분의 1보다 낮은 확률로 발생합니다.)
 
 ==Copyright==
 
-This BIP is dual-licensed under the Open Publication License and BSD 2-clause license.
+이 BIP는 Open Publication License 및 BSD 2-clause 라이센스에 따라 이중 라이센스입니다.
