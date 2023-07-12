@@ -512,12 +512,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Rejected
 |- style="background-color: #ffcfcf"
-| [[bip-0101.mediawiki|101]]
-| Consensus (hard fork)
-| Increase maximum block size
+| [[bip-0101_kr.mediawiki|101(kr)]]
+| 컨센서스 (하드 포크)
+| 최대 블록 사이즈 증가
 | Gavin Andresen
-| Standard
-| Withdrawn
+| 표준
+| 중단됨
 |- style="background-color: #ffcfcf"
 | [[bip-0102.mediawiki|102]]
 | Consensus (hard fork)
