@@ -75,27 +75,27 @@
 
 ===Centralization of full nodes===
 
-The number of fully-validating nodes reachable on the network has been steadily declining. Increasing the capacity of the network to handle transactions by increasing the maximum block size may accelerate that decline, meaning a less distributed network that is more vulnerable to disruption. The size of this effect is debatable; the author of this BIP believes that the decline in fully validating nodes on the network is largely due to the availability of convenient, attractive, secure, lightweight wallet software and the general trend away from computing on desktop computers to mobile phones and tablets.
+네트워크에서 도달 가능한 완전 검증 노드의 수는 꾸준히 감소하고 있습니다. 최대 블록 크기를 늘려 트랜잭션을 처리할 수 있는 네트워크의 용량을 늘리면 이러한 감소세가 가속화될 수 있으며, 이는 덜 분산된 네트워크로 인해 장애에 더 취약해질 수 있음을 의미합니다. 본 BIP의 작성자는 네트워크에서 노드를 완전히 검증하는 노드의 감소가 편리하고 매력적이며 안전하고 가벼운 지갑 소프트웨어의 사용 가능성과 데스크톱 컴퓨터에서 휴대폰과 태블릿으로 이동하는 일반적인 추세에 기인한 것으로 보고 있습니다.
 
-Increasing the capacity of the network to handle transactions should enable increased adoption by users and businesses, especially in areas of the world where existing financial infrastructure is weak. That could lead to a more robust network with nodes running in more political jurisdictions.
+트랜잭션을 처리할 수 있는 네트워크의 용량을 늘리면 특히 기존 금융 인프라가 취약한 지역에서 사용자와 기업의 채택이 늘어날 것입니다. 이는 더 많은 정치적 관할권에서 노드가 운영되는 더 강력한 네트워크로 이어질 수 있습니다.
 
 ===Centralization of mining: costs===
 
-Miners benefit from low-latency, high-bandwidth connections because they increase their chances of winning a "block race" (two or more blocks found at approximately the same time). With the current peer-to-peer networking protocol, announcing larger blocks requires more bandwidth. If the costs grow high enough, the result will be a very small number of very large miners.
+채굴자는 지연 시간이 짧고 대역폭이 높은 연결을 통해 '블록 경쟁'(거의 동시에 두 개 이상의 블록이 발견되는 것)에서 승리할 확률이 높아지기 때문에 이점을 얻을 수 있습니다. 현재의 P2P 네트워킹 프로토콜에서는 더 큰 블록을 발표하려면 더 많은 대역폭이 필요합니다. 비용이 충분히 높아지면 결과적으로 매우 적은 수의 대규모 채굴자만 남게 됩니다.
 
-The limits proposed by this BIP are designed so that running a fully validating node has very modest costs, which, if current trends in the cost of technology continue, will become even less expensive over time.
+이 BIP에서 제안하는 한계는 완전한 검증 노드를 실행하는 데 매우 적은 비용이 들도록 설계되었으며, 현재의 기술 비용 추세가 계속된다면 시간이 지남에 따라 비용은 더욱 낮아질 것입니다.
 
 ===Centralization of mining: big-block attacks===
 
-[http://lists.linuxfoundation.org/pipermail/bitcoin-dev/2015-June/008820.html Simulations show] that with the current peer-to-peer protocol, miners behind high-latency or low-bandwidth links are at a disadvantage compared to miners connected to a majority of hashpower via low-latency, high-bandwidth links. Larger blocks increase the advantage of miners with high-bandwidth connections, although that advantage can be minimized with changes to the way new blocks are announced (e.g. http://bitcoinrelaynetwork.org/ ).
+[http://lists.linuxfoundation.org/pipermail/bitcoin-dev/2015-June/008820.html 시뮬레이션 결과] 현재 P2P 프로토콜에서는 지연 시간이 길거나 대역폭이 낮은 링크를 사용하는 채굴자가 지연 시간이 짧고 대역폭이 높은 링크를 통해 대부분의 해시파워에 연결된 채굴자에 비해 불리한 것으로 나타났습니다. 블록이 클수록 고대역폭 연결을 사용하는 마이너가 유리하지만, 새로운 블록이 발표되는 방식을 변경하면 이러한 이점을 최소화할 수 있습니다(예: http://bitcoinrelaynetwork.org/ ).
 
-If latency and bandwidth to other miners were the only variable that affected the profitability of mining, and miners were driven purely by profit, the end result would be one miner running on one machine, where latency was zero and bandwidth was essentially infinite.
+다른 채굴자에 대한 지연 시간과 대역폭이 채굴의 수익성에 영향을 미치는 유일한 변수이고 채굴자가 순전히 수익에 따라 움직인다면, 최종 결과는 하나의 컴퓨터에서 하나의 채굴자가 실행되며, 지연 시간은 0이고 대역폭은 사실상 무한대일 것입니다.
 
-However, many other factors influence miner profitability, including cost of electricity and labor and real estate, ability to use waste heat productively, access to capital to invest in mining equipment, etc. Increasing the influence of bandwidth in the mining profitability equation will not necessarily lead to more centralization.
+그러나 전기와 인건비, 부동산 비용, 폐열을 생산적으로 사용할 수 있는 능력, 채굴 장비에 투자할 수 있는 자본 접근성 등 다른 많은 요인들이 채굴자의 수익성에 영향을 미칩니다. 채굴 수익성 방정식에서 대역폭의 영향력이 증가한다고 해서 반드시 더 많은 중앙 집중화로 이어지는 것은 아닙니다.
 
 ===Unspent Transaction Output Growth===
 
-This BIP makes no attempt to restrict the approximately 100% per-year growth in unspent transaction outputs (see http://gavinandresen.ninja/utxo-uhoh for details), because the author believe that problem should be solved by a further restriction on blocks described in a separate BIP (perhaps an additional limit on how much the transactions in any block may increase the UTXO set size).
+이 BIP는 UTXO의 연간 약 100% 증가를 제한하려는 시도를 하지 않습니다(자세한 내용은 http://gavinandresen.ninja/utxo-uhoh 참조). 저자는 이 문제가 별도의 BIP에 설명된 블록에 대한 추가 제한(아마도 블록 내 트랜잭션이 UTXO 설정 크기를 증가시킬 수 있는 정도에 대한 추가 제한)으로 해결되어야 한다고 생각하기 때문입니다.
 
 ==Long-term fee incentives==
 
@@ -103,25 +103,25 @@ http://gavinandresen.ninja/block-size-and-miner-fees-again
 
 ==Other solutions considered==
 
-There have been dozens of proposals for increasing the block size over the years. Some notable ideas:
+지난 몇 년간 블록 크기를 늘리기 위한 수십 가지 제안이 있었습니다. 몇 가지 주목할 만한 아이디어를 소개합니다:
 
 ===One-time increase===
 
-A small, quick one-time increase to, for example, 2MB blocks, would be the most conservative option.
+일회성 소규모 증가, 예를 들어 2MB 블록은 가장 보수적인 옵션입니다.
 
-However, a one-time increase requires just as much care in testing and deployment as a longer-term fix. And the entire debate over how large or small a limit is appropriate would be repeated as soon as the new limit was reached.
+그러나 일회성 증가는 장기적인 수정만큼이나 테스트 및 배포에 많은 주의가 필요합니다. 그리고 새로운 한도에 도달하자마자 얼마나 큰 한도가 적절한지에 대한 모든 논쟁이 반복될 것입니다.
 
 ===Dynamic limit proposals===
 
-BIP 100 proposes a dynamic limit determined by miner preferences expressed in coinbase transactions, with limits on the rate of growth. It gives miners more direct control over the maximum block size, which some people see as an advantage over this proposal and some see as a disadvantage. It is more complex to implement, because the maximum allowed size for a block depends on information contained in coinbase transactions from previous blocks (which may not be immediately known if block contents are being fetched out-of-order in a 'headers-first' mode).
+BIP 100은 코인베이스 트랜잭션에 표현된 채굴자 선호도에 따라 결정되는 동적 제한을 제안하며, 증가율에 제한을 두고 있습니다. 이는 채굴자가 최대 블록 크기를 보다 직접적으로 제어할 수 있도록 하는데, 이 제안을 장점으로 보는 사람들도 있고 단점으로 보는 사람들도 있습니다. 블록에 허용되는 최대 크기는 이전 블록의 코인베이스 트랜잭션에 포함된 정보에 따라 달라지기 때문에 구현하기가 더 복잡합니다(블록 콘텐츠가 '헤더 우선' 모드에서 순서 없이 가져오는 경우 즉시 알지 못할 수 있음).
 
-[https://bitcointalk.org/index.php?topic=1078521.0 Meni Rosenfeld has proposed] that miners sacrifice mining reward to "pay for" bigger blocks, so there is an incentive to create bigger blocks only if transaction fees cover the cost of creating a larger block. This proposal is significantly more complex to implement, and it is not clear if a set of parameters for setting the cost of making a block bigger can be found that is not equivalent to a centrally-controlled network-wide minimum transaction fee.
+메니 로젠펠드는 마이너가 더 큰 블록을 '지불'하기 위해 마이닝 보상을 희생할 것을 [https://bitcointalk.org/index.php?topic=1078521.0 제안했으며], 따라서 거래 수수료가 더 큰 블록을 생성하는 비용을 충당할 수 있을 때만 더 큰 블록을 생성할 인센티브가 있습니다. 이 제안은 구현하기가 훨씬 더 복잡하며, 중앙에서 통제하는 네트워크 전반의 최소 트랜잭션 수수료와 동일하지 않은 블록을 더 크게 만드는 비용을 설정하는 매개변수 집합을 찾을 수 있는지 여부는 명확하지 않습니다.
 
 ==Compatibility==
 
-This is a hard-forking change to the Bitcoin protocol; anybody running code that fully validates blocks must upgrade before the activation time or they will risk rejecting a chain containing larger-than-one-megabyte blocks.
+이는 비트코인 프로토콜의 하드포크 변경으로, 블록을 완전히 검증하는 코드를 실행하는 사람은 누구나 활성화 시간 전에 업그레이드해야 하며, 그렇지 않으면 1메가바이트 이상의 블록이 포함된 체인이 거부될 위험이 있습니다.
 
-Simplified Payment Verification software is not affected, unless it makes assumptions about the maximum depth of a transaction's merkle branch based on the minimum size of a transaction and the maximum block size.
+간편 결제 검증(Simplified Payment Verification) 소프트웨어는 거래의 최소 크기와 최대 블록 크기를 기준으로 거래의 머클 브랜치 최대 깊이에 대해 가정하지 않는 한 영향을 받지 않습니다.
 
 ==Implementation==
 
