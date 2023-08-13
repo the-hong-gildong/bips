@@ -84,12 +84,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Deferred
 |- style="background-color: #cfffcf"
-| [[bip-0016.mediawiki|16]]
-| Consensus (soft fork)
+| [[bip-0016_kr.mediawiki|16(kr)]]
+| 컨센서스 (soft fork)
 | Pay to Script Hash
 | Gavin Andresen
-| Standard
-| Final
+| 표준
+| 최종
 |- style="background-color: #ffcfcf"
 | [[bip-0017.mediawiki|17]]
 | Consensus (soft fork)
