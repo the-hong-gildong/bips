@@ -63,12 +63,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Withdrawn
 |- style="background-color: #cfffcf"
-| [[bip-0013.mediawiki|13]]
-| Applications
-| Address Format for pay-to-script-hash
+| [[bip-0013_kr.mediawiki|13(kr)]]
+| 애플리케이션
+| pay-to-script-hash 주소 형식
 | Gavin Andresen
-| Standard
-| Final
+| 표준
+| 최종
 |- style="background-color: #cfffcf"
 | [[bip-0014.mediawiki|14]]
 | Peer Services
