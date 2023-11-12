@@ -21,7 +21,7 @@
 안타깝게도, 원래 SignatureHash 트랜잭션 다이제스트 알고리즘에는 최소한 2가지의 약점이 있습니다:
 
 * 각 서명의 검증에 대해 데이터 해싱 양이 트랜잭션의 크기에 비례합니다. 따라서 트랜잭션 내의 sigops 수가 증가함에 따라 데이터 해싱은 O(n<sup>2</sup>)로 증가합니다. 예를 들어, 1MB 블록은 일반적으로 2015년 평균 컴퓨터에서 2초의 검증 시간이 소요되지만, 5569개의 sigops가 포함된 1MB 트랜잭션은 25초 이상 소요될 수 있습니다. 이는 재사용 가능한 "중간 상태(midstate)"를 도입하여 다이제스트 알고리즘을 최적화함으로써 시간 복잡도를 O(n)으로 개선함으로써 해결될 수 있습니다. <ref>[https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2013-2292 CVE-2013-2292]</ref><ref>[https://bitcointalk.org/?topic=140078 New Bitcoin vulnerability: A transaction that takes at least 3 minutes to verify]</ref><ref>[http://rusty.ozlabs.org/?p=522 The Megatransaction: Why Does It Take 25 Seconds?]</ref>
-* 이 알고리즘은 입력으로 지출되는 비트코인의 양을 포함하지 않습니다. 온라인 네트워크 노드에서는 지정된 트랜잭션을 요청하여 출력 값을 얻을 수 있으므로 일반적으로 문제가 되지 않습니다. 그러나 오프라인 트랜잭션 서명 장치("콜드 월렛")의 경우, 입력 금액을 모르기 때문에 정확한 지출 금액과 트랜잭션 수수료를 계산할 수 없습니다. 이 문제를 해결하기 위해서는 콜드 월렛이 지출되는 전체 트랜잭션을 획득해야 하며, 이는 경량화된, 에어 갭월렛 구현에 큰 장애물이 될 수 있습니다. 트랜잭션 다이제스트의 일부로 입력 값이 포함되도록 하면 콜드 월렛은 신뢰가 없는 소스로부터 값을 배움으로써 안전하게 트랜잭션에 서명할 수 있습니다. 잘못된 값이 제공되어 서명된 경우 서명은 유효하지 않을 것이며 자금이 손실될 수 없습니다. <ref>[https://bitcointalk.org/index.php?topic=181734.0 SIGHASH_WITHINPUTVALUE: Super-lightweight HW wallets and offline data]</ref>
+* 기존 알고리즘은 입력에 의해 지출되는 비트코인의 양을 포함하지 않습니다. 네트워크에 연결된 온라인 노드에서는 지정된 트랜잭션을 요청하여 출력 값을 얻을 수 있으므로 일반적으로 문제가 되지 않습니다. 그러나 오프라인 트랜잭션 서명 장치("콜드 월렛")의 경우, 입력 금액을 모르기 때문에 정확한 지출 금액과 트랜잭션 수수료를 계산할 수 없습니다. 이 문제를 해결하기 위해서는 콜드 월렛이 지출될 트랜잭션 전체를 획득해야 하며, 이는 경량화된, 에어 갭 월렛 구현에 큰 장애물이 될 수 있습니다. 트랜잭션 다이제스트의 일부로 입력 값이 포함되도록 하면 콜드 월렛은 신뢰할 수 없는 소스로부터 값을 얻음으로써 안전하게 트랜잭션에 서명할 수 있습니다. 잘못된 값이 제공되어 서명된 경우 서명은 유효하지 않을 것이며 자금이 손실될 수 없습니다. <ref>[https://bitcointalk.org/index.php?topic=181734.0 SIGHASH_WITHINPUTVALUE: Super-lightweight HW wallets and offline data]</ref>
 
 기존 스크립트 시스템에서 위에서 언급한 수정 사항을 배포하는 것은 간단한 작업이 아닙니다. 이것은 하드포크이거나 스택 항목을 제거하거나 삽입할 수 없는 새로운 서명 연산 코드(sigops)가 있는 소프트포크가 될 것입니다. 그러나 세그윗 소프트포크의 도입은 기존 시스템을 방해하지 않고 다른 스크립트 의미론(semantic)을 정의할 수 있는 기회를 제공합니다. 업그레이드되지 않은 노드는 이러한 트랜잭션 출력이 임의의 서명 또는 전혀 서명되지 않은 상태로 소비 가능하다고 항상 간주합니다. <ref>[https://github.com/MyLifeForB/bips/blob/master/bip-0141_kr.mediawiki BIP141(kr): Segregated Witness (Consensus layer)]</ref>
 
@@ -44,7 +44,7 @@
 # 모든 sighash 유형은 서명된 입력에 의해 소비되고있는 금액에 대해 커밋(commit)합니다;
 # <code>scriptCode</code>에서 서명의 <code>FindAndDelete</code>는 적용되지 않습니다.;
 # 마지막으로 실행된 <code>OP_CODESEPARATOR</code> 이후의 모든 <code>OP_CODESEPARATOR</code>는 scriptCode에서 제거되지 않습니다 (마지막으로 실행된 <code>OP_CODESEPARATOR</code>와 그 앞의 스크립트는 항상 제거됩니다);
-# <code>SINGLE</code>은 입력 인덱스를 명시적으로 커밋하지 않습니다. <code>ANYONECANPAY</code>가 설정되지 않은 경우, <code>hashPrevouts</code>와 <code>outpoint</code>가 함께 입력 인덱스를 암묵적으로 커밋하므로 의미는 변경되지 않습니다. <code>SINGLE</code>이 <code>ANYONECANPAY</code>와 함께 사용되는 경우 인덱스 커밋이 생략되어 입력-출력 쌍을 동등한 인덱스에 위치시키는 것만으로 순열이 가능합니다.
+# <code>SINGLE</code>은 입력 인덱스를 명시적으로 커밋하지 않습니다. <code>ANYONECANPAY</code>가 설정되지 않은 경우, <code>hashPrevouts</code>와 <code>outpoint</code>가 함께 입력 인덱스를 암묵적으로 커밋하므로 의미는 변경되지 않습니다. <code>SINGLE</code>이 <code>ANYONECANPAY</code>와 함께 사용되는 경우 인덱스 커밋이 생략되어 입력-출력 쌍을 동등한 인덱스에 위치시키는 것만으로 치환(permutation)이 가능합니다.
 
 1, 4, 7, 9, 10 항목들은 기존 알고리즘과 같은 의미를 가집니다. <ref name=wiki></ref>
 
@@ -57,8 +57,7 @@
 항목 6은 이 입력에서 소비된 비트코인 금액의 8바이트 값을 나타냅니다.
 
 <code>hashPrevouts</code>:
-*만약 <code>ANYONECANPAY</code> 플래그가 설정되지 않은 경우, <code>hashPrevouts</code>는 모든 입력 아웃포인트들의 직렬화(serialization of all input outpoints)의 이중 SHA256 값입니다;
-<blockquote> "outpoints"는 입력 트랜잭션의 outpoint(해당 입력이 참조하는 이전 출력)를 나타내는 것입니다. 따라서 "이전 트랜잭션의 모든 outpoint 직렬화"로 해석하는 것이 더 적절합니다. by chatGPT</blockquote>
+*만약 <code>ANYONECANPAY</code> 플래그가 설정되지 않은 경우, <code>hashPrevouts</code>는 모든 입력 아웃포인트들의 직렬화의 이중 SHA256 값입니다;
 *그렇지 않으면 <code>hashPrevouts</code>는 <code>0x0000......0000</code>의 <code>uint256</code>입니다.
 
 <code>hashSequence</code>:
@@ -623,7 +622,7 @@
 
 == Backward compatibility ==
 
-오래된 소프트웨어는 수정 없이 계속 작동합니다. 그러나 업그레이드되지 않은 노드는 증인 데이터를 볼 수 없으며 유효성을 검사하지 않으며, 재정의된 서명 연산(redefined sigops)을 포함한 모든 증인 프로그램을 누구나 소비 가능한 스크립트로 간주합니다.
+이전 소프트웨어는 수정 없이 계속 동작합니다. 그러나 업그레이드되지 않은 노드는 증인 데이터를 볼 수 없으며 유효성을 검사하지 않으며, 재정의된 서명 연산(redefined sigops)을 포함한 모든 증인 프로그램을 누구나 소비 가능한 스크립트로 간주합니다.
 
 == Reference Implementation ==
 
