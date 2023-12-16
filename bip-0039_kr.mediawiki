@@ -11,6 +11,7 @@
   상태: 제안됨
   타입: 표준 트랙
   생성일: 2013-09-10
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
 </pre>
 
 ==Abstract==

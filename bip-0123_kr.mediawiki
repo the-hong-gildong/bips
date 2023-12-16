@@ -9,6 +9,7 @@
   생성일: 2015-08-26
   라이센스: CC0-1.0
            GNU-All-Permissive
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0123.mediawiki
 </pre>
 
 ==Abstract==

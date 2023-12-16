@@ -11,6 +11,7 @@
   타입: 표준 트랙
   생성일: 2015-08-10
   라이센스: PD
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki
 </pre>
 
 ==Abstract==

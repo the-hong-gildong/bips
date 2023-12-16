@@ -9,6 +9,7 @@
   상태: 제안됨
   타입: 표준 트랙
   생성일: 2014-04-24
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki
 </pre>
 
 ==Abstract==
