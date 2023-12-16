@@ -9,6 +9,7 @@
   타입: 정보성
   생성일: 2017-12-28
   라이센스: CC0-1.0
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki
 </pre>
 
 ==Abstract==

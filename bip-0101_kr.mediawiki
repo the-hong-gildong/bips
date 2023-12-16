@@ -8,6 +8,7 @@
   상태: 중단됨
   타입: 표준 트랙
   생성일: 2015-06-22
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0101.mediawiki
 </pre>
 
 ==Abstract==
