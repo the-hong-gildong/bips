@@ -8,6 +8,7 @@
   상태: 최종
   타입: 표준 트랙
   생성일: 2011-10-18
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki
 </pre>
 
 ==Abstract==

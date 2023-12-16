@@ -11,6 +11,7 @@
   생성일: 2017-03-20
   라이센스: BSD-2-Clause
   대체: 142
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki
 </pre>
 
 ==Introduction==

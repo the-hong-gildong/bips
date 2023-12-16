@@ -10,6 +10,7 @@
   라이센스: BSD-2-Clause
            OPL
   대체: 1
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0002.mediawiki
 </pre>
 
 ==Abstract==

@@ -890,7 +890,7 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Rejected
 |- style="background-color: #cfffcf"
-| [[bip-0173(kr).mediawiki|173(kr)]]
+| [[bip-0173_kr.mediawiki|173(kr)]]
 | 애플리케이션
 | v0-16 네이티브 증인 출력에 대한 Base32 주소 형식
 | Pieter Wuille, Greg Maxwell

@@ -17,6 +17,7 @@ RECENT CHANGES:
   타입: 정보성
   생성일: 2012-02-11
   라이센스: BSD-2-Clause
+  원문: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 </pre>
 
 ==Abstract==
