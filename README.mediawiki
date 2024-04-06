@@ -1044,12 +1044,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Draft
 |- style="background-color: #cfffcf"
-| [[bip-0340.mediawiki|340]]
+| [[bip-0340_kr.mediawiki|340(kr)]]
 |
-| Schnorr Signatures for secp256k1
+| secp256k1를 위한 슈노르 서명
 | Pieter Wuille, Jonas Nick, Tim Ruffing
-| Standard
-| Final
+| 표준
+| 최종
 |- style="background-color: #cfffcf"
 | [[bip-0341.mediawiki|341]]
 | Consensus (soft fork)
