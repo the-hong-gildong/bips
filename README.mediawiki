@@ -624,12 +624,12 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | Standard
 | Draft
 |-
-| [[bip-0119.mediawiki|119]]
-| Consensus (soft fork)
+| [[bip-0119_kr.mediawiki|119(kr)]]
+| 컨센서스 (소프트 포크)
 | CHECKTEMPLATEVERIFY
-| Jeremy Rubin
-| Standard
-| Draft
+| 제레미 루빈(Jeremy Rubin)
+| 표준
+| 초안
 |- style="background-color: #ffcfcf"
 | [[bip-0120.mediawiki|120]]
 | Applications
