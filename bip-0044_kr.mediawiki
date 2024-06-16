@@ -30,10 +30,7 @@ BIP32 경로안에서 다음 5가지 레벨을 정의합니다:
 m / purpose' / coin_type' / account' / change / address_index
 </pre>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 경로의 작은 따옴표는 BIP32 강화 유도가 사용되었음을 나타냅니다.
->>>>>>> 0dddeda (bip-0044 번역 완료)
 
 각 레벨에는 아래 챕터에 설명된 특별한 의미가 있습니다.
 
@@ -127,11 +124,8 @@ m / purpose' / coin_type' / account' / change / address_index
 [[https://github.com/satoshilabs/slips/blob/master/slip-0044.md|SLIP-0044 : Registered coin types for BIP-0044]]
 
 새로운 코인 유형을 등록하려면 해당 표준을 구현하는 기존 지갑이 필요하며 위 파일에 대한 풀 리퀘스트를 생성해야 합니다.
-=======
-Apostrophe in the path indicates that BIP32 hardened derivation is used.
-=======
+
 경로의 작은 따옴표는 BIP32 강화 유도가 사용되었음을 나타냅니다.
->>>>>>> 0dddeda (bip-0044 번역 완료)
 
 각 레벨에는 아래 챕터에 설명된 특별한 의미가 있습니다.
 
@@ -224,21 +218,11 @@ Apostrophe in the path indicates that BIP32 hardened derivation is used.
 
 [[https://github.com/satoshilabs/slips/blob/master/slip-0044.md|SLIP-0044 : Registered coin types for BIP-0044]]
 
-<<<<<<< HEAD
-To register a new coin type, an existing wallet that implements the standard
-is required and a pull request to the above file should be created.
->>>>>>> d19c7b1 (bip-0044_kr 파일 추가)
-=======
 새로운 코인 유형을 등록하려면 해당 표준을 구현하는 기존 지갑이 필요하며 위 파일에 대한 풀 리퀘스트를 생성해야 합니다.
->>>>>>> 0dddeda (bip-0044 번역 완료)
 
 ==Examples==
 
 {|
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 0dddeda (bip-0044 번역 완료)
 !코인
 !계좌
 !체인
@@ -335,13 +319,6 @@ is required and a pull request to the above file should be created.
 |첫 번째
 |m / 44' / 1' / 1' / 1 / 0
 |-
-<<<<<<< HEAD
-|Bitcoin Testnet
-|second
-|change
-|second
->>>>>>> d19c7b1 (bip-0044_kr 파일 추가)
-=======
 |비트코인 테스트넷
 |두 번째
 |잔돈
@@ -351,15 +328,5 @@ is required and a pull request to the above file should be created.
 
 ==Reference==
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 * [[bip-0032_kr.mediawiki|BIP32 - 계층적 결정론적 지갑]]
 * [[bip-0043_kr.mediawiki|BIP43 - 결정론적 지갑을 위한 목적 필드]]
-=======
-* [[bip-0032.mediawiki|BIP32 - Hierarchical Deterministic Wallets]]
-* [[bip-0043.mediawiki|BIP43 - Purpose Field for Deterministic Wallets]]
->>>>>>> d19c7b1 (bip-0044_kr 파일 추가)
-=======
-* [[bip-0032_kr.mediawiki|BIP32 - 계층적 결정론적 지갑]]
-* [[bip-0043_kr.mediawiki|BIP43 - 결정론적 지갑을 위한 목적 필드]]
->>>>>>> 0dddeda (bip-0044 번역 완료)
