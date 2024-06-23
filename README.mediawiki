@@ -1,3 +1,5 @@
+* 원문: https://github.com/bitcoin/bips/blob/master/README.mediawiki
+* 싱크: https://github.com/bitcoin/bips/commit/4f75edb2b85f55f5723e379584e52181f5f44269
 BIP을 제출하려는 사람들은 먼저 아이디어나 문서를 [https://groups.google.com/g/bitcoindev bitcoindev@googlegroups.com] 메일링 리스트에 제안해야 합니다 (번호를 할당하지 <em>마세요</em> - <a href="bip-0002.mediawiki">BIP 2</a>에서 전체 과정을 읽어보세요). 논의 후, PR을 열어주세요. 수정 및 승인된 이후 여기에 게시됩니다.
 
 BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정을 내리는 데에는 너무 개입하지 않으려고 노력합니다. 이에 대한 예외는, 의견이 분분하고 합의가 이루어지지 않을 때 매우 드물게 발생합니다. 그러한 경우에는 보수적인 선택이 항상 우선시됩니다.
@@ -235,15 +237,15 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | 애플리케이션
 | 결정론적 지갑을 위한 목적 필드
 | Marek Palatinus, Pavol Rusnak
-| 정보성
+| 표준
 | 최종
-|- style="background-color: #ffffcf"
+|- style="background-color: #cfffcf"
 | [[bip-0044_kr.mediawiki|44(kr)]]
 | 애플리케이션
 | 결정론적 지갑을 위한 다중-계좌 계층
 | Marek Palatinus, Pavol Rusnak
 | 표준
-| 제안됨
+| 최종
 |- style="background-color: #ffffcf"
 | [[bip-0045.mediawiki|45]]
 | Applications
@@ -270,7 +272,7 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | 애플리케이션
 | P2WPKH-nested-in-P2SH 기반 계좌를 위한 유도 체계
 | Daniel Weigl
-| 정보성
+| 표준
 | 최종
 |- style="background-color: #cfffcf"
 | [[bip-0050.mediawiki|50]]
@@ -439,7 +441,7 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | 애플리케이션
 | P2WPKH 기반 계좌를 위한 유도 체계
 | Pavol Rusnak
-| 정보성
+| 표준
 | 최종
 |-
 | [[bip-0085_kr.mediawiki|85(kr)]]
@@ -487,7 +489,7 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | [[bip-0093.mediawiki|93]]
 | Applications
 | codex32: Checksummed SSSS-aware BIP32 seeds
-| Leon Olsson Curr, Pearlwort Sneed
+| Leon Olsson Curr, Pearlwort Sneed, Andrew Poelstra
 | Informational
 | Draft
 |-
@@ -1120,6 +1122,13 @@ BIP 승인에 대해서는 꽤 관대하며, 커뮤니티를 대신하여 결정
 | josibake, Ruben Somsen
 | Standard
 | Proposed
+|-
+| [[bip-0353.mediawiki|353]]
+| Applications
+| DNS Payment Instructions
+| Matt Corallo, Bastien Teinturier
+| Standard
+| Draft
 |-
 | [[bip-0370.mediawiki|370]]
 | Applications

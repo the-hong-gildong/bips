@@ -2,26 +2,27 @@
   BIP: 144
   레이어: 피어 서비스
   제목: 세그윗 (피어 서비스)
-  작성자: Eric Lombrozo <elombrozo@gmail.com>
-          Pieter Wuille <pieter.wuille@gmail.com>
+  작성자: 에릭 롬브로조(Eric Lombrozo) <elombrozo@gmail.com>
+          피터 윌러(Pieter Wuille) <pieter.wuille@gmail.com>
   코멘트-요약: 아직 코멘트 없음.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0144
   상태: 최종
   타입: 표준 트랙
   생성일: 2016-01-08
-  라이센스: PD
-  원문: https://github.com/bitcoin/bips/blob/master/bip-0144.mediawiki
+  라이선스: PD
 </pre>
+* 원문: https://github.com/bitcoin/bips/blob/master/bip-0144.mediawiki
+* 싱크: https://github.com/bitcoin/bips/commit/d8dea4ef095e5ce8a12f7956a9951cb5cddf8964
 
-==Abstract==
+==초록==
 본 BIP는 세그윗 구조에 커밋하는 트랜잭션과 블록의 전파를 위한 새로운 메세지와 직렬화 형식을 정의합니다.
 
-==Motivation==
+==동기==
 세그윗 구조체를 정의하고 미래 블록에 대한 커밋을 요구하는([https://github.com/MyLifeForB/bips/blob/master/bip-0141_kr.mediawiki BIP141(kr)] - Consensus segwit BIP) 새로운 메커니즘은 피어가 다른 피어에게 호환성을 깨뜨리지 않으면서 세그윗을 지원하는 것을 알리고 증인 구조체를 전달하고 요청하는 것을 허용하도록 정의되어야만 합니다.
 
-==Specification==
+==스펙==
 
-=== Serialization ===
+=== 직렬화 ===
 tx 메세지에 대한 새로운 직렬화 형식이 P2P 프로토콜에 추가됩니다.
 
 다음 구조로 직렬화 됩니다:
@@ -90,20 +91,20 @@ tx 메세지에 대한 새로운 직렬화 형식이 P2P 프로토콜에 추가�
 
 * '''0x01 플래그 바이트의 이유''': 이를 통해 우리는 커밋 되지 않는(non-committed) 데이터를 트랜잭션에 쉽게 추가할 수 있습니다(소비되고 있는 txout 등). 이는 비트 벡터로 해석될 수 있습니다.
 
-=== Handshake ===
+=== 핸드쉐이크 ===
 노드는 다음 서비스 비트를 사용하여 증인을 제공할 수 있다는 신호를 보냅니다.
 
     NODE_WITNESS = (1 << 3)
 	
 
-=== Hashes ===
+=== 해시 ===
 트랜잭션 머클 트리 및 입력 트랜잭션의 아웃포인트에서 사용되는 트랜잭션 해시는 항상 이전의 비-증인 직렬화를 사용하여 계산됩니다.
 
 증인 데이터를 포함하는 새 해시의 지원은 새로운 증인 직렬화 계산에 추가되었습니다. (빈 증인을 갖는 트랜잭션은 항상 이전 직렬화를 사용하므로, 일반적인 해시와 같은 증인 해시를 갖습니다.)
 
 <img src=bip-0144/witnesstx.png></img>
 
-=== Relay ===
+=== 릴레이 ===
 오직 getdata 에서만 사용되는 새로운 인벤토리(inv) 타입 - MSG_WITNESS_TX (0x40000001 또는 (1<<30)+MSG_TX)와 MSG_WITNESS_BLOCK (0x40000002 또는 (1<<30)+MSG_BLOCK) - 이 추가되었습니다. 인벤토리 메세지 스스로는  MSG_FILTERED_BLOCK과 비슷하게 MSG_TX와 MSG_BLOCK을 사용합니다. MSG_FILTERED_WITNESS_BLOCK(0x40000003 또는 (1<<30)+MSG_FILTERED_BLOCK)과 같은 추가적인 인벤토리 타입은 예약되어 있으며(reserved), 나중에 사용될 예정입니다.
 
 * '''인벤토리(invs)에서 증인을 알리지 않는 이유''': 더 이상 인벤토리(invs)를 항상 사용하지 않으며('sendheaders' BIP 130으로), 게다가 유용하지 않습니다. 묵시적으로 모든 트랜잭션과 블록은 증인을 가지고 있지만, 구버전은 빈 증인을 가지고 있습니다.
@@ -112,11 +113,11 @@ MSG_WITNESS_TX getdata 요청은 비-증인 직렬화 해시를 사용해야 합
 
 MSG_WITNESS_BLOCK 요청은 증인 직렬화를 사용하는 증인을 갖는 트랜잭션과 함께 블록 메세지를 반환합니다.
 
-== Credits ==
+== 크레딧 ==
 이 BIP에서 많은 아이디어를 제안한 Gregory Maxwell와 이를 소프트포크로 배포하는 방법을 개발한 Luke-Jr에게 특별히 감사드립니다.
 
-== Reference Implementation ==
+== 참조 구현 ==
 https://github.com/bitcoin/bitcoin/pull/8149
 
-== Copyright ==
+== 저작권 ==
 이 문서는 공개 도메인에 배치됩니다.

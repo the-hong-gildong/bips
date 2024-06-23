@@ -2,21 +2,22 @@
   BIP: 143
   레이어: 컨센서스 (소프트 포크)
   제목: 버전 0 증인 프로그램을 위한 트랜잭션 서명 검증
-  작성자: Johnson Lau <jl2012@xbt.hk>
-          Pieter Wuille <pieter.wuille@gmail.com>
+  작성자: 존슨 라우(Johnson Lau) <jl2012@xbt.hk>
+          피터 윌러(Pieter Wuille) <pieter.wuille@gmail.com>
   코멘트-요약: 아직 코멘트 없음.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0143
   상태: 최종
   타입: 표준 트랙
   생성일: 2016-01-03
-  라이센스: PD
-  원문: https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki
+  라이선스: PD
 </pre>
+* 원문: https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki
+* 싱크: https://github.com/bitcoin/bips/commit/f61885edcf5e63ac205b1ca5f08173f1336bff74#diff-683fc485a59908adf2fe122780f1ed8789cf4adbce30b46f8f7e78fabc1b3f2e
 
-== Abstract ==
+== 초록 ==
 이 제안서는, 검증을 위해 불필요한 데이터 해싱을 최소화하고 서명에 의해 입력값이 커버되도록하기 위해, 버전 0 증인 프로그램에서 서명 검증을 위한 새로운 트랜잭션 다이제스트 알고리즘을 정의합니다.
 
-== Motivation ==
+== 동기 ==
 비트코인 스크립트 시스템에서 원래 4개의 ECDSA 서명 검증 코드가 있습니다: <code>CHECKSIG</code>, <code>CHECKSIGVERIFY</code>, <code>CHECKMULTISIG</code>, <code>CHECKMULTISIGVERIFY</code> (“sigops”). sighash 유형(<code>ALL</code>, <code>NONE</code>, <code>SINGLE</code>, <code>ANYONECANPAY</code>)에 따라 트랜잭션의 직렬화된 하위 집합을 더블 SHA256으로 해싱하여 트랜잭션 다이제스트가 생성되며, 이 다이제스트와 주어진 공개 키에 대해 서명이 검증됩니다. 자세한 절차는 비트코인 위키 문서에 설명되어 있습니다. <ref name=wiki>[https://en.bitcoin.it/wiki/OP_CHECKSIG]</ref>
 
 안타깝게도, 원래 SignatureHash 트랜잭션 다이제스트 알고리즘에는 최소한 2가지의 약점이 있습니다:
@@ -26,7 +27,7 @@
 
 기존 스크립트 시스템에서 위에서 언급한 수정 사항을 배포하는 것은 간단한 작업이 아닙니다. 이것은 하드포크이거나 스택 항목을 제거하거나 삽입할 수 없는 새로운 서명 연산 코드(sigops)가 있는 소프트포크가 될 것입니다. 그러나 세그윗 소프트포크의 도입은 기존 시스템을 방해하지 않고 다른 스크립트 의미론(semantic)을 정의할 수 있는 기회를 제공합니다. 업그레이드되지 않은 노드는 이러한 트랜잭션 출력이 임의의 서명 또는 전혀 서명되지 않은 상태로 소비 가능하다고 항상 간주합니다. <ref>[https://github.com/MyLifeForB/bips/blob/master/bip-0141_kr.mediawiki BIP141(kr): Segregated Witness (Consensus layer)]</ref>
 
-== Specification ==
+== 스펙 ==
 새로운 트랜잭션 다이제스트 알고리즘이 정의되었지만, 버전 0 증인 프로그램의 시그옵스에만 적용됩니다.
   Double SHA256 of the serialization of:
      1. nVersion of the transaction (4-byte little endian)
@@ -130,16 +131,16 @@
   return ss.GetHash();
 </source>
 
-== Restrictions on public key type ==
+== 공개키 유형에 대한 제한 ==
 기본 정책으로 <code>P2WPKH</code>와 <code>P2WSH</code>에서는 압축된 공개키(compressed public keys)만 허용됩니다. 버전 0 증인 프로그램 내에서 sigop으로 전달되는 모든 공개키는 압축된 키여야 하며, 첫 번째 바이트는 반드시 <code>0x02</code> 또는 <code>0x03</code>이어야 하고, 크기는 33바이트여야 합니다. 이 규칙을 위반하는 트랜잭션은 기본적으로 릴레이(relay)되거나 채굴되지 않습니다.
 
 이 정책은 앞으로의 소프트포크 제안을 준비하기 위한 것이므로, 잠재적인 자금 손실을 피하기 위해 사용자들은 버전 0 증인 프로그램에서 압축되지 않은 키를 사용해서는 안 됩니다.
 
-== Example ==
+== 예시 ==
 
 합의에 중요한 영향을 미치는 일관성을 보장하기 위해, 개발자는 구현을 아래의 모든 테스트에 대해 검증해야 합니다. 이 제안과 관련된 더 많은 테스트는 https://github.com/bitcoin/bitcoin/tree/master/src/test/data 에서 찾을 수 있습니다.
 
-=== Native P2WPKH ===
+=== 네이티브 P2WPKH ===
   
   The following is an unsigned transaction:
     0100000002fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f0000000000eeffffffef51e1b804cc89d182d279655c3aa89e815b1b309fe287d9b2b55d57b90ec68a0100000000ffffffff02202cb206000000001976a9148280b37df378db99f66f85c95a783a76ac7a6d5988ac9093510d000000001976a9143bde42dbee7e4dbe6a21b2d50ce2f0167faa815988ac11000000
@@ -188,7 +189,7 @@
     nHashType:    01000000
     
   sigHash:      c37af31116d1b27caf68aae9e3ac82f1477929014d5b917657d0eb49478cb670
-  signature:    304402203609e17b84f6a7d30c80bfa610b5b4542f32a8a0d5447a12fb1366d7f01cc44a0220573a954c4518331561406f90300e8f3358f51928d43c212a8caed02de67eebee
+  signature:    304402203609e17b84f6a7d30c80bfa610b5b4542f32a8a0d5447a12fb1366d7f01cc44a0220573a954c4518331561406f90300e8f3358f51928d43c212a8caed02de67eebee01
     
   The serialized signed transaction is: 01000000000102fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f00000000494830450221008b9d1dc26ba6a9cb62127b02742fa9d754cd3bebf337f7a55d114c8e5cdd30be022040529b194ba3f9281a99f2b1c0a19c0489bc22ede944ccf4ecbab4cc618ef3ed01eeffffffef51e1b804cc89d182d279655c3aa89e815b1b309fe287d9b2b55d57b90ec68a0100000000ffffffff02202cb206000000001976a9148280b37df378db99f66f85c95a783a76ac7a6d5988ac9093510d000000001976a9143bde42dbee7e4dbe6a21b2d50ce2f0167faa815988ac000247304402203609e17b84f6a7d30c80bfa610b5b4542f32a8a0d5447a12fb1366d7f01cc44a0220573a954c4518331561406f90300e8f3358f51928d43c212a8caed02de67eebee0121025476c2e83188368da1ff3e292e7acafcdb3566bb0ad253f62fc70f07aeee635711000000
   
@@ -260,7 +261,7 @@
     witness    02 473044022047ac8e878352d3ebbde1c94ce3a10d057c24175747116f8288e5d794d12d482f0220217f36a485cae903c713331d877c1f64677e3622ad4010726870540656fe9dcb01 2103ad1d8e89212f0b92c74d23bb710c00662ad1470198ac48c43f7d6f93a2a26873
     nLockTime: 92040000
 
-=== Native P2WSH ===
+=== 네이티브 P2WSH ===
 
 다음 예시는 <code>OP_CODESEPARATOR</code>와 범위를 벗어난(out-of-range) <code>SIGHASH_SINGLE</code>의 처리 방식을 보여줍니다:
 
@@ -539,7 +540,7 @@
   The serialized signed transaction is: 0100000000010136641869ca081e70f394c6948e8af409e18b619df2ed74aa106c1ca29787b96e0100000023220020a16b5755f7f6f96dbd65f5f0d6ab9418b89af4b1f14a1bb8a09062c35f0dcb54ffffffff0200e9a435000000001976a914389ffce9cd9ae88dcc0631e88a821ffdbe9bfe2688acc0832f05000000001976a9147480a33f950689af511e6e84c138dbbd3c3ee41588ac080047304402206ac44d672dac41f9b00e28f4df20c52eeb087207e8d758d76d92c6fab3b73e2b0220367750dbbe19290069cba53d096f44530e4f98acaa594810388cf7409a1870ce01473044022068c7946a43232757cbdf9176f009a928e1cd9a1a8c212f15c1e11ac9f2925d9002205b75f937ff2f9f3c1246e547e54f62e027f64eefa2695578cc6432cdabce271502473044022059ebf56d98010a932cf8ecfec54c48e6139ed6adb0728c09cbe1e4fa0915302e022007cd986c8fa870ff5d2b3a89139c9fe7e499259875357e20fcbb15571c76795403483045022100fbefd94bd0a488d50b79102b5dad4ab6ced30c4069f1eaa69a4b5a763414067e02203156c6a5c9cf88f91265f5a942e96213afae16d83321c8b31bb342142a14d16381483045022100a5263ea0553ba89221984bd7f0b13613db16e7a70c549a86de0cc0444141a407022005c360ef0ae5a5d4f9f2f87a56c1546cc8268cab08c73501d6b3be2e1e1a8a08824730440220525406a1482936d5a21888260dc165497a90a15669636d8edca6b9fe490d309c022032af0c646a34a44d1f4576bf6a4a74b67940f8faa84c7df9abe12a01a11e2b4783cf56210307b8ae49ac90a048e9b53357a2354b3334e9c8bee813ecb98e99a7e07e8c3ba32103b28f0c28bfab54554ae8c658ac5c3e0ce6e79ad336331f78c428dd43eea8449b21034b8113d703413d57761b8b9781957b8c0ac1dfe69f492580ca4195f50376ba4a21033400f6afecb833092a9a21cfdf1ed1376e58c5d1f47de74683123987e967a8f42103a6d48b1131e94ba04d9737d61acdaa1322008af9602b3b14862c07a1789aac162102d8b661b0b3302ee2f162b09e07a55ad5dfbe673a9f01d9f0c19617681024306b56ae00000000
 
 
-=== No FindAndDelete ===
+=== FindAndDelete 없음 ===
 
 이 예제는 서명에 대한 <code>FindAndDelete</code>가 적용되지 않음을 보여줍니다. 이 트랜잭션들은 비전통적인 방법으로 생성되었습니다. 개인 키를 사용하여 서명하는 대신, 서명은 <code>witnessScript</code>의 일부로 미리 결정됩니다. 공개키는 이 제안서에서 정의된 고정 서명 및 <code>sighash</code>를 사용하여 키 복구를 통해 생성됩니다. 따라서 개인 키는 알 수 없습니다.
 
@@ -552,7 +553,7 @@
     nLockTime: 00000000
   
   The input comes from a P2WSH witness program:
-    scriptPubKey : 00209e1be07558ea5cc8e02ed1d80c0911048afad949affa36d5c3951e3159dbea19, value: 200000
+    scriptPubKey : 00209e1be07558ea5cc8e02ed1d80c0911048afad949affa36d5c3951e3159dbea19, value: 0.00200000
     redeemScript : OP_CHECKSIGVERIFY <0x30450220487fb382c4974de3f7d834c1b617fe15860828c7f96454490edd6d891556dcc9022100baf95feb48f845d5bfc9882eb6aeefa1bc3790e39f59eaa46ff7f15ae626c53e01>
                    ad4830450220487fb382c4974de3f7d834c1b617fe15860828c7f96454490edd6d891556dcc9022100baf95feb48f845d5bfc9882eb6aeefa1bc3790e39f59eaa46ff7f15ae626c53e01
   
@@ -617,22 +618,22 @@
 
 새로운 직렬화 형식은 BIP144에서 설명하고 있습니다 <ref>[[bip-0144_kr.mediawiki|BIP144(kr): Segregated Witness (Peer Services)]]</ref>
 
-== Deployment ==
+== 배포 ==
 
 이 제안은 세그윗(Segregated Witness) 소프트포크(BIP 141)와 함께 배포됩니다
 
-== Backward compatibility ==
+== 하위 호완성 ==
 
 이전 소프트웨어는 수정 없이 계속 동작합니다. 그러나 업그레이드되지 않은 노드는 증인 데이터를 볼 수 없으며 유효성을 검사하지 않으며, 재정의된 서명 연산(redefined sigops)을 포함한 모든 증인 프로그램을 누구나 소비 가능한 스크립트로 간주합니다.
 
-== Reference Implementation ==
+== 참조 구현 ==
 
 https://github.com/bitcoin/bitcoin/pull/8149
 
-== References ==
+== 참고 자료 ==
 
 <references />
 
-== Copyright ==
+== 저작권 ==
 
 이 문서는 공공 도메인에 배치되어 있습니다.

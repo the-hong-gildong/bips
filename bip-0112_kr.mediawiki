@@ -2,23 +2,24 @@
   BIP: 112
   레이어: 컨센서스 (소프트 포크)
   제목: CHECKSEQUENCEVERIFY
-  작성자: BtcDrak <btcdrak@gmail.com>
-          Mark Friedenbach <mark@friedenbach.org>
-          Eric Lombrozo <elombrozo@gmail.com>
+  작성자: Btc드락(BtcDrak) <btcdrak@gmail.com>
+          마크 프라이든배치(Mark Friedenbach) <mark@friedenbach.org>
+          에릭 롬브로조(Eric Lombrozo) <elombrozo@gmail.com>
   코멘트-요약: 아직 코멘트 없음.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0112
   상태: 최종
   타입: 표준 트랙
   생성일: 2015-08-10
-  라이센스: PD
-  원문: https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki
+  라이선스: PD
 </pre>
+* 원문: https://github.com/bitcoin/bips/blob/master/bip-0112.mediawiki
+* 싱크: https://github.com/bitcoin/bips/commit/b151555daa23343ed550fbc0f191b730814a9e69
 
-==Abstract==
+==초록==
 
 본 BIP는 비트코인 스크립팅 시스템을 위한 새로운 오피코드(CHECKSEQUENCEVERIFY)를 설명하며, BIP 68과 함께 사용 중인 출력의 나이에 따라 스크립트의 실행 경로를 제한할 수 있도록 합니다.
 
-==Summary==
+==요약==
 
 CHECKSEQUENCEVERIFY는 기존 NOP3 연산 코드를 재정의합니다.
 실행 시 다음 조건 중 하나라도 참이면 스크립트 인터프리터가 오류와 함께 종료됩니다:
@@ -36,16 +37,16 @@ CHECKSEQUENCEVERIFY는 기존 NOP3 연산 코드를 재정의합니다.
 BIP 68은 해당 입력이 블록 높이 또는 블록 시간으로 계산되는 지정 나이에 도달할 때까지 논-파이널 트랜잭션이 블록에 포함되기 위해 선택되지 않도록 합니다. CHECKSEQUENCEVERIFY에 대한 인수를 nSequence 필드와 비교하여 원하는 출력의 최소 사용 나이를 간접적으로 확인합니다. 해당 상대 나이에 도달할 때까지 CHECKSEQUENCEVERIFY를 포함한 모든 스크립트 실행 경로는 유효성 검사에 실패하여 트랜잭션이 블록에 포함되기 위해 선택되지 않게 됩니다.
 
 
-==Motivation==
+==동기==
 
 BIP 68은 시퀀스 넘버에 상대적 잠금 시간이라는 합의가 강제되는 새로운 시맨틱을 부여하여 트랜잭션 nSequence 필드 의미를 재설정합니다. 그러나 이 필드를 기반으로 의사 결정을 내릴 수 있는 비트코인 스크립트를 구축할 방법은 없습니다.
 
 스크립트에서 nSequence 필드에 액세스할 수 있도록 하면, 게시 증명 후 어떤 최소한의 시간 동안만 액세스할 수 있는 코드 경로를 구성할 수 있게 됩니다. 이를 통해 에스크로, 결제 채널 또는 양방향 페그와 같은 단계적 프로토콜에서 다양한 애플리케이션을 사용할 수 있습니다.
 
 
-===Contracts With Expiration Deadlines===
+===만료 기한이 있는 계약===
 
-====Escrow with Timeout====
+====타임아웃이 있는 에스크로====
 
 펀딩 후 30일이 지나면 자동으로 만료되는 에스크로를 다음과 같은 방법으로 설정할 수 있습니다. 앨리스, 밥, 에스크로가 다음 사용(redeem) 스크립트로 2-of-3 주소를 생성합니다.
 
@@ -62,7 +63,7 @@ BIP 68은 시퀀스 넘버에 상대적 잠금 시간이라는 합의가 강제�
 
 에스크로 주소로 결제가 컨펌 될 때까지 시간이 가지 않습니다.
 
-===Retroactive Invalidation===
+===소급 무효화===
 
 많은 경우, 향후 어떤 사건이 발생할 경우 취소할 수 있는 계약을 만들고자 합니다. 그러나 블록체인의 불변성을 고려할 때, 이미 확정된 이전 약속을 소급해서 무효화하는 것은 사실상 불가능합니다. 소급 무효화를 할 수 있는 유일한 메커니즘은 블록체인을 재구성하는 것인데, 이는 근본적인 보안상의 이유로 매우 어렵고 비용이 많이 들도록 설계되어 있습니다.
 
@@ -70,15 +71,15 @@ BIP 68은 시퀀스 넘버에 상대적 잠금 시간이라는 합의가 강제�
 
 이 아이디어를 좀 더 구체적으로 적용하면 다음과 같습니다:
 
-====Hash Time-Locked Contracts====
+====해시 타임락 계약====
 
 해시 타임락 계약(HTLCs, Hash Time-Locked Contracts)은 오프체인 계약 협상을 위한 일반적인 메커니즘을 제공합니다. 무효화 시간 제한 내에 제시할 수 있는 비밀(해시의 프리이미지)에 대한 지식이 필요하도록 실행 경로를 만들 수 있습니다. 비밀을 공유하면 거래 상대방이 시간 제한이 지나갈 때까지 기다리는 동안 다른 거래 상대방이 즉시 결과물을 청구할 수 있기 때문에 트랜잭션이 절대 브로드캐스트되지 않도록 보장할 수 있습니다. 비밀을 공유하지 않으면 상대방은 즉각적으로 지불되는 경로를 사용할 수 없으며 대신 지연 경로를 사용해야 합니다.
 
-====Bidirectional Payment Channels====
+====양방향 결제 채널====
 
 스크립트화 가능한 상대적 잠금 시간은 상대방이 취소된 트랜잭션을 브로드캐스트할 경우 반응할 수 있도록 예측가능한 시간을 제공합니다: 절대 잠금 시간은 시간 제한에 가까워지면 채널을 닫았다가 다시 열어야 하는 반면, 상대 잠금 시간은 트랜잭션이 블록에 컨펌되는 순간부터 시계가 돌아가기 시작합니다. 또한 비협조적인 상대방이 있을 경우 채널에서 자금을 인출하기까지 얼마나 기다려야 하는지(블록 수)를 정확히 알 수 있는 수단도 제공합니다.
 
-====Lightning Network====
+====라이트닝 네트워크====
 
 라이트닝 네트워크는 양방향 결제 채널 아이디어를 확장하여 여러 양방향 결제 채널 홉을 통해 결제를 라우팅할 수 있도록 합니다.
 
@@ -151,7 +152,7 @@ CHECKLOCKTIMEVERIFY을 사용하면 다음과 같습니다:
 [https://github.com/ElementsProject/lightning/blob/master/doc/deployable-lightning.pdf 배포 가능한 라이트닝] 문서를 참조하세요.
 
 
-====2-Way Pegged Sidechains====
+====양방향 페깅된 사이드체인====
 
 양방향 페깅된 사이드체인에는 새로운 REORGPROOFVERIFY 연산자가 필요하며, 그 의미는 이 BIP의 범위를 벗어납니다. CHECKSEQUENCEVERIFY는 반환 페그가 게시된 후 재구성 증명을 게시하기에 충분한 시간이 경과했는지 확인하는 데 사용됩니다:
 
@@ -162,7 +163,7 @@ CHECKLOCKTIMEVERIFY을 사용하면 다음과 같습니다:
     ENDIF
 
 
-==Specification==
+==스펙==
 
 정확한 의미와 해당 의미에 대한 자세한 근거는 아래에 재현된 참조 구현을 참조하세요.
 
@@ -270,14 +271,14 @@ bool TransactionSignatureChecker::CheckSequence(const CScriptNum& nSequence) con
 }
 </pre>
 
-==Reference Implementation==
+==참조 구현==
 
 참조 구현은 다음 풀 리퀘스트에서 제공됩니다:
 
 https://github.com/bitcoin/bitcoin/pull/7524
 
 
-==Deployment==
+==배포==
 
 이 BIP는 BIP9의 "versionbits"를 0으로 배포해야 합니다.
 
@@ -287,18 +288,18 @@ https://github.com/bitcoin/bitcoin/pull/7524
 
 이 BIP는 동일한 배포 메커니즘을 사용하여 BIP68 및 BIP113과 동시에 배포해야 합니다.
 
-==Credits==
+==크레딧==
 
-Mark Friedenbach는 상대적인 잠금 시간을 달성하기 위해 시퀀스 넘버를 적용하는 방법을 고안했으며, CHECKSEQUENCEVERIFY의 참조 구현을 작성했습니다.
+마크 프라이든배치(Mark Friedenbach)는 상대적인 잠금 시간을 달성하기 위해 시퀀스 넘버를 적용하는 방법을 고안했으며, CHECKSEQUENCEVERIFY의 참조 구현을 작성했습니다.
 
 참조 구현과 이 BIP는 밀접하게 관련된 BIP 65를 위해  Peter Todd가 수행한 작업에 크게 기반했습니다.
 
 이 BIP 문서는 BtcDrak이 작성했습니다.
 
-사용 사례 예시에 기여해주신 Eric Lombrozo와 Anthony Towns에게 감사드립니다.
+사용 사례 예시에 기여해주신 에릭 롬브로조(Eric Lombrozo)와 안토니 타운(Anthony Towns)에게 감사드립니다.
 
 
-==References==
+==참고 자료==
 
 [https://github.com/bitcoin/bips/blob/master/bip-0009.mediawiki BIP 9] Versionbits
 
@@ -323,8 +324,8 @@ Mark Friedenbach는 상대적인 잠금 시간을 달성하기 위해 시퀀스 
 [https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2013-April/002433.html Jeremy Spilman Micropayment Channels]
 
 
-==Copyright==
+==저작권==
 
-This document is placed in the public domain.
+이 문서는 퍼블릭 도메인에 배치되어 있습니다.
 
 
