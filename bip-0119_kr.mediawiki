@@ -10,9 +10,10 @@
   생성일: 2020-01-06
   라이선스: BSD-3-Clause
 </pre>
-원문 링크: https://github.com/bitcoin/bips/blob/master/bip-0119.mediawiki
+* 원문: https://github.com/bitcoin/bips/blob/master/bip-0119.mediawiki
+* 싱크: https://github.com/the-hong-gildong/bips/commit/1eefea0456d661b4c51f3a40b7262d6a99161edd#diff-aaa82c3decf53fb4312de88fbb3cc081da786b72387c9fec7bfb977ad3558b91
 
-==개요==
+==초록==
 
 본 BIP는 OP_NOP4를 새로운 오피코드 OP_CHECKTEMPLATEVERIFY로 변경하여 활성화할 것을 제안합니다.
 
@@ -68,7 +69,7 @@ def execute_bip_119(self):
             self.context.precomputed_ctv_data = self.context.tx.get_default_check_template_precomputed_data()
 
         # If the hashes do not match, return error
-        if stack[-1] != self.context.tx.get_default_check_template_hash(self.context.nIn, self.context.precomputed_ctv_data)
+        if stack[-1] != self.context.tx.get_default_check_template_hash(self.context.nIn, self.context.precomputed_ctv_data):
             return self.errors_with(errors.script_err_template_mismatch)
 
         return self.return_as_nop()

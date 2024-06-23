@@ -2,26 +2,27 @@
   BIP: 16
   제목: 컨센서스 (소프트 포크)
   제목: Pay to Script Hash
-  작성자: Gavin Andresen <gavinandresen@gmail.com>
+  작성자: 게빈 엔더슨(Gavin Andresen) <gavinandresen@gmail.com>
   코멘트-요약: 아직 코멘트 없음.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0016
   상태: 최종
   타입: 표준 트랙
   생성일: 2012-01-03
-  원문: https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki
 </pre>
+* 원문: https://github.com/bitcoin/bips/blob/master/bip-0016.mediawiki
+* 싱크: https://github.com/bitcoin/bips/commit/0d77964a6b458f55dd8566295a0dd15179a44d9d
 
-==Abstract==
+==초록==
 
 본 BIP는 비트코인 스크립팅 시스템에 대한 새로운 "표준(standard)" 트랜잭션 유형을 설명하고, 새로운 트랜잭션에만 적용되는 추가 검증 규칙을 정의합니다.
 
-==Motivation==
+==동기==
 
 pay-to-script-hash의 목적은 트랜잭션 사용(redeem) 조건 충족에 대한 책임을 자금 송금자에게서 사용자(redeemer)에게로 이전하는 것입니다.
 
 송금자는 QR코드를 스캔하거나 쉽게 복사하여 붙여넣을 수 있을 만큼 짧은 20바이트의 고정 길이 해시를 사용하여 아무리 복잡한 거래라도 임의의 거래를 통해 송금할 수 있다는 이점이 있습니다.
 
-==Specification==
+==스펙==
 
 릴레이되거나 채굴된 블록에 포함되는 새로운 표준 트랜잭션 유형은 다음과 같이 정의됩니다:
 
@@ -62,7 +63,7 @@ pay-to-script-hash의 목적은 트랜잭션 사용(redeem) 조건 충족에 대
 +22 서명 연산:
     {OP_CHECKSIG OP_IF OP_CHECKSIGVERIFY OP_ELSE OP_CHECKMULTISIGVERIFY OP_ENDIF}
 
-==Rationale==
+==근거==
 
 본 BIP는 새로운 스크립트 오피코드("OP_EVAL")를 제안한 BIP 12를 대체하며, 해당 BIP의 모든 기능과 그 이상을 수행합니다.
 
@@ -82,7 +83,7 @@ pay-to-script-hash의 목적은 트랜잭션 사용(redeem) 조건 충족에 대
 
 이 공격은 공격자가 나머지 네트워크에서 무효화될 것을 알고 있는 블록을 생성해야 하기 때문에 비용이 많이 듭니다. 블록을 생성하는 것이 어렵고 사용자가 더 높은 가치의 트랜잭션일 수록 1-컨펌 트랜잭션을 수락하지 않을 것이기 때문에 어렵습니다.
 
-==Backwards Compatibility==
+==하위 호환성==
 
 이전 구현에서 이러한 트랜잭션들은 (일반적으로) 릴레이되지 않거나 블록에 포함되지 않는 비표준 트랜잭션입니다.
 
@@ -100,20 +101,20 @@ pay-to-script-hash의 목적은 트랜잭션 사용(redeem) 조건 충족에 대
 
 해시 파워의 과반수가 새로운 검증 규칙을 지지하지 않으면 롤아웃이 연기됩니다(또는 과반수를 얻지 못할 것이 분명해지면 거부됩니다).
 
-===520-byte limitation on serialized script size===
+===직렬화된 스크립트 크기의 520 바이트 제약===
 
 하위 호환성 요구 사항으로 인해 직렬화된 스크립트 자체에는 520바이트보다 큰 데이터를 스택에 푸시할 수 없다는 규칙을 포함하여 PUSHDATA 연산 이외의 연산이 금지되는 동일한 규칙이 적용됩니다. 따라서 P2SH 출력이 참조하는 리딤 스크립트의 길이가 520바이트를 초과하는 경우 P2SH 출력을 사용할 수 없습니다. 예를 들어 OP_CHECKMULTISIG 오피코드는 자체적으로 최대 20개의 공개키를 허용하지만, 33바이트 압축 pubkey를 사용할 때 최대 15개의 공개키만 P2SH 출력(3바이트 + 15개의 pubkey * 34바이트/ubkey = 513바이트)으로 사용할 수 있습니다.
 
-==Reference Implementation==
+==참조 구현==
 
 https://gist.github.com/gavinandresen/3966071
 
-==See Also==
+==함께 보세요==
 
 * https://bitcointalk.org/index.php?topic=46538
 * The [[bip-0013.mediawiki|Address format for Pay to Script Hash BIP]]
 * M-of-N Multisignature Transactions [[bip-0011.mediawiki|BIP 11]]
 * [[bip-0016/qa.mediawiki|Quality Assurance test checklist]]
 
-== References ==
+== 참고 자료 ==
 <references>

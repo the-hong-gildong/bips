@@ -2,18 +2,19 @@
   BIP: 85
   레이어: 애플리케이션
   제목: BIP32 키체인으로부터 유도한 결정론적 엔트로피
-  작성자: Ethan Kosakovsky <ethankosakovsky@protonmail.com>
+  작성자: 에댄 코사코브스키(Ethan Kosakovsky) <ethankosakovsky@protonmail.com>
   코멘트-요약: 아직 코멘트 없음.
   코멘트-URI: https://github.com/bitcoin/bips/wiki/Comments:BIP-0085
   상태: 초안
   타입: 정보성
   생성일: 2020-03-20
-  라이센스: BSD-2-Clause
+  라이선스: BSD-2-Clause
            OPL
-  원문: https://github.com/bitcoin/bips/blob/master/bip-0085.mediawiki
 </pre>
+* 원문: https://github.com/bitcoin/bips/blob/master/bip-0085.mediawiki
+* 싱크: https://github.com/bitcoin/bips/commits/master/bip-0085.mediawiki
 
-==Abstract==
+==초록==
 
 ''"하나의 시드 하나로 모든 것을 규정하고,''
 ''키 하나로 그것들을 찾고,''
@@ -24,7 +25,7 @@
 
 HD 키체인은 본질적으로 초기 엔트로피에서 유도되므로, 본 제안은 지갑이 초기 니모닉 시드 또는 루트 키를 생성하는 데 사용하는 모든 방법에 공급할 수 있는 키체인으로부터 지갑이 엔트로피를 유도하는 방법을 제안합니다.
 
-==Definitions==
+==정의==
 
 본 문서에서 "반드시(MUST)", "반드시 하지 말아야 함(MUST NOT)", "필수(REQUIRED)", "해야 함(SHALL)", "하지 말아야 함(SHALL NOT)", "해야 함(SHOULD)", "하지 말아야 함(SHOULD NOT)", "권장(RECOMMENDED)", "할 수 있음(MAY)" 및 "선택적(OPTIONAL)"이라는 키워드는 RFC 2119에 설명된 대로 해석해야 합니다.
 
@@ -34,7 +35,7 @@ HD 키체인은 본질적으로 초기 엔트로피에서 유도되므로, 본 �
 # '''BIP39 니모닉''' 은 BIP39에서 니모닉을 해싱하기 전에 사용된 엔트로피로부터 계산된 니모닉 구문입니다.
 # '''BIP39 시드'''는 BIP39 니모닉 시드를 해싱한 결과입니다.
 
-==Motivation==
+==동기==
 
 대부분의 지갑은 BIP32 루트 키를 사용해 키체인을 유도하는 방법을 정의한 BIP32를 지원합니다. 따라서 BIP32 루트 키만 백업하면 이 키에서 파생된 모든 키를 포괄할 수 있습니다. BIP32는 BIP32 루트 키(또는 일반적으로 BIP32 확장 키)의 인간 친화적인 직렬화가 없기 때문에 종이 백업이나 수동으로 키를 복원할 때 오류가 발생하기 쉽습니다. BIP39는 이 문제를 해결하기 위해 설계되었지만, BIP32 루트 키를 직렬화하는 대신 약간의 엔트로피를 사용하여 '시드 니모닉'으로 인코딩한 다음 해시하여 BIP32 루트 키로 변환할 수 있는 BIP39 시드를 도출해냅니다. BIP39 니모닉을 저장하는 것만으로도 전체 BIP32 키체인을 재구성할 수 있지만, BIP32 루트 키는 다시 BIP39 니모닉으로 되돌릴 수 없습니다.
 
@@ -46,7 +47,7 @@ HD 키체인은 본질적으로 초기 엔트로피에서 유도되므로, 본 �
 
 궁극적으로 모든 니모닉/시드 체계는 니모닉/시드를 유도하기 위해 "초기 엔트로피"로 시작한 다음, 니모닉을 BIP32 키 또는 개인키로 처리합니다. BIP32 자체를 사용하여 "초기 엔트로피"를 유도한 다음 대상 지갑의 특정 애플리케이션 표준에 따라 동일한 니모닉 또는 시드를 다시 생성할 수 있습니다. 대상 애플리케이션 유형에 따라 균일한 유도를 보장하기 위해 BIP44와 유사한 분류를 사용할 수 있습니다.
 
-==Specification==
+==스펙==
 
 여기서는 단일 BIP32 마스터 루트 키를 가정합니다. 이 명세에서는 이 키가 어떻게 유도되었는지는 중요하지 않습니다(예: 직접 또는 BIP39와 같은 니모닉 체계를 통해).
 
@@ -54,9 +55,9 @@ HD 키체인은 본질적으로 초기 엔트로피에서 유도되므로, 본 �
 
 HMAC-SHA512 기능은 [http://tools.ietf.org/html/rfc4231 RFC 4231]에 명시되어 있습니다.
 
-===Test vectors===
+===테스트 벡터===
 
-====Test case 1====
+====테스트 케이스 1====
 INPUT:
 * MASTER BIP32 ROOT KEY: xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
 * PATH: m/83696968'/0'/0'
@@ -65,7 +66,7 @@ OUTPUT:
 * DERIVED KEY=cca20ccb0e9a90feb0912870c3323b24874b0ca3d8018c4b96d0b97c0e82ded0
 * DERIVED ENTROPY=efecfbccffea313214232d29e71563d941229afb4338c21f9517c41aaa0d16f00b83d2a09ef747e7a64e8e2bd5a14869e693da66ce94ac2da570ab7ee48618f7
 
-====Test case 2====
+====테스트 케이스 2====
 INPUT:
 * MASTER BIP32 ROOT KEY: xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
 *PATH: m/83696968'/0'/1'
@@ -83,7 +84,7 @@ RSA 키 생성은 64바이트 이상의 무작위 입력이 필요한 함수의 
     drng_reader = BIP85DRNG.new(bip85_entropy)
     rsa_key = RSA.generate_key(4096, drng_reader.read())
 
-===Test Vectors===
+===테스트 벡터===
 INPUT:
 xprv9s21ZrQH143K2LBWUUQRFXhucrQqBpKdRRxNVq2zBqsx8HVqFk2uYo8kmbaLLHRdqtQpUm98uKfu3vca1LqdGhUtyoFnCNkfmXRyPXLjbKb
 * MASTER BIP32 ROOT KEY: m/83696968'/0'/0'
@@ -94,12 +95,12 @@ OUTPUT
 
 * DRNG(80 bytes)=b78b1ee6b345eae6836c2d53d33c64cdaf9a696487be81b03e822dc84b3f1cd883d7559e53d175f243e4c349e822a957bbff9224bc5dde9492ef54e8a439f6bc8c7355b87a925a37ee405a7502991111
 
-==Reference Implementation==
+==참조 구현==
 
 * Python 라이브러리 구현체: [https://github.com/ethankosakovsky/bip85]
 * JavaScript 라이브러리 구현체: [https://github.com/hoganri/bip85-js]
 
-===Other Implementations===
+===다른 구현===
 
 * JavaScript 라이브러리 구현체: [https://github.com/hoganri/bip85-js]
 
@@ -111,7 +112,7 @@ OUTPUT
 
 btc_hd_wallet: [https://github.com/scgbckbone/btc-hd-wallet]
 
-==Applications==
+==애플리케이션==
 
 애플리케이션 번호는 엔트로피가 후처리에 사용되는 방식을 정의합니다. 다음은 몇 가지 기본적인 예입니다:
 
@@ -180,7 +181,7 @@ btc_hd_wallet: [https://github.com/scgbckbone/btc-hd-wallet]
 | 24'
 |}
 
-====12 English words====
+====12 영어 단어====
 BIP39 영어 12 단어 니모닉 시드
 
 128 비트의 엔트로피를 BIP39에 입력하여 12 단어 니모닉을 유도합니다
@@ -193,7 +194,7 @@ OUTPUT:
 * DERIVED ENTROPY=6250b68daf746d12a24d58b4787a714b
 * DERIVED BIP39 MNEMONIC=girl mad pet galaxy egg matter matrix prison refuse sense ordinary nose
 
-====18 English words====
+====18 영어 단어====
 BIP39 영어 18 단어 니모닉 시드
 
 196 비트의 엔트로피를 BIP39에 입력하여 18 단어 니모닉을 유도합니다
@@ -206,7 +207,7 @@ OUTPUT:
 * DERIVED ENTROPY=938033ed8b12698449d4bbca3c853c66b293ea1b1ce9d9dc
 * DERIVED BIP39 MNEMONIC=near account window bike charge season chef number sketch tomorrow excuse sniff circle vital hockey outdoor supply token
 
-====24 English words====
+====24 영어 단어====
 BIP39 영어 24 단어 니모닉 시드
 
 256 비트의 엔트로피를 BIP39에 입력하여 24 단어 니모닉을 유도합니다
@@ -295,31 +296,31 @@ GPG 지원 스마트카드는 다음과 같이 로드해야 합니다: 암호화
 
 그러나 스마트 카드의 사용 가능한 슬롯 및 선호 정책에 따라, 자격증명 가능 키는 자격증명(CERTIFY) 및 서명(SIGNATURE) 기능으로 플래그가 지정되고 서명 가능 슬롯에 로드될 수 있습니다(MAY)(예: 스마트 카드에 슬롯이 3개만 있고 동일한 카드에 자격증명(CERTIFY) 기능이 필요한 경우). 이 경우, 서명(SIGNATURE) 가능 하위 키는 무시되는데, 이는 자격증명(CERTIFY) 가능 키가 이중 용도로 사용되기 때문입니다.
 
-==Backwards Compatibility==
+==하위 호환성==
 
 이 명세는 다른 기존 명세와 역호환되지 않습니다.
 
 이 명세는 BIP32에 의존하지만, BIP32 루트 키가 어떻게 유도되는지에 대해서는 무관합니다. 따라서 이 표준은 BIP39나 일렉트럼 지갑 스타일 니모닉과 같은 초기화 체계를 가진 지갑을 도출할 수 있습니다.
 
-==Discussion==
+==논의==
 
 HMAC-SHA512를 통해 파생된 키를 실행하고 필요에 따라 결과를 잘라내는 이유는 유도된 키(''k'')가 침해될 경우 상위 트리의 누출을 방지하기 위해서입니다. 명세는 이를 방지하기 위해 강화 키 유도를 사용하도록 요구하지만, 강화 유도를 강제할 수는 없으므로 이 방법은 유도된 엔트로피가 강화되도록 보장합니다. 또한 의미론적 관점에서 볼 때, 개인키가 아닌 엔트로피를 유도하는 것이 목적이므로 자식 키를 변환해야 합니다. 이는 ''k''가 원치 않는 예기치 않은 상호 작용이 발생할 수 있는 논스 ''hash(k)''를 포함하여 이중 목적으로 사용될 경우 원치 않는 부작용을 방지하기 위해 많은 주의를 기울이기 위해 수행됩니다.
 
-==Acknowledgements==
+==감사의 글==
 
 의견을 제공해 주신 Peter Gray와 Christopher Allen에게 감사드리며, 추가 애플리케이션 사용 사례를 제안해 주신 Peter에게도 감사드립니다.
 
-==References==
+==참고 자료==
 
 BIP32, BIP39
 
-==Footnotes==
+==풋노트==
 
 [1] 0이거나 커브의 위수보다 큰 유효하지 않은 키를 만들 가능성은 매우 적습니다. 이 경우 소프트웨어는 하드 페일(hard fail, 사용자가 다음 인덱스로 강제로 반복해야 함)해야 합니다.
 
 BIP32에서:
 parse<sub>256</sub>(I<sub>L</sub>)이 0 또는 ≥ n인 경우 결과 키가 유효하지 않으므로 i의 다음 값으로 진행해야 합니다. (참고: 2<sup>127</sup>분의 1보다 낮은 확률로 발생합니다.)
 
-==Copyright==
+==저작권==
 
-이 BIP는 Open Publication License 및 BSD 2-clause 라이센스에 따라 이중 라이센스입니다.
+이 BIP는 Open Publication License 및 BSD 2-clause 라이선스에 따라 이중 라이선스입니다.
